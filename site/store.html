@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر الأليرتات - TikFlux</title>
+  <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/alert-library-store.css">
+  <link rel="stylesheet" href="/assets/css/alert-library.css">
+  <style>
+    :root {
+      --primary-color: #4ade80;
+      --primary-rgba-15: rgba(74, 222, 128, 0.15);
+      --primary-rgba-05: rgba(74, 222, 128, 0.05);
+      --bg-dark: #07090d;
+      --bg-card: #0d131b;
+      --bg-card-hover: #111823;
+      --text-primary: #f2f2f5;
+      --text-secondary: #a0a0a0;
+      --border-color: rgba(255, 255, 255, 0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Cairo', 'Tajawal', sans-serif; background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+    
+    .alib-store-page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .alib-store-sticky-top {
+      padding: 20px 32px 15px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .alib-picker-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+    
+    .alib-picker-head h2 {
+      font-size: 22px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .alib-picker-head h2 i {
+      color: var(--primary-color);
+    }
+    
+    .alib-picker-head .back-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      transition: all 0.2s;
+    }
+    
+    .alib-picker-head .back-link:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    
+    .alib-cats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .alib-cat-btn {
+      padding: 8px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .alib-cat-btn:hover {
+      border-color: var(--primary-color);
+      color: var(--text-primary);
+    }
+    
+    .alib-cat-btn.active {
+      background: var(--primary-rgba-15);
+      border-color: var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .alib-cat-count {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+    
+    .alib-store-body {
+      flex: 1;
+      padding: 24px 32px;
+      overflow-y: auto;
+    }
+    
+    .alib-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    
+    @media (max-width: 1200px) { .alib-grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 900px) { .alib-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 600px) { .alib-grid { grid-template-columns: repeat(2, 1fr); } }
+    
+    .alib-card {
+      background: var(--bg-card);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    
+    .alib-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      border-color: rgba(255,255,255,0.15);
+    }
+    
+    .alib-card__thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #090c11;
+      overflow: hidden;
+    }
+    
+    .alib-card__poster {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    
+    .alib-card:hover .alib-card__poster {
+      transform: scale(1.05);
+    }
+    
+    .alib-card__thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    
+    .alib-card:hover .alib-card__thumb video {
+      display: block;
+    }
+    
+    .alib-card__thumb .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      background: rgba(0,0,0,0.6);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    
+    .alib-card:hover .play-icon {
+      opacity: 1;
+    }
+    
+    .alib-card__free {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 10px;
+      background: var(--primary-color);
+      color: #000;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .alib-card__price-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 3px 10px;
+      background: rgba(0,0,0,0.7);
+      color: #fbbf24;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    
+    .alib-card__body {
+      padding: 12px 14px;
+    }
+    
+    .alib-card__name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    
+    .alib-card__name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+    
+    .alib-card__duration {
+      font-size: 11px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    
+    .alib-card__duration span {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .alib-card__store-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    
+    .alib-btn-use {
+      flex: 1;
+      padding: 8px 16px;
+      background: var(--primary-color);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .alib-btn-use:hover {
+      background: #22c55e;
+      transform: scale(1.02);
+    }
+    
+    .alib-btn-preview {
+      width: 36px;
+      height: 36px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text-secondary);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+    
+    .alib-btn-preview:hover {
+      background: rgba(255,255,255,0.15);
+      color: var(--text-primary);
+    }
+    
+    .alib-card__owned {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--primary-color);
+      margin-top: 6px;
+    }
+    
+    .alib-store-stats {
+      display: flex;
+      gap: 20px;
+      padding: 12px 0;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+    
+    .alib-store-stats span {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .alib-empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-secondary);
+    }
+    
+    .alib-empty i {
+      font-size: 48px;
+      color: #223044;
+      margin-bottom: 15px;
+    }
+    
+    .loading-spinner {
+      text-align: center;
+      padding: 60px;
+      color: var(--text-secondary);
+    }
+    
+    .loading-spinner i {
+      font-size: 32px;
+      animation: spin 1s linear infinite;
+      color: var(--primary-color);
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    /* Preview Overlay */
+    .alib-player-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 99999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .alib-player-overlay.active {
+      display: flex;
+    }
+    
+    .alib-player-overlay video {
+      max-width: 80%;
+      max-height: 60%;
+      border-radius: 12px;
+    }
+    
+    .alib-player-overlay .player-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .alib-player-overlay .player-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .alib-player-overlay .player-btn {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .alib-player-overlay .player-btn--select {
+      background: var(--primary-color);
+      color: #000;
+    }
+    
+    .alib-player-overlay .player-btn--select:hover {
+      background: #22c55e;
+    }
+    
+    .alib-player-overlay .player-btn--close {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+    
+    .alib-player-overlay .player-btn--close:hover {
+      background: rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="alib-store-page">
+    <div class="alib-store-sticky-top">
+      <div class="alib-picker-head">
+        <h2><i class="fas fa-store"></i> متجر الأليرتات</h2>
+        <a href="/" class="back-link"><i class="fas fa-arrow-right"></i> رجوع للوحة التحكم</a>
+      </div>
+      <div class="alib-cats" id="categories"></div>
+    </div>
+    
+    <div class="alib-store-body">
+      <div class="alib-store-stats" id="stats"></div>
+      <div class="alib-grid" id="grid">
+        <div class="loading-spinner"><i class="fas fa-spinner"></i><p>جاري تحميل الأليرتات...</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alib-player-overlay" id="playerOverlay">
+    <video id="playerVideo" controls autoplay></video>
+    <div class="player-name" id="playerName"></div>
+    <div class="player-actions">
+      <button class="player-btn player-btn--select" id="playerSelect"><i class="fas fa-check"></i> استخدام هذا الأليرت</button>
+      <button class="player-btn player-btn--close" id="playerClose"><i class="fas fa-times"></i> إغلاق</button>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin;
+    let allAlerts = [];
+    let currentCategory = 'all';
+    let currentAlert = null;
+
+    const categoryLabels = {
+      all: 'الكل', love: 'حب', likes: 'لايكات', boys: 'شباب',
+      countries: 'دول', girls: 'بنات', anime: 'أنمي', follow: 'متابعة'
+    };
+
+    async function loadAlerts() {
+      try {
+        const r = await fetch(API + '/api/alert-library');
+        const data = await r.json();
+        allAlerts = data.items || [];
+        renderCategories();
+        renderStats();
+        renderGrid();
+      } catch (e) {
+        document.getElementById('grid').innerHTML = '<div class="alib-empty"><i class="fas fa-exclamation-triangle"></i><p>خطأ في تحميل الأليرتات</p></div>';
+      }
+    }
+
+    function renderCategories() {
+      const counts = {};
+      allAlerts.forEach(a => { counts[a.category] = (counts[a.category] || 0) + 1; });
+      
+      let html = '<button class="alib-cat-btn ' + (currentCategory === 'all' ? 'active' : '') + '" onclick="setCategory(\'all\')">الكل <span class="alib-cat-count">' + allAlerts.length + '</span></button>';
+      
+      Object.keys(counts).forEach(cat => {
+        html += '<button class="alib-cat-btn ' + (currentCategory === cat ? 'active' : '') + '" onclick="setCategory(\'' + cat + '\')">' + (categoryLabels[cat] || cat) + ' <span class="alib-cat-count">' + counts[cat] + '</span></button>';
+      });
+      
+      document.getElementById('categories').innerHTML = html;
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderCategories();
+      renderGrid();
+    }
+
+    function renderStats() {
+      const total = allAlerts.length;
+      const free = allAlerts.filter(a => a.access_type === 'free' || a.price_cents === 0).length;
+      const paid = total - free;
+      document.getElementById('stats').innerHTML = '<span>' + total + '</span> أليرت &nbsp;|&nbsp; <span>' + free + '</span> مجاني &nbsp;|&nbsp; <span>' + paid + '</span> مدفوع';
+    }
+
+    function renderGrid() {
+      const filtered = currentCategory === 'all' ? allAlerts : allAlerts.filter(a => a.category === currentCategory);
+      
+      if (filtered.length === 0) {
+        document.getElementById('grid').innerHTML = '<div class="alib-empty"><i class="fas fa-bell-slash"></i><p>لا توجد أليرتات في هذا التصنيف</p></div>';
+        return;
+      }
+      
+      document.getElementById('grid').innerHTML = filtered.map((a, i) => {
+        const isFree = a.access_type === 'free' || a.price_cents === 0;
+        const thumb = a.thumbnail_url || '';
+        const preview = a.preview_video_url || a.preview_url || '';
+        const price = (a.price_cents / 100).toFixed(2);
+        
+        return '<div class="alib-card" style="animation-delay:' + (i * 38) + 'ms">' +
+          '<div class="alib-card__thumb">' +
+            (thumb ? '<img class="alib-card__poster" src="' + thumb + '" alt="' + a.name + '" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
+            (preview ? '<video src="' + preview + '" muted loop preload="none"></video>' : '') +
+            '<div class="play-icon"><i class="fas fa-play"></i></div>' +
+            (isFree ? '<div class="alib-card__free">مجاني</div>' : '<div class="alib-card__price-badge">$' + price + '</div>') +
+          '</div>' +
+          '<div class="alib-card__body">' +
+            '<div class="alib-card__name-row">' +
+              '<div class="alib-card__name">' + (a.name || 'أليرت') + '</div>' +
+              '<div class="alib-card__duration"><span>' + (a.duration_seconds || 0) + '</span> ث</div>' +
+            '</div>' +
+            '<div class="alib-card__store-actions">' +
+              '<button class="alib-btn-use" onclick="useAlert(\'' + a.id + '\', \'' + (a.name||'').replace(/'/g,"\\'") + '\', \'' + (a.category||'') + '\', \'' + preview.replace(/'/g,"\\'") + '\', \'' + thumb.replace(/'/g,"\\'") + '\')">استخدم</button>' +
+              (preview ? '<button class="alib-btn-preview" onclick="event.stopPropagation();previewAlert(\'' + preview.replace(/'/g,"\\'") + '\', \'' + (a.name||'').replace(/'/g,"\\'") + '\', \'' + a.id + '\', \'' + (a.category||'') + '\', \'' + thumb.replace(/'/g,"\\'") + '\')"><i class="fas fa-play"></i></button>' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function previewAlert(url, name, id, category, thumb) {
+      if (!url) return;
+      currentAlert = { id, name, category, preview_url: url, thumbnail_url: thumb };
+      document.getElementById('playerVideo').src = url;
+      document.getElementById('playerName').textContent = name;
+      document.getElementById('playerOverlay').classList.add('active');
+    }
+
+    document.getElementById('playerClose').onclick = function() {
+      document.getElementById('playerOverlay').classList.remove('active');
+      document.getElementById('playerVideo').pause();
+    };
+
+    document.getElementById('playerSelect').onclick = function() {
+      if (currentAlert) {
+        fetch(API + '/api/alert-library/attach', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ alertId: currentAlert.id })
+        }).then(function(r) { return r.json(); }).then(function(data) {
+          localStorage.setItem('tikflux_selected_alert', JSON.stringify(currentAlert));
+          document.getElementById('playerOverlay').classList.remove('active');
+          showToast('تم تثبيت ' + currentAlert.name + '!');
+          setTimeout(function() { window.location.href = '/'; }, 1000);
+        }).catch(function(e) {
+          localStorage.setItem('tikflux_selected_alert', JSON.stringify(currentAlert));
+          document.getElementById('playerOverlay').classList.remove('active');
+          showToast('تم اختيار ' + currentAlert.name + '!');
+          setTimeout(function() { window.location.href = '/'; }, 1000);
+        });
+      }
+    };
+
+    function useAlert(id, name, category, previewUrl, thumbUrl) {
+      // Call attach API first
+      fetch(API + '/api/alert-library/attach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ alertId: id })
+      }).then(function(r) { return r.json(); }).then(function(data) {
+        localStorage.setItem('tikflux_selected_alert', JSON.stringify({ id: id, name: name, category: category, preview_url: previewUrl, thumbnail_url: thumbUrl }));
+        showToast('تم تثبيت ' + name + '!');
+        setTimeout(function() { window.location.href = '/'; }, 1000);
+      }).catch(function(e) {
+        // Still save even if API fails
+        localStorage.setItem('tikflux_selected_alert', JSON.stringify({ id: id, name: name, category: category, preview_url: previewUrl, thumbnail_url: thumbUrl }));
+        showToast('تم اختيار ' + name + '!');
+        setTimeout(function() { window.location.href = '/'; }, 1000);
+      });
+    }
+
+    function showToast(msg) {
+      var t = document.createElement('div');
+      t.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--primary-color);color:#000;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:999999';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(function() { t.remove(); }, 3000);
+    }
+
+    loadAlerts();
+  </script>
+</body>
+</html>

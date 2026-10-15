@@ -1,0 +1,2994 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-i18n-layout-dir="rtl">
+<head>
+  <!-- Local development setup: mocks for non-stream endpoints only -->
+  <script>
+  window.__I18N_AR__ = {
+  "common": {
+    "pageTitle": "TikFlux",
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "تم بنجاح",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "copy": "نسخ",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا",
+    "on": "تشغيل",
+    "off": "إيقاف",
+    "enabled": "مفعل",
+    "disabled": "معطل",
+    "reset": "إعادة تعيين",
+    "apply": "تطبيق",
+    "preview": "معاينة",
+    "settings": "الإعدادات",
+    "name": "الاسم",
+    "type": "النوع",
+    "value": "القيمة",
+    "count": "العدد",
+    "total": "المجموع",
+    "page": "صفحة",
+    "search": "بحث",
+    "none": "بدون",
+    "unknown": "غير معروف",
+    "new": "جديد",
+    "default": "افتراضي",
+    "custom": "مخصص",
+    "color": "اللون",
+    "font": "الخط",
+    "size": "الحجم",
+    "speed": "السرعة",
+    "position": "الموضع",
+    "opacity": "الشفافية",
+    "duration": "المدة",
+    "volume": "الصوت",
+    "theme": "السمة",
+    "style": "النمط",
+    "image": "الصورة",
+    "animation": "الحركة",
+    "test": "اختبار",
+    "select": "اختيار",
+    "selectFile": "اختر ملف",
+    "upload": "رفع",
+    "download": "تنزيل",
+    "share": "مشاركة",
+    "connect": "اتصال",
+    "disconnect": "قطع الاتصال",
+    "reconnect": "إعادة اتصال",
+    "viewAll": "عرض الكل",
+    "viewDetails": "عرض التفاصيل",
+    "noData": "لا توجد بيانات",
+    "empty": "فارغ",
+    "required": "مطلوب",
+    "optional": "اختياري",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "done": "تم",
+    "skip": "تخطي",
+    "getStarted": "ابدأ",
+    "learnMore": "اعرف المزيد",
+    "upgrade": "ترقية",
+    "subscribe": "اشترك",
+    "trial": "تجربة",
+    "free": "مجاني",
+    "pro": "برو",
+    "premium": "مميز",
+    "yearly": "سنوي",
+    "monthly": "شهري",
+    "weekly": "أسبوعي",
+    "daily": "يومي",
+    "today": "اليوم",
+    "yesterday": "أمس",
+    "thisWeek": "هذا الأسبوع",
+    "thisMonth": "هذا الشهر",
+    "all": "الكل",
+    "other": "آخر",
+    "and": "و",
+    "or": "أو",
+    "min": "الحد الأدنى",
+    "max": "الحد الأقصى",
+    "average": "المتوسط"
+  },
+  "header": {
+    "connect": "اتصال",
+    "connecting": "جاري الاتصال...",
+    "disconnecting": "جاري قطع الاتصال...",
+    "disconnect": "قطع الاتصال",
+    "startStream": "بدء البث",
+    "serverFull": "الخادم ممتلئ",
+    "connectionError": "خطأ في الاتصال",
+    "reconnecting": "إعادة الاتصال...",
+    "connected": "متصل",
+    "disconnected": "غير متصل",
+    "streaming": "يُبث",
+    "notStreaming": "غير مُبث",
+    "animationHint": "اضغط لإعادة الأنيميشن",
+    "tiktokPlaceholder": "اسم حساب TikTok",
+    "viewersNow": "المشاهدون الآن",
+    "viewersTotal": "إجمالي المشاهدين"
+  },
+  "sidebar": {
+    "overlays": "التراكبات",
+    "latestEvents": "آخر الأحداث",
+    "stats": "الإحصائيات",
+    "newBadge": "جديد",
+    "top": "Top",
+    "goals": "الأهداف",
+    "actions": "الإجراءات",
+    "donationAlerts": "تنبيهات التبرعات",
+    "tts": "TTS",
+    "comments": "التعليقات",
+    "botChat": "Bot Chat",
+    "musicPlayer": "مشغل الموسيقى",
+    "supportersLeaderboard": "تصنيف الداعمين",
+    "socialMedia": "السوشيال ميديا",
+    "challenges": "تحديات",
+    "linkScenes": "تجميع الروابط",
+    "alertStore": "\u0645\u062A\u062C\u0631 \u0627\u0644\u0623\u0644\u064A\u0631\u062A\u0627\u062A",
+    "terms": "الشروط",
+    "privacy": "الخصوصية",
+    "support": "الدعم"
+  },
+  "account": {
+    "aboutOverlays": "التراكبات",
+    "aboutOverlaysDesc": "إضافة طبقات تراكب مخصصة على بثك مباشرة مع دعم السمات والألوان والصور المتحركة.",
+    "aboutGoals": "الأهداف",
+    "aboutGoalsDesc": "تتبع تقدمك في البث مع أهداف الإعجابات والمتابعين والهدايا وأكثر من ذلك.",
+    "aboutAlerts": "التنبيهات",
+    "aboutAlertsDesc": "عرض تنبيهات مخصصة عند حدوث أحداث مباشرة مثل الإعجابات والمتابعين والهدايا.",
+    "aboutMusicPlayer": "مشغل الموسيقى",
+    "aboutMusicPlayerDesc": "تشغيل وإدارة الموسيقى أثناء البث مع دعم قوائم التشغيل والتحكم الصوتي.",
+    "aboutTTS": "تحويل النص إلى كلام",
+    "aboutTTSDesc": "تحويل رسائل الدردشة إلى كلام مسموع مع خيارات صوتية متعددة.",
+    "aboutBotChat": "الشات بوت",
+    "aboutBotChatDesc": "ردود تلقائية على رسائل الدردشة مع دعم القواعد المخصصة والردود الذكية.",
+    "aboutStats": "الإحصائيات",
+    "aboutStatsDesc": "تتبع وإحصائيات شاملة لأداء بثك وتفاعل الجمهور.",
+    "aboutThemes": "السمات",
+    "aboutThemesDesc": "اختر من بين سمات مصممة بعناية لتخصيص مظهر لوحة التحكم والبث.",
+    "aboutSupport": "الدعم",
+    "aboutSupportDesc": "فريق الدعم متاح لمساعدتك في أي وقت عبر تيليجرام.",
+    "aboutSubathon": "Subathon",
+    "aboutSubathonDesc": "ميزة Subathon للحفاظ على البث نشطاً مع أهداف تفاعلية.",
+    "desktopAppAvailable": "التطبيق سطح المكتب متاح",
+    "desktopAppName": "تطبيق سطح المكتب",
+    "desktopAppDesc": "حمّل تطبيق سطح المكتب للحصول على ميزات إضافية وتحكم أفضل.",
+    "downloadApp": "تنزيل التطبيق",
+    "aboutServiceWhy": "لماذا TikFlux؟",
+    "aboutServiceWhyDesc": "كل ما تحتاجه لبث مباشر احترافي على TikTok في مكان واحد",
+    "platformTickerTitle": "نشاط المنصة في الوقت الحالي",
+    "platformTickerStreamer": "الستريمر",
+    "platformTickerUser": "المستخدم",
+    "platformTickerConnecting": "جاري الاتصال...",
+    "platformTickerEvent": "الحدث",
+    "platformTickerSince": "منذ",
+    "platformTickerLive": "مباشر",
+    "platformTickerEmpty": "في انتظار أحداث البث...",
+    "platformTickerEventGift": "هدية",
+    "platformTickerEventLike": "إعجاب",
+    "platformTickerEventFollow": "متابعة",
+    "platformTickerEventComment": "تعليق",
+    "platformTickerEventJoin": "دخول",
+    "platformTickerEventOther": "نشاط",
+    "platformTickerViewerCrowd": "عدة مشاهدين",
+    "platformTickerViewerUnknown": "—"
+  },
+  "connectionMode": {
+    "title": "وضع الاتصال",
+    "desc": "اختر طريقة الاتصال بالخادم",
+    "cloud": "السحابة",
+    "local": "محلي",
+    "lockedHint": "قريباً"
+  },
+  "footer": {
+    "email": "البريد الإلكتروني",
+    "faq": "الأسئلة الشائعة",
+    "features": "الميزات",
+    "guides": "الدليل",
+    "learn": "اعرف المزيد",
+    "madeForStreamers": "صُمم للمُبثّين",
+    "pricing": "الأسعار",
+    "refund": "استرداد",
+    "terms": "الشروط",
+    "privacy": "الخصوصية",
+    "contact": "التواصل",
+    "support": "الدعم",
+    "telegram": "تيليجرام",
+    "tiktok": "تيك توك",
+    "instagram": "إنستغرام",
+    "downloadApp": "تنزيل التطبيق",
+    "langAr": "العربية",
+    "langEn": "English",
+    "product": "المنتج",
+    "joinTelegram": "انضم للتلجرام",
+    "telegramTitle": "انضم لقناة تلجرام",
+    "telegramUpdateModalTitle": "انضم إلى TikFlux على تلجرام",
+    "telegramUpdatePrompt": "يرجى الانضمام إلى قناة تطبيق TikFlux على تلجرام لتلقي أحدث التحديثات والإجابات على استفساراتك."
+  },
+  "login": {
+    "title": "تسجيل الدخول",
+    "codeRequired": "أدخل رمز التحقق",
+    "sendCode": "إرسال الرمز",
+    "sending": "جاري الإرسال...",
+    "verifySent": "تم إرسال رمز التحقق",
+    "verifying": "جاري التحقق...",
+    "verifySuccess": "تم التحقق بنجاح",
+    "googleSignInFailed": "فشل تسجيل الدخول عبر جوجل"
+  },
+  "auth": {
+    "sessionExpiredRedirect": "انتهت الجلسة، جاري التحويل..."
+  },
+  "subscription": {
+    "activateSuccess": "تم تفعيل الاشتراك بنجاح",
+    "activateError": "خطأ في تفعيل الاشتراك",
+    "loginRequired": "يجب تسجيل الدخول أولاً"
+  },
+  "actions": {
+    "title": "الإجراءات",
+    "gifts": "الهدايا",
+    "likes": "الإعجابات",
+    "follows": "المتابعين",
+    "shares": "المشاركات",
+    "joins": "الانضمامات",
+    "comments": "التعليقات",
+    "subscribers": "المشتركين"
+  },
+  "overlays": {
+    "title": "الطبقات",
+    "addOverlay": "إضافة طبقة",
+    "manageOverlays": "إدارة الطبقات",
+    "noOverlays": "لا توجد طبقات",
+    "preview": "معاينة",
+    "visibility": "الظهور",
+    "hide": "إخفاء",
+    "show": "إظهار",
+    "delete": "حذف",
+    "duplicate": "تكرار",
+    "moveUp": "تحريك لأعلى",
+    "moveDown": "تحريك لأسفل",
+    "bringToFront": "إحضار للأمام",
+    "sendToBack": "إرسال للخلف",
+    "socialMediaDisplay": "السوشيال ميديا"
+  },
+  "top": {
+    "title": "التوب والتكبيسات"
+  },
+  "goals": {
+    "title": "الأهداف",
+    "followGoal": "هدف المتابعين",
+    "likeGoal": "هدف الإعجابات",
+    "giftGoal": "هدف الهدايا",
+    "donationGoal": "هدف التبرعات",
+    "heartMeGoal": "هدف القلوب",
+    "currentProgress": "التقدم الحالي",
+    "targetGoal": "الهدف",
+    "completed": "مكتمل",
+    "reset": "إعادة تعيين",
+    "customize": "تخصيص",
+    "font": "الخط",
+    "color": "اللون",
+    "backgroundColor": "لون الخلفية",
+    "borderColor": "لون الحدود",
+    "progressColor": "لون شريط التقدم",
+    "showTitle": "إظهار العنوان",
+    "showProgress": "إظهار التقدم",
+    "showIcon": "إظهار الأيقونة",
+    "animation": "الحركة",
+    "progressBar": "شريط التقدم",
+    "circular": "دائري",
+    "horizontal": "أفقي",
+    "vertical": "عمودي"
+  },
+  "tts": {
+    "title": "TTS",
+    "enableTts": "تفعيل TTS",
+    "disableTts": "تعطيل TTS",
+    "voice": "الصوت",
+    "speed": "السرعة",
+    "pitch": "طبقة الصوت",
+    "volume": "الصوت",
+    "testVoice": "اختبار الصوت",
+    "filterByCoins": "الفلترة حسب العملات",
+    "minCoins": "الحد الأدنى للعملات",
+    "allowAll": "السماح للجميع",
+    "allowFollowers": "المتابعين فقط",
+    "allowSubscribers": "المشتركين فقط",
+    "blacklist": "القائمة السوداء",
+    "whitelist": "القائمة البيضاء",
+    "addWord": "إضافة كلمة",
+    "removeWord": "إزالة كلمة",
+    "pause": "إيقاف مؤقت",
+    "resume": "استئناف",
+    "skip": "تخطي",
+    "clear": "مسح",
+    "queue": "قائمة الانتظار",
+    "history": "السجل"
+  },
+  "chat": {
+    "title": "التعليقات",
+    "enableChat": "تفعيل التعليقات",
+    "disableChat": "تعطيل التعليقات",
+    "filterSpam": "فلتر Spam",
+    "filterLinks": "فلتر الروابط",
+    "filterWords": "فلتر الكلمات",
+    "blacklist": "القائمة السوداء",
+    "whitelist": "القائمة البيضاء",
+    "maxMessageLength": "الحد الأقصى لطول الرسالة",
+    "slowMode": "وضع البطء",
+    "slowModeDelay": "تأخير وضع البطء",
+    "moderatorsOnly": "المشرفين فقط",
+    "followersOnly": "المتابعين فقط",
+    "subscribersOnly": "المشتركين فقط",
+    "badges": "الشارات",
+    "emotes": "الإيموجي",
+    "mentions": "الإشارات",
+    "reply": "رد",
+    "deleteMessage": "حذف الرسالة",
+    "banUser": "حظر المستخدم",
+    "timeoutUser": "مؤقت للمستخدم"
+  },
+  "botChat": {
+    "title": "Bot Chat",
+    "enableBot": "تفعيل البوت",
+    "disableBot": "تعطيل البوت",
+    "autoReply": "رد تلقائي",
+    "addRule": "إضافة قاعدة",
+    "editRule": "تعديل القاعدة",
+    "deleteRule": "حذف القاعدة",
+    "trigger": "المُحفِّز",
+    "response": "الرد",
+    "cooldown": "فترة التهدئة",
+    "minCoins": "الحد الأدنى للعملات",
+    "eventMinCoins": "حدث الحد الأدنى للعملات",
+    "eventSpecificGift": "حدث هدية محددة",
+    "eventMinLikes": "حدث الحد الأدنى للإعجابات",
+    "eventFollow": "حدث المتابعة",
+    "eventJoin": "حدث الانضمام",
+    "eventShare": "حدث المشاركة",
+    "eventComment": "حدث التعليق",
+    "eventSubscribe": "حدث الاشتراك"
+  },
+  "musicPlayer": {
+    "title": "مشغل الموسيقى",
+    "play": "تشغيل",
+    "pause": "إيقاف مؤقت",
+    "stop": "إيقاف",
+    "next": "التالي",
+    "previous": "السابق",
+    "shuffle": "عشوائي",
+    "repeat": "تكرار",
+    "repeatOne": "تكرار واحد",
+    "repeatAll": "تكرار الكل",
+    "noRepeat": "بدون تكرار",
+    "volume": "الصوت",
+    "mute": "كتم",
+    "unmute": "إلغاء الكتم",
+    "queue": "قائمة التشغيل",
+    "nowPlaying": "يُشغَّل الآن",
+    "addToQueue": "إضافة للقائمة",
+    "removeFromQueue": "إزالة من القائمة",
+    "clearQueue": "مسح القائمة",
+    "search": "بحث",
+    "noResults": "لا توجد نتائج",
+    "loading": "جاري التحميل...",
+    "error": "خطأ في التحميل",
+    "syncWithTikTok": "مزامنة مع تيك توك",
+    "desktopRequired": "يتطلب تطبيق سطح المكتب"
+  },
+  "supportersLeaderboard": {
+    "title": "تصنيف الداعمين",
+    "rank": "الترتيب",
+    "user": "المستخدم",
+    "diamonds": "الماس",
+    "gifts": "الهدايا",
+    "totalGifts": "إجمالي الهدايا",
+    "lastGift": "آخر هدية",
+    "topSupporter": "أفضل داعم",
+    "noSupporters": "لا يوجد داعمين",
+    "allTime": "كل الأوقات",
+    "daily": "يومي",
+    "weekly": "أسبوعي",
+    "monthly": "شهري",
+    "search": "بحث عن مستخدم..."
+  },
+  "supporters": {
+    "title": "تصنيف الداعمين",
+    "desc": "جدول داعميك الكامل — يتحدّث تلقائيًا عند كل هدية حقيقية",
+    "searchLabel": "بحث",
+    "searchPlaceholder": "ابحث باسم المستخدم...",
+    "addUser": "إضافة داعم",
+    "addUserTitle": "إضافة داعم جديد",
+    "deleteAll": "حذف الكل",
+    "loading": "جاري التحميل...",
+    "empty": "لا يوجد داعمين بعد — أول هدية حقيقية تظهر هنا تلقائيًا",
+    "loadFailed": "فشل تحميل القائمة، حاول مرة أخرى",
+    "loadMore": "تحميل المزيد",
+    "colRank": "الترتيب",
+    "colAvatar": "الصورة",
+    "colName": "الاسم",
+    "colDiamonds": "الماس",
+    "colManage": "إدارة",
+    "manage": "إدارة",
+    "manageTitle": "إدارة الداعم",
+    "deleteUser": "حذف المستخدم",
+    "delete": "حذف",
+    "deletingLabel": "جاري الحذف...",
+    "deleteFailed": "فشل الحذف",
+    "deleteAllFailed": "فشل حذف الكل",
+    "confirmDeleteTitle": "تأكيد الحذف",
+    "confirmDeleteText": "هل أنت متأكد من حذف هذا الداعم؟",
+    "confirmDeleteAllTitle": "حذف الكل",
+    "confirmDeleteAllText": "سيتم حذف جميع الداعمين نهائيًا. هل تريد المتابعة؟",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "save": "حفظ",
+    "savingLabel": "جاري الحفظ...",
+    "username": "اسم المستخدم",
+    "usernameLabel": "اسم المستخدم على تيك توك",
+    "usernamePlaceholder": "مثال: user123",
+    "nickname": "الاسم",
+    "id": "المعرف",
+    "diamondsLabel": "الماس",
+    "totalDiamonds": "إجمالي الماس",
+    "deltaLabel": "تعديل الماس",
+    "deltaPlaceholder": "+/-",
+    "deltaHint": "قيمة موجبة للإضافة أو سالبة للخصم",
+    "deltaInvalid": "قيمة غير صالحة",
+    "deltaFailed": "فشل تعديل الماس",
+    "apply": "تطبيق",
+    "lastUpdate": "آخر تحديث",
+    "openTiktok": "فتح حساب تيك توك",
+    "errEnterUsername": "اكتب اسم المستخدم",
+    "errDiamondsPositive": "اكتب رقمًا موجبًا",
+    "errUserExists": "هذا المستخدم موجود بالفعل:",
+    "errUserNotFound": "المستخدم غير موجود",
+    "errAddFailed": "فشلت الإضافة",
+    "errAddGeneric": "خطأ غير متوقع أثناء الإضافة",
+    "demoTitle": "تصنيف تجريبي",
+    "demoSub": "الميزة متاحة في الباقة المدفوعة"
+  },
+  "stats": {
+    "title": "الإحصائيات",
+    "totalLikes": "إجمالي الإعجابات",
+    "totalGifts": "إجمالي الهدايا",
+    "totalDiamonds": "إجمالي الماس",
+    "totalViews": "إجمالي المشاهدات",
+    "totalFollowers": "إجمالي المتابعين",
+    "peakViewers": "أقصى مشاهدين",
+    "averageViewers": "متوسط المشاهدين",
+    "viewerGrowth": "نمو المشاهدين",
+    "engagement": "معدل التفاعل",
+    "showViewers": "إظهار المشاهدين",
+    "downloadStats": "تنزيل الإحصائيات",
+    "shareStats": "مشاركة الإحصائيات",
+    "dailyStats": "إحصائيات يومية",
+    "weeklyStats": "إحصائيات أسبوعية",
+    "monthlyStats": "إحصائيات شهرية"
+  },
+  "socialMedia": {
+    "title": "السوشيال ميديا",
+    "tiktok": "تيك توك",
+    "instagram": "إنستغرام",
+    "youtube": "يوتيوب",
+    "telegram": "تيليجرام",
+    "twitter": "تويتر",
+    "discord": "ديسكورد",
+    "addLink": "إضافة رابط",
+    "editLink": "تعديل الرابط",
+    "deleteLink": "حذف الرابط",
+    "enableSocialBar": "تفعيل شريط السوشيال",
+    "socialBarStyle": "نمط الشريط",
+    "iconSize": "حجم الأيقونة",
+    "iconColor": "لون الأيقونة",
+    "showLabels": "إظهار التسميات",
+    "animateOnHover": "حركة عند التمرير"
+  },
+  "challenges": {
+    "title": "تحديات",
+    "giftChallenge": "تحدي الهدايا",
+    "teamChallenge": "تحدي الفرق",
+    "subathon": "Subathon",
+    "supportersChallenge": "تحدي الداعمين",
+    "team1": "الفريق 1",
+    "team2": "الفريق 2",
+    "addPoints": "إضافة نقاط",
+    "subtractPoints": "خصم نقاط",
+    "setScore": "تحديد النتيجة",
+    "resetChallenge": "إعادة تعيين التحدي",
+    "challengeRules": "قواعد التحدي",
+    "noActiveChallenge": "لا يوجد تحدي نشط"
+  },
+  "linkScenes": {
+    "title": "تجميع الروابط",
+    "addScene": "إضافة مشهد",
+    "editScene": "تعديل المشهد",
+    "deleteScene": "حذف المشهد",
+    "addLink": "إضافة رابط",
+    "editLink": "تعديل الرابط",
+    "deleteLink": "حذف الرابط",
+    "linkTitle": "عنوان الرابط",
+    "linkUrl": "رابط URL",
+    "linkIcon": "أيقونة الرابط",
+    "noScenes": "لا توجد مشاهد",
+    "noLinks": "لا توجد روابط",
+    "preview": "معاينة",
+    "copyLink": "نسخ الرابط",
+    "openInNewTab": "فتح في تبويب جديد"
+  },
+  "latestEvents": {
+    "title": "آخر الأحداث",
+    "noEvents": "لا توجد أحداث",
+    "viewAll": "عرض الكل",
+    "clearAll": "مسح الكل",
+    "eventTypes": "أنواع الأحداث",
+    "likes": "الإعجابات",
+    "gifts": "الهدايا",
+    "follows": "المتابعين",
+    "joins": "الانضمامات",
+    "shares": "المشاركات",
+    "comments": "التعليقات",
+    "subscribers": "المشتركين",
+    "filter": "فلتر",
+    "timeRange": "نطاق الوقت"
+  },
+  "donationAlerts": {
+    "title": "تنبيهات التبرعات",
+    "enableAlerts": "تفعيل التنبيهات",
+    "disableAlerts": "تعطيل التنبيهات",
+    "alertSound": "صوت التنبيه",
+    "alertDuration": "مدة التنبيه",
+    "alertAnimation": "حركة التنبيه",
+    "alertText": "نص التنبيه",
+    "minDonation": "الحد الأدنى للتبرع",
+    "showDonorName": "إظهار اسم المتبرع",
+    "showDonationAmount": "إظهار المبلغ",
+    "showDonationMessage": "إظهار الرسالة",
+    "customAlert": "تنبيه مخصص",
+    "testAlert": "اختبار التنبيه",
+    "pickFromLibrary": "اختيار من المكتبة",
+    "noAlerts": "لا توجد تنبيهات",
+    "alertHistory": "سجل التنبيهات"
+  }
+};
+  window.__I18N_EN__ = {
+  "common": {
+    "pageTitle": "TikFlux",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "on": "On",
+    "off": "Off",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "reset": "Reset",
+    "apply": "Apply",
+    "preview": "Preview",
+    "settings": "Settings",
+    "name": "Name",
+    "type": "Type",
+    "value": "Value",
+    "count": "Count",
+    "total": "Total",
+    "page": "Page",
+    "search": "Search",
+    "none": "None",
+    "unknown": "Unknown",
+    "new": "New",
+    "default": "Default",
+    "custom": "Custom",
+    "color": "Color",
+    "font": "Font",
+    "size": "Size",
+    "speed": "Speed",
+    "position": "Position",
+    "opacity": "Opacity",
+    "duration": "Duration",
+    "volume": "Volume",
+    "theme": "Theme",
+    "style": "Style",
+    "image": "Image",
+    "animation": "Animation",
+    "test": "Test",
+    "select": "Select",
+    "selectFile": "Select File",
+    "upload": "Upload",
+    "download": "Download",
+    "share": "Share",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "reconnect": "Reconnect",
+    "viewAll": "View All",
+    "viewDetails": "View Details",
+    "noData": "No data",
+    "empty": "Empty",
+    "required": "Required",
+    "optional": "Optional",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "done": "Done",
+    "skip": "Skip",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "upgrade": "Upgrade",
+    "subscribe": "Subscribe",
+    "trial": "Trial",
+    "free": "Free",
+    "pro": "Pro",
+    "premium": "Premium",
+    "yearly": "Yearly",
+    "monthly": "Monthly",
+    "weekly": "Weekly",
+    "daily": "Daily",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "all": "All",
+    "other": "Other",
+    "and": "and",
+    "or": "or",
+    "min": "Min",
+    "max": "Max",
+    "average": "Average"
+  },
+  "header": {
+    "connect": "Connect",
+    "connecting": "Connecting...",
+    "disconnecting": "Disconnecting...",
+    "disconnect": "Disconnect",
+    "startStream": "Start Stream",
+    "serverFull": "Server Full",
+    "connectionError": "Connection Error",
+    "reconnecting": "Reconnecting...",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "streaming": "Streaming",
+    "notStreaming": "Not Streaming",
+    "animationHint": "Click to replay animation",
+    "tiktokPlaceholder": "TikTok username",
+    "viewersNow": "Viewers now",
+    "viewersTotal": "Total viewers"
+  },
+  "sidebar": {
+    "overlays": "Overlays",
+    "latestEvents": "Latest Events",
+    "stats": "Statistics",
+    "newBadge": "NEW",
+    "top": "Top",
+    "goals": "Goals",
+    "actions": "Actions",
+    "donationAlerts": "Donation Alerts",
+    "tts": "TTS",
+    "comments": "Comments",
+    "botChat": "Bot Chat",
+    "musicPlayer": "Music Player",
+    "supportersLeaderboard": "Supporters",
+    "socialMedia": "Social Media",
+    "challenges": "Challenges",
+    "linkScenes": "Link Scenes",
+    "alertStore": "Alert Store",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "support": "Support"
+  },
+  "account": {
+    "aboutOverlays": "Overlays",
+    "aboutOverlaysDesc": "Add custom overlay layers to your stream with theme, color, and animation support.",
+    "aboutGoals": "Goals",
+    "aboutGoalsDesc": "Track your stream progress with likes, followers, gifts and more goals.",
+    "aboutAlerts": "Alerts",
+    "aboutAlertsDesc": "Display custom alerts for live events like likes, followers, and gifts.",
+    "aboutMusicPlayer": "Music Player",
+    "aboutMusicPlayerDesc": "Play and manage music during stream with playlist and volume control.",
+    "aboutTTS": "Text to Speech",
+    "aboutTTSDesc": "Convert chat messages to spoken audio with multiple voice options.",
+    "aboutBotChat": "Bot Chat",
+    "aboutBotChatDesc": "Auto-reply to chat messages with custom rules and smart responses.",
+    "aboutStats": "Statistics",
+    "aboutStatsDesc": "Track and analyze comprehensive stats for your stream and audience engagement.",
+    "aboutThemes": "Themes",
+    "aboutThemesDesc": "Choose from carefully designed themes to customize your dashboard and broadcast appearance.",
+    "aboutSupport": "Support",
+    "aboutSupportDesc": "Support team is available to help you anytime via Telegram.",
+    "aboutSubathon": "Subathon",
+    "aboutSubathonDesc": "Subathon feature to keep your stream active with interactive goals.",
+    "desktopAppAvailable": "Desktop App Available",
+    "desktopAppName": "Desktop App",
+    "desktopAppDesc": "Download the desktop app for additional features and better control.",
+    "downloadApp": "Download App",
+    "aboutServiceWhy": "Why TikFlux?",
+    "aboutServiceWhyDesc": "Everything you need for professional TikTok live streaming in one place",
+    "platformTickerTitle": "Platform Activity",
+    "platformTickerStreamer": "Streamer",
+    "platformTickerUser": "User",
+    "platformTickerConnecting": "Connecting...",
+    "platformTickerEvent": "Event",
+    "platformTickerSince": "Since",
+    "platformTickerLive": "Live",
+    "platformTickerEmpty": "Waiting for live events…",
+    "platformTickerEventGift": "Gift",
+    "platformTickerEventLike": "Like",
+    "platformTickerEventFollow": "Follow",
+    "platformTickerEventComment": "Comment",
+    "platformTickerEventJoin": "Join",
+    "platformTickerEventOther": "Activity",
+    "platformTickerViewerCrowd": "Several viewers",
+    "platformTickerViewerUnknown": "—"
+  },
+  "connectionMode": {
+    "title": "Connection Mode",
+    "desc": "Choose how to connect to the server",
+    "cloud": "Cloud",
+    "local": "Local",
+    "lockedHint": "Coming soon..."
+  },
+  "footer": {
+    "email": "Email",
+    "faq": "FAQ",
+    "features": "Features",
+    "guides": "Guides",
+    "learn": "Learn",
+    "madeForStreamers": "Made for Streamers",
+    "pricing": "Pricing",
+    "refund": "Refund",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "support": "Support",
+    "telegram": "Telegram",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "downloadApp": "Download App",
+    "langAr": "العربية",
+    "langEn": "English",
+    "product": "Product",
+    "joinTelegram": "Join Telegram",
+    "telegramTitle": "Join our Telegram channel",
+    "telegramUpdateModalTitle": "Join TikFlux on Telegram",
+    "telegramUpdatePrompt": "Please join the TikFlux Telegram channel to receive the latest updates and answers to your questions."
+  },
+  "login": {
+    "title": "Login",
+    "codeRequired": "Enter verification code",
+    "sendCode": "Send Code",
+    "sending": "Sending...",
+    "verifySent": "Verification code sent",
+    "verifying": "Verifying...",
+    "verifySuccess": "Verification successful",
+    "googleSignInFailed": "Google sign-in failed"
+  },
+  "auth": {
+    "sessionExpiredRedirect": "Session expired, redirecting..."
+  },
+  "subscription": {
+    "activateSuccess": "Subscription activated successfully",
+    "activateError": "Error activating subscription",
+    "loginRequired": "Please login first"
+  },
+  "actions": {
+    "title": "Actions",
+    "gifts": "Gifts",
+    "likes": "Likes",
+    "follows": "Follows",
+    "shares": "Shares",
+    "joins": "Joins",
+    "comments": "Comments",
+    "subscribers": "Subscribers"
+  },
+  "overlays": {
+    "title": "Overlays",
+    "addOverlay": "Add Overlay",
+    "manageOverlays": "Manage Overlays",
+    "noOverlays": "No overlays",
+    "preview": "Preview",
+    "visibility": "Visibility",
+    "hide": "Hide",
+    "show": "Show",
+    "delete": "Delete",
+    "duplicate": "Duplicate",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
+    "bringToFront": "Bring to Front",
+    "sendToBack": "Send to Back",
+    "socialMediaDisplay": "Social Media"
+  },
+  "top": {
+    "title": "Top & Gifters"
+  },
+  "goals": {
+    "title": "Goals",
+    "followGoal": "Follow Goal",
+    "likeGoal": "Like Goal",
+    "giftGoal": "Gift Goal",
+    "donationGoal": "Donation Goal",
+    "heartMeGoal": "Heart Me Goal",
+    "currentProgress": "Current Progress",
+    "targetGoal": "Target Goal",
+    "completed": "Completed",
+    "reset": "Reset",
+    "customize": "Customize",
+    "font": "Font",
+    "color": "Color",
+    "backgroundColor": "Background Color",
+    "borderColor": "Border Color",
+    "progressColor": "Progress Bar Color",
+    "showTitle": "Show Title",
+    "showProgress": "Show Progress",
+    "showIcon": "Show Icon",
+    "animation": "Animation",
+    "progressBar": "Progress Bar",
+    "circular": "Circular",
+    "horizontal": "Horizontal",
+    "vertical": "Vertical"
+  },
+  "tts": {
+    "title": "TTS",
+    "enableTts": "Enable TTS",
+    "disableTts": "Disable TTS",
+    "voice": "Voice",
+    "speed": "Speed",
+    "pitch": "Pitch",
+    "volume": "Volume",
+    "testVoice": "Test Voice",
+    "filterByCoins": "Filter by Coins",
+    "minCoins": "Minimum Coins",
+    "allowAll": "Allow All",
+    "allowFollowers": "Followers Only",
+    "allowSubscribers": "Subscribers Only",
+    "blacklist": "Blacklist",
+    "whitelist": "Whitelist",
+    "addWord": "Add Word",
+    "removeWord": "Remove Word",
+    "pause": "Pause",
+    "resume": "Resume",
+    "skip": "Skip",
+    "clear": "Clear",
+    "queue": "Queue",
+    "history": "History"
+  },
+  "chat": {
+    "title": "Comments",
+    "enableChat": "Enable Chat",
+    "disableChat": "Disable Chat",
+    "filterSpam": "Spam Filter",
+    "filterLinks": "Link Filter",
+    "filterWords": "Word Filter",
+    "blacklist": "Blacklist",
+    "whitelist": "Whitelist",
+    "maxMessageLength": "Max Message Length",
+    "slowMode": "Slow Mode",
+    "slowModeDelay": "Slow Mode Delay",
+    "moderatorsOnly": "Moderators Only",
+    "followersOnly": "Followers Only",
+    "subscribersOnly": "Subscribers Only",
+    "badges": "Badges",
+    "emotes": "Emotes",
+    "mentions": "Mentions",
+    "reply": "Reply",
+    "deleteMessage": "Delete Message",
+    "banUser": "Ban User",
+    "timeoutUser": "Timeout User"
+  },
+  "botChat": {
+    "title": "Bot Chat",
+    "enableBot": "Enable Bot",
+    "disableBot": "Disable Bot",
+    "autoReply": "Auto Reply",
+    "addRule": "Add Rule",
+    "editRule": "Edit Rule",
+    "deleteRule": "Delete Rule",
+    "trigger": "Trigger",
+    "response": "Response",
+    "cooldown": "Cooldown",
+    "minCoins": "Minimum Coins",
+    "eventMinCoins": "Min Coins Event",
+    "eventSpecificGift": "Specific Gift Event",
+    "eventMinLikes": "Min Likes Event",
+    "eventFollow": "Follow Event",
+    "eventJoin": "Join Event",
+    "eventShare": "Share Event",
+    "eventComment": "Comment Event",
+    "eventSubscribe": "Subscribe Event"
+  },
+  "musicPlayer": {
+    "title": "Music Player",
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "next": "Next",
+    "previous": "Previous",
+    "shuffle": "Shuffle",
+    "repeat": "Repeat",
+    "repeatOne": "Repeat One",
+    "repeatAll": "Repeat All",
+    "noRepeat": "No Repeat",
+    "volume": "Volume",
+    "mute": "Mute",
+    "unmute": "Unmute",
+    "queue": "Queue",
+    "nowPlaying": "Now Playing",
+    "addToQueue": "Add to Queue",
+    "removeFromQueue": "Remove from Queue",
+    "clearQueue": "Clear Queue",
+    "search": "Search",
+    "noResults": "No results found",
+    "loading": "Loading...",
+    "error": "Loading error",
+    "syncWithTikTok": "Sync with TikTok",
+    "desktopRequired": "Desktop app required"
+  },
+  "supportersLeaderboard": {
+    "title": "Supporters Leaderboard",
+    "rank": "Rank",
+    "user": "User",
+    "diamonds": "Diamonds",
+    "gifts": "Gifts",
+    "totalGifts": "Total Gifts",
+    "lastGift": "Last Gift",
+    "topSupporter": "Top Supporter",
+    "noSupporters": "No supporters yet",
+    "allTime": "All Time",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "search": "Search user..."
+  },
+  "supporters": {
+    "title": "Supporters Leaderboard",
+    "desc": "Your full supporters table — updates automatically with every real gift",
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search by username...",
+    "addUser": "Add Supporter",
+    "addUserTitle": "Add New Supporter",
+    "deleteAll": "Delete All",
+    "loading": "Loading...",
+    "empty": "No supporters yet — the first real gift will show here automatically",
+    "loadFailed": "Failed to load the list, try again",
+    "loadMore": "Load More",
+    "colRank": "Rank",
+    "colAvatar": "Avatar",
+    "colName": "Name",
+    "colDiamonds": "Diamonds",
+    "colManage": "Manage",
+    "manage": "Manage",
+    "manageTitle": "Manage Supporter",
+    "deleteUser": "Delete User",
+    "delete": "Delete",
+    "deletingLabel": "Deleting...",
+    "deleteFailed": "Delete failed",
+    "deleteAllFailed": "Delete all failed",
+    "confirmDeleteTitle": "Confirm Delete",
+    "confirmDeleteText": "Are you sure you want to delete this supporter?",
+    "confirmDeleteAllTitle": "Delete All",
+    "confirmDeleteAllText": "All supporters will be permanently deleted. Continue?",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "savingLabel": "Saving...",
+    "username": "Username",
+    "usernameLabel": "TikTok username",
+    "usernamePlaceholder": "e.g. user123",
+    "nickname": "Nickname",
+    "id": "ID",
+    "diamondsLabel": "Diamonds",
+    "totalDiamonds": "Total Diamonds",
+    "deltaLabel": "Adjust Diamonds",
+    "deltaPlaceholder": "+/-",
+    "deltaHint": "Positive to add or negative to deduct",
+    "deltaInvalid": "Invalid value",
+    "deltaFailed": "Failed to adjust diamonds",
+    "apply": "Apply",
+    "lastUpdate": "Last Update",
+    "openTiktok": "Open TikTok profile",
+    "errEnterUsername": "Enter a username",
+    "errDiamondsPositive": "Enter a positive number",
+    "errUserExists": "User already exists:",
+    "errUserNotFound": "User not found",
+    "errAddFailed": "Add failed",
+    "errAddGeneric": "Unexpected error while adding",
+    "demoTitle": "Demo Leaderboard",
+    "demoSub": "Available in the paid plan"
+  },
+  "stats": {
+    "title": "Statistics",
+    "totalLikes": "Total Likes",
+    "totalGifts": "Total Gifts",
+    "totalDiamonds": "Total Diamonds",
+    "totalViews": "Total Views",
+    "totalFollowers": "Total Followers",
+    "peakViewers": "Peak Viewers",
+    "averageViewers": "Average Viewers",
+    "viewerGrowth": "Viewer Growth",
+    "engagement": "Engagement Rate",
+    "showViewers": "Show Viewers",
+    "downloadStats": "Download Stats",
+    "shareStats": "Share Stats",
+    "dailyStats": "Daily Stats",
+    "weeklyStats": "Weekly Stats",
+    "monthlyStats": "Monthly Stats"
+  },
+  "socialMedia": {
+    "title": "Social Media",
+    "tiktok": "TikTok",
+    "instagram": "Instagram",
+    "youtube": "YouTube",
+    "telegram": "Telegram",
+    "twitter": "Twitter",
+    "discord": "Discord",
+    "addLink": "Add Link",
+    "editLink": "Edit Link",
+    "deleteLink": "Delete Link",
+    "enableSocialBar": "Enable Social Bar",
+    "socialBarStyle": "Bar Style",
+    "iconSize": "Icon Size",
+    "iconColor": "Icon Color",
+    "showLabels": "Show Labels",
+    "animateOnHover": "Animate on Hover"
+  },
+  "challenges": {
+    "title": "Challenges",
+    "giftChallenge": "Gift Challenge",
+    "teamChallenge": "Team Challenge",
+    "subathon": "Subathon",
+    "supportersChallenge": "Supporters Challenge",
+    "team1": "Team 1",
+    "team2": "Team 2",
+    "addPoints": "Add Points",
+    "subtractPoints": "Subtract Points",
+    "setScore": "Set Score",
+    "resetChallenge": "Reset Challenge",
+    "challengeRules": "Challenge Rules",
+    "noActiveChallenge": "No active challenge"
+  },
+  "linkScenes": {
+    "title": "Link Scenes",
+    "addScene": "Add Scene",
+    "editScene": "Edit Scene",
+    "deleteScene": "Delete Scene",
+    "addLink": "Add Link",
+    "editLink": "Edit Link",
+    "deleteLink": "Delete Link",
+    "linkTitle": "Link Title",
+    "linkUrl": "Link URL",
+    "linkIcon": "Link Icon",
+    "noScenes": "No scenes",
+    "noLinks": "No links",
+    "preview": "Preview",
+    "copyLink": "Copy Link",
+    "openInNewTab": "Open in New Tab"
+  },
+  "latestEvents": {
+    "title": "Latest Events",
+    "noEvents": "No events",
+    "viewAll": "View All",
+    "clearAll": "Clear All",
+    "eventTypes": "Event Types",
+    "likes": "Likes",
+    "gifts": "Gifts",
+    "follows": "Follows",
+    "joins": "Joins",
+    "shares": "Shares",
+    "comments": "Comments",
+    "subscribers": "Subscribers",
+    "filter": "Filter",
+    "timeRange": "Time Range"
+  },
+  "donationAlerts": {
+    "title": "Donation Alerts",
+    "enableAlerts": "Enable Alerts",
+    "disableAlerts": "Disable Alerts",
+    "alertSound": "Alert Sound",
+    "alertDuration": "Alert Duration",
+    "alertAnimation": "Alert Animation",
+    "alertText": "Alert Text",
+    "minDonation": "Minimum Donation",
+    "showDonorName": "Show Donor Name",
+    "showDonationAmount": "Show Donation Amount",
+    "showDonationMessage": "Show Donation Message",
+    "customAlert": "Custom Alert",
+    "testAlert": "Test Alert",
+    "pickFromLibrary": "Pick from Library",
+    "noAlerts": "No alerts",
+    "alertHistory": "Alert History"
+  }
+};
+  </script>
+  <script>
+  (function() {
+    var translations = window.__I18N_AR__;
+    var currentLang = localStorage.getItem('TikFlux_lang') || 'ar';
+    var basePath = '';
+    function lookup(key) {
+      if (!key) return key;
+      var src = currentLang === 'ar' ? window.__I18N_AR__ : window.__I18N_EN__;
+      if (!src) return key;
+      var parts = key.split('.'), obj = src;
+      for (var i = 0; i < parts.length; i++) {
+        if (obj == null || typeof obj !== 'object') return key;
+        obj = obj[parts[i]];
+      }
+      return typeof obj === 'string' ? obj : key;
+    }
+    function loadLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('TikFlux_lang', lang);
+      translations = lang === 'ar' ? window.__I18N_AR__ : window.__I18N_EN__;
+    }
+    console.log('[I18N DEBUG] Setting window.i18n...');
+    window.i18n = {
+      t: lookup,
+      getLang: function() { return currentLang; },
+      setLang: function(lang, cb) { loadLang(lang); if (cb) cb(); },
+      init: function(cb) { if (cb) cb(); },
+      setBasePath: function(p) { basePath = p.replace(/\/?$/, '/'); },
+      applyToPage: function() {
+        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n');
+          var val = lookup(key);
+          if (val && val !== key && el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+            el.innerHTML = val;
+          }
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n-placeholder');
+          var val = lookup(key);
+          if (val && val !== key) el.placeholder = val;
+        });
+        document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+          var key = el.getAttribute('data-i18n-title');
+          var val = lookup(key);
+          if (val && val !== key) el.title = val;
+        });
+      }
+    };
+
+    // Auto-apply translations to dynamically added elements
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node.nodeType !== 1) return;
+          if (node.setAttribute) {
+            var key = node.getAttribute('data-i18n');
+            if (key) {
+              var val = lookup(key);
+              if (val && val !== key && node.tagName !== 'INPUT' && node.tagName !== 'TEXTAREA') {
+                node.innerHTML = val;
+              }
+            }
+          }
+          if (node.querySelectorAll) {
+            node.querySelectorAll('[data-i18n]').forEach(function(el) {
+              var key = el.getAttribute('data-i18n');
+              var val = lookup(key);
+              if (val && val !== key && el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+                el.innerHTML = val;
+              }
+            });
+          }
+        });
+      });
+    });
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+    window.SupabaseConfig = {
+      loaded: true,
+      config: { supabaseUrl: 'https://placeholder.supabase.co', supabaseAnonKey: 'placeholder-key' }
+    };
+    window.SUPABASE_CONFIG = window.SupabaseConfig.config;
+
+    // Fetch mock
+    var originalFetch = window.fetch;
+    window.fetch = function(url, opts) {
+      var urlStr = typeof url === 'string' ? url : (url?.url || '');
+      if (urlStr.includes('/stream/')) {
+        return originalFetch.call(window, url, opts);
+      }
+      if (urlStr.includes('/config')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          supabaseUrl: 'https://placeholder.supabase.co',
+          supabaseAnonKey: 'placeholder-key',
+          apiUrl: 'http://localhost:3000',
+          edgeWsUrl: 'ws://localhost:3000/ws',
+          paypalClientId: '',
+          paypalMode: 'sandbox',
+          paypalPlanIds: {}
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+      }
+      if (urlStr.includes('/subscription') || urlStr.includes('/ban-status') || urlStr.includes('/api/subscriptions') || urlStr.includes('/api/ban-status')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          ok: true, active: true, banned: false, status: 'active',
+          plan: 'yearly', subscription_active: true, has_subscription: true,
+          hasActiveSubscription: true, subscription: {id:'local',plan:'pro',status:'active'}
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+      }
+      if (urlStr.includes('/api/user') || urlStr.includes('/api/account') || urlStr.includes('/api/profile')) {
+        return Promise.resolve(new Response(JSON.stringify({
+          ok: true, data: { id: '550e8400-e29b-41d4-a716-446655440000', email: 'user@gmail.com', name: '\u0645\u0633\u062A\u062E\u062F\u0645 \u0645\u062D\u0644\u064A' }
+        }), { status: 200, headers: { 'Content-Type': 'application/json' } }));
+      }
+      if (urlStr.startsWith('/') && !urlStr.startsWith('//')) {
+        return originalFetch.call(window, url, opts).catch(function() {
+          return new Response(JSON.stringify({ ok: true, data: null }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        });
+      }
+      return originalFetch.call(window, url, opts);
+    };
+
+    // ENV_CONFIG
+    if (!window.ENV_CONFIG) {
+      window.ENV_CONFIG = {
+        environment: 'local',
+        API_URL: 'http://localhost:3000',
+        EDGE_WS_URL: 'ws://localhost:3000/ws',
+        WEB_URL: window.location.origin,
+        SUPABASE_URL: 'https://placeholder.supabase.co',
+        SUPABASE_ANON_KEY: 'placeholder-key',
+        DEBUG: true,
+        displayName: 'Local Development',
+        isLocal: function() { return true; },
+        isProduction: function() { return false; },
+        get: function(k, d) { return this[k] !== undefined ? this[k] : d; },
+        isAlertLibraryUiEnabled: function() { return true; },
+        isAlertLibraryStoreEnabled: function() { return true; },
+        isLinkScenesEnabled: function() { return true; },
+        getApiUrl: function(p) { return this.API_URL + '/' + p.replace(/^\//, ''); }
+      };
+    }
+    window.API_URL = window.ENV_CONFIG.API_URL || 'http://localhost:3000';
+    window.EDGE_WS_URL = window.ENV_CONFIG.EDGE_WS_URL || 'ws://localhost:3000/ws';
+    window.TikFlux_DESKTOP = { isDesktop: false };
+  })();
+  </script>
+  <meta charset="UTF-8">
+  <script src="/assets/b/aa9c4c6deef9b265.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base href="/">
+  <link rel="icon" href="/assets/img/tx-favicon.png?v=20260906" type="image/png">
+  <link rel="shortcut icon" href="/assets/img/tx-favicon.png?v=20260906" type="image/png">
+  <title data-i18n="common.pageTitle">TikFlux</title>
+  <meta name="description" content="TikFlux for TikTok LIVE creators: interactive overlays, goals, TTS, chat bot, and pro stream tools.">
+  <meta name="keywords" content="TikFlux, TikFlux, TikTok overlay, TikTok LIVE tools, تيك لايون, تيك لايون, تيك لايون">
+  <meta property="og:site_name" content="TikFlux">
+  <meta property="og:title" content="TikFlux">
+  <meta property="og:description" content="TikFlux for TikTok LIVE creators: interactive overlays, goals, TTS, chat bot, and pro stream tools.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://TikFlux.live/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TikFlux">
+  <meta name="twitter:description" content="TikFlux for TikTok LIVE creators: interactive overlays, goals, TTS, chat bot, and pro stream tools.">
+  <link rel="canonical" href="https://TikFlux.live/">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "TikFlux",
+      "alternateName": ["TikFlux", "TikFlux", "تيك لايون", "تيك لايون"],
+      "url": "https://TikFlux.live/"
+    }
+  </script>
+  <link rel="stylesheet" href="/assets/vendor/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="/assets/vendor/splitting/splitting.css">
+  <link rel="stylesheet" href="/assets/vendor/splitting/splitting-cells.css">
+  <link rel="stylesheet" href="/assets/css/main-dashboard.v1.css">
+  <link rel="stylesheet" href="/assets/css/actions-avatar-frame.css">
+  <link rel="stylesheet" href="/assets/css/scene-builder.css">
+  <link rel="stylesheet" href="/assets/css/TikFlux-color-picker.css">
+  <link rel="stylesheet" href="/assets/css/alert-library.css">
+  <link rel="stylesheet" href="/assets/css/alert-library-store.css">
+  <link rel="stylesheet" href="/assets/css/stats.css">
+  <link rel="stylesheet" href="/assets/css/tikflux-marine-neon.css">
+  <style>
+    /* زر تغيير اللغة - صغير بحرفين فقط (AR | EN) */
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      height: 38px;
+      box-sizing: border-box;
+      background: linear-gradient(180deg, #1c2738 0%, #111823 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 3px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+    .lang-toggle .lang-btn {
+      padding: 0 10px;
+      height: 100%;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: transparent;
+      color: #777;
+      transition: color 0.18s ease, background 0.18s ease;
+    }
+    .lang-toggle .lang-btn:hover {
+      color: #ddd;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .lang-toggle .lang-btn.active {
+      background: rgba(0, 121, 177, 0.22);
+      color: #6bd0ff;
+      box-shadow: none;
+      -webkit-text-fill-color: #6bd0ff;
+    }
+    .lang-toggle .lang-btn.active:hover {
+      background: rgba(0, 121, 177, 0.3);
+      box-shadow: none;
+    }
+    .lang-toggle .header-tools-sep {
+      display: none;
+    }
+  </style>
+  <style>
+    /* TikFlux Animation Styles */
+    :root {
+      --brand-animation-duration: .5s;
+    }
+
+    /* Animation for Header + Sidebar Brand */
+    .brand .char,
+    .sidebar-brand-name .char {
+      display: inline-block;
+      animation-name: char-transform;
+      animation-duration: calc(var(--brand-animation-duration));
+      animation-fill-mode: both;
+      animation-delay: calc(var(--brand-animation-duration) + .05s * (var(--char-total) - var(--char-index)));
+      animation-timing-function: cubic-bezier(.5, 0, .5, 1);
+    }
+
+    .brand .char:first-child,
+    .sidebar-brand-name .char:first-child {
+      animation-name: first-char-transform;
+      animation-duration: calc(var(--brand-animation-duration) * 2);
+      animation-delay: 0s;
+    }
+
+    @keyframes char-transform {
+      0% { 
+        opacity: 0; 
+        transform: translateY(50%) rotate(30deg);
+      }
+      70% { 
+        opacity: 1;
+        transform: translateY(-6%) rotate(-5deg);
+      }
+      90% { 
+        transform: translateY(1%) rotate(2deg);
+      }
+      100% { 
+        opacity: 1;
+        transform: translateY(0%) rotate(0deg);
+      }
+    }
+
+    @keyframes first-char-transform {
+      0% { 
+        opacity: 0;
+        transform: translateX(calc(.75ch * var(--char-total))) translateY(200%) rotate(180deg);
+      }
+      40% { 
+        opacity: 1;
+        transform: translateX(calc(.75ch * var(--char-total))) translateY(-10%) rotate(-20deg);
+      }
+      60% { 
+        transform: translateX(calc(.75ch * var(--char-total))) translateY(7%) rotate(10deg);
+      }
+      100% { 
+        opacity: 1;
+        transform: translateX(0) translateY(0) rotate(0deg);
+      }
+    }
+
+    @keyframes brand-mark-enter {
+      0% {
+        opacity: 0;
+        transform: translateY(50%) rotate(26deg) scale(0.88);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(-6%) rotate(-5deg) scale(1.04);
+      }
+      90% {
+        transform: translateY(1%) rotate(2deg) scale(1);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+
+    .header-brand-mark,
+    .sidebar-brand-mark {
+      animation-name: brand-mark-enter;
+      animation-duration: calc(var(--brand-animation-duration) * 1.15);
+      animation-delay: calc(var(--brand-animation-duration) * 0.42);
+      animation-fill-mode: both;
+      animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+      transform-origin: 50% 55%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .header-brand-mark,
+      .sidebar-brand-mark,
+      .brand .char,
+      .sidebar-brand-name .char {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+
+
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="appLoadingScreen" class="app-loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo"><img src="/assets/img/tx-logo.png" alt="TikFlux" style="height:80px;width:auto;" /></div>
+      <div class="loading-spinner">
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+        <div class="spinner-ring"></div>
+      </div>
+      <div class="loading-text" data-i18n="common.loading">جارٍ تحميل لوحة التحكم...</div>
+    </div>
+  </div>
+
+  <header class="header">
+      <div class="header-meta-zone">
+        <div class="header-tools">
+          <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+            <button type="button" id="langAr" class="lang-btn" data-lang="ar" aria-pressed="true" title="العربية">AR</button>
+            <span class="header-tools-sep" aria-hidden="true"></span>
+            <button type="button" id="langEn" class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
+          </div>
+        </div>
+
+      <span class="header-divider" aria-hidden="true"></span>
+
+      <div class="room-viewers-display" id="roomViewersDisplay" style="display: flex;">
+        <div class="viewers-chip" data-i18n-title="header.viewersNow" data-tip="المشاهدون الآن">
+          <i class="fas fa-eye" aria-hidden="true"></i>
+          <span class="viewers-value" id="currentViewersValue">-</span>
+        </div>
+        <div class="viewers-chip" data-i18n-title="header.viewersTotal" data-tip="إجمالي المشاهدين">
+          <i class="fas fa-users" aria-hidden="true"></i>
+          <span class="viewers-value" id="totalUserValue">-</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-connect-zone">
+      <div class="header-connect-bar">
+        <div class="connection-status-indicator">
+          <span class="status-dot" id="headerStatusDot"></span>
+          <span class="status-label" id="headerStatusLabel">غير متصل</span>
+        </div>
+        <div class="header-tiktok-field">
+          <i class="fab fa-tiktok" aria-hidden="true"></i>
+          <input type="text" id="tiktokInput" class="input-tiktok" autocapitalize="none" spellcheck="false" data-i18n-placeholder="header.tiktokPlaceholder" placeholder="اسم حساب TikTok" />
+        </div>
+        <button class="btn-connect" id="connectBtn" data-i18n="header.connect">اتصال</button>
+      </div>
+    </div>
+
+    <div class="header-profile-zone">
+      <div class="room-info-display" id="roomInfoDisplay" style="display: none;">
+        <div class="room-details">
+          <div class="room-nickname" id="roomNickname">-</div>
+          <div class="room-title" id="roomTitle">-</div>
+        </div>
+        <img class="room-avatar" id="roomAvatar" src="" alt="Avatar" />
+      </div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand" data-i18n-title="header.animationHint" title="اضغط لإعادة الأنيميشن">
+        <img class="sidebar-brand-mark" src="assets/img/tx-logo.png" alt="" width="40" height="40" decoding="async" />
+        <span class="sidebar-brand-name" data-splitting>TikFlux</span>
+      </div>
+      <div class="nav-menu-wrap">
+      <nav class="nav-menu">
+        <div class="nav-menu-track">
+        <button class="nav-btn active" id="accountBtn">
+          <span class="nav-icon"><i class="fas fa-user-circle"></i></span>
+          <span class="nav-text">الحساب</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="overlaysBtn">
+          <span class="nav-icon"><i class="fas fa-layer-group"></i></span>
+          <span class="nav-text" data-i18n="sidebar.overlays">Overlays</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="latestEventsBtn">
+          <span class="nav-icon"><i class="fas fa-clock-rotate-left"></i></span>
+          <span class="nav-text" data-i18n="sidebar.latestEvents">آخر الأحداث</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn nav-btn--has-new-badge" id="statsBtn">
+          <span class="nav-icon"><i class="fas fa-chart-line"></i></span>
+          <span class="nav-text" data-i18n="sidebar.stats">الإحصائيات</span>
+          <span class="nav-badge-new" data-i18n="sidebar.newBadge">NEW</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="topLikesBtn">
+          <span class="nav-icon"><i class="fas fa-crown"></i></span>
+          <span class="nav-text" data-i18n="sidebar.top">Top</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="goalsBtn">
+          <span class="nav-icon"><i class="fas fa-bullseye"></i></span>
+          <span class="nav-text" data-i18n="sidebar.goals">الأهداف</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="actionsBtn">
+          <span class="nav-icon"><i class="fas fa-bolt"></i></span>
+          <span class="nav-text" data-i18n="sidebar.actions">الإجراءات</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="ttsBtn">
+          <span class="nav-icon"><i class="fas fa-volume-up"></i></span>
+          <span class="nav-text" data-i18n="sidebar.tts">TTS</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="chatBtn">
+          <span class="nav-icon"><i class="fas fa-comments"></i></span>
+          <span class="nav-text" data-i18n="sidebar.comments">التعليقات</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="socialMediaBtn">
+          <span class="nav-icon"><i class="fas fa-share-nodes"></i></span>
+          <span class="nav-text" data-i18n="sidebar.socialMedia">السوشيال ميديا</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="challengesBtn">
+          <span class="nav-icon"><i class="fas fa-gamepad"></i></span>
+          <span class="nav-text" data-i18n="sidebar.challenges">تحديات</span>
+          <span class="nav-indicator"></span>
+        </button>
+        <button class="nav-btn" id="linkScenesBtn" type="button">
+          <span class="nav-icon"><i class="fas fa-object-group"></i></span>
+          <span class="nav-text" data-i18n="sidebar.linkScenes">تجميع الروابط</span>
+          <span class="nav-indicator"></span>
+        </button>
+        </div>
+      </nav>
+      <div class="nav-scroll-hint" id="navScrollHint" aria-hidden="true">
+        <span class="nav-scroll-chevron"></span>
+        <span class="nav-scroll-chevron"></span>
+      </div>
+      </div>
+      
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <!-- Account View -->
+      <div id="accountView" class="view account-view">
+        <!-- Primary: login OR account summary -->
+        <section class="account-primary" aria-label="Account access">
+          <!-- Login Form (shown immediately, hidden when authenticated) -->
+          <div id="loginForm" class="card account-auth-card">
+            <div class="login-form-header">
+              <h2 data-i18n="login.title">تسجيل الدخول</h2>
+            </div>
+            <div class="login-auth-stage">
+              <!-- Step 1: Choose login method -->
+              <div id="authMethodStep" class="auth-step">
+                <button id="emailLoginBtn" class="btn-secondary auth-email-btn" type="button">
+                  <i class="fas fa-envelope auth-method-btn-icon" aria-hidden="true"></i>
+                  <span>البريد الإلكتروني</span>
+                </button>
+
+                <button id="googleLoginBtn" class="google-btn" type="button">
+                  <span class="google-btn__icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 186.69 190.5" width="20" height="20">
+                      <g transform="translate(1184.583 765.171)">
+                        <path d="M-1089.333-687.239v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" fill="#4285f4"/>
+                        <path d="M-1142.714-651.791l-6.972 5.337-24.679 19.223h0c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z" fill="#34a853"/>
+                        <path d="M-1174.365-712.61c-6.494 12.815-10.217 27.276-10.217 42.689s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" fill="#fbbc05"/>
+                        <path d="M-1089.333-727.244c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276c-16.539-15.413-38.013-24.852-63.731-24.852-37.234 0-69.359 21.388-85.032 52.561l31.692 24.592c7.533-22.514 28.575-39.226 53.34-39.226z" fill="#35b1ea"/>
+                      </g>
+                    </svg>
+                  </span>
+                  <span class="google-btn__text">المتابعة عبر Google</span>
+                </button>
+                <p class="auth-message" id="emailMessage"></p>
+              </div>
+
+              <!-- Step 2: Email + Password -->
+              <div id="emailStep" class="auth-step auth-step-hidden">
+                <input type="email" id="emailInput" class="input-field" placeholder="البريد الإلكتروني" />
+                <input type="password" id="passwordInput" class="input-field" placeholder="كلمة المرور" style="margin-top: 10px;" />
+                <button id="sendCodeBtn" class="btn-primary auth-send-code-btn" type="button" style="margin-top: 15px;">
+                  <span class="auth-send-code-btn__text">تسجيل الدخول</span>
+                  <i class="fas fa-sign-in-alt auth-send-code-btn__icon" aria-hidden="true"></i>
+                </button>
+                <p class="auth-message" id="emailStepMessage"></p>
+                <p style="margin-top: 15px; text-align: center; color: #888; font-size: 13px;">
+                  ليس لديك حساب؟ <a href="#" id="showRegisterBtn" style="color: #6bd0ff; text-decoration: none;">إنشاء حساب جديد</a>
+                </p>
+              </div>
+
+              <!-- Register Step -->
+              <div id="registerStep" class="auth-step auth-step-hidden">
+                <input type="text" id="registerNameInput" class="input-field" placeholder="الاسم" />
+                <input type="email" id="registerEmailInput" class="input-field" placeholder="البريد الإلكتروني" style="margin-top: 10px;" />
+                <input type="password" id="registerPasswordInput" class="input-field" placeholder="كلمة المرور" style="margin-top: 10px;" />
+                <button id="registerBtn" class="btn-primary auth-send-code-btn" type="button" style="margin-top: 15px;">
+                  <span>إنشاء حساب</span>
+                  <i class="fas fa-user-plus" aria-hidden="true"></i>
+                </button>
+                <p class="auth-message" id="registerMessage"></p>
+                <p style="margin-top: 15px; text-align: center; color: #888; font-size: 13px;">
+                  لديك حساب بالفعل؟ <a href="#" id="showLoginBtn" style="color: #6bd0ff; text-decoration: none;">تسجيل الدخول</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account + plan — calm two-card layout -->
+          <div id="accountCardsContainer" class="account-cards-container account-summary account-summary--calm" style="display: none;">
+            <div class="account-summary__grid">
+              <section id="accountInfo" class="account-calm-card" aria-labelledby="accountCalmTitle">
+                <h3 id="accountCalmTitle" class="account-calm-card__title">الحساب</h3>
+                <div class="account-calm-card__profile">
+                  <div class="account-calm-card__avatar" aria-hidden="true">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="account-calm-card__identity">
+                    <span class="account-calm-card__name" id="accountDisplayName">-</span>
+                    <span class="account-calm-card__email" id="userEmail">-</span>
+                  </div>
+                </div>
+                <button type="button" class="account-calm-card__btn account-calm-card__btn--ghost" id="logoutBtn">
+                  تسجيل الخروج
+                </button>
+              </section>
+            </div>
+          </div>
+
+          <!--
+            Connection Mode — Desktop App Only.
+            Placed with account summary so settings stay together.
+            Hidden in browser; setupConnectionModeUI() reveals it when desktop.
+          -->
+          <div id="connectionModeCard" class="connection-mode-card connection-mode-card--compact" style="display: none;">
+            <div class="connection-mode-card__head">
+              <span class="connection-mode-card__title" data-i18n="connectionMode.title">وضع الاتصال</span>
+              <span class="connection-mode-card__desc" data-i18n="connectionMode.desc">اختر طريقة استقبال أحداث البث المباشر.</span>
+            </div>
+            <div class="connection-mode-options">
+              <label class="connection-mode-option" data-mode="cloud">
+                <input type="radio" name="connectionMode" id="connectionModeCloud" value="cloud" checked />
+                <span class="connection-mode-pill">
+                  <i class="fas fa-cloud" aria-hidden="true"></i>
+                  <span data-i18n="connectionMode.cloud">سحابي (افتراضي)</span>
+                </span>
+              </label>
+              <label class="connection-mode-option" data-mode="local">
+                <input type="radio" name="connectionMode" id="connectionModeLocal" value="local" />
+                <span class="connection-mode-pill">
+                  <i class="fas fa-desktop" aria-hidden="true"></i>
+                  <span data-i18n="connectionMode.local">محلي</span>
+                </span>
+              </label>
+            </div>
+            <span class="connection-mode-locked-hint" id="connectionModeLockedHint" style="display: none;" data-i18n="connectionMode.lockedHint">
+              لا يمكن تغيير وضع الاتصال أثناء الاتصال الحالي. الرجاء قطع الاتصال أولاً.
+            </span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Overlays View (Lazy Loaded) -->
+      <div id="overlaysView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Social Media View -->
+      <div id="socialMediaView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+      
+      <!-- Top Rankings View (Top Likes + Top Gifters) -->
+      <div id="topLikesView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Goals View -->
+      <div id="goalsView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Actions View (Lazy Loaded) -->
+      <div id="actionsView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Challenges View (Lazy Loaded) -->
+      <div id="challengesView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Link Scenes / Scene Builder (Lazy Loaded) -->
+      <div id="linkScenesView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- TTS View (Lazy Loaded) -->
+      <div id="ttsView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Chat Comments View (Lazy Loaded) -->
+      <div id="chatView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Alert Library Store View -->
+      <div id="alertStoreView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Latest Events View -->
+      <div id="latestEventsView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+      <!-- Stream Stats View -->
+      <div id="statsView" class="view" style="display: none;">
+        <!-- المحتوى سيتم تحميله ديناميكياً عند الحاجة -->
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Modal Root Container (Portal) -->
+  <div id="modal-root"></div>
+
+  <script src="/assets/vendor/supabase/supabase.min.js"></script>
+  <!-- Override Supabase createClient to return a local mock -->
+  <script>
+  (function() {
+    var origCreateClient = window.supabase?.createClient;
+    window.supabase.createClient = function(url, key, opts) {
+      var MOCK_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
+      var mockUser = { id: MOCK_USER_ID, email: 'user@gmail.com', user_metadata: { name: 'مستخدم', avatar_url: '' } };
+      var mockSession = { user: mockUser, access_token: 'mock-token', expires_at: Date.now() + 86400000 };
+      var activeSub = { id: 'sub-1', user_id: 'local-user', status: 'active', plan: 'yearly', current_period_end: new Date(Date.now() + 365*86400000).toISOString(), created_at: new Date().toISOString() };
+      return {
+        auth: {
+          onAuthStateChange: function(cb) {
+            setTimeout(function(){ cb('SIGNED_IN', mockSession); }, 100);
+            return { data: { subscription: { unsubscribe: function(){} } } };
+          },
+          getSession: function() { return Promise.resolve({ data: { session: mockSession } }); },
+          getUser: function() { return Promise.resolve({ data: { user: mockUser } }); },
+          signInWithOtp: function() { return Promise.resolve({ error: null }); },
+          verifyOtp: function() { return Promise.resolve({ data: { session: mockSession }, error: null }); },
+          signOut: function() { return Promise.resolve(); },
+          signInWithPassword: function() { return Promise.resolve({ data: { user: mockUser, session: mockSession }, error: null }); },
+          signUp: function() { return Promise.resolve({ data: { user: mockUser, session: mockSession }, error: null }); },
+          signInWithOAuth: function() { return Promise.resolve({ error: null }); },
+          exchangeCodeForSession: function() { return Promise.resolve({ data: { session: mockSession }, error: null }); },
+          setSession: function() { return Promise.resolve({ error: null }); }
+        },
+        from: function(table) {
+          var query = {
+            _table: table, _filters: [], _orderCol: null, _orderAsc: true, _limitN: null,
+            select: function() { return this; },
+            eq: function(col, val) { this._filters.push({ col: col, val: val }); return this; },
+            neq: function(col, val) { this._filters.push({ col: col, neq: val }); return this; },
+            gt: function() { return this; },
+            lt: function() { return this; },
+            gte: function() { return this; },
+            lte: function() { return this; },
+            in: function() { return this; },
+            like: function() { return this; },
+            ilike: function() { return this; },
+            is: function() { return this; },
+            order: function(col, opts) { this._orderCol = col; this._orderAsc = opts?.ascending !== false; return this; },
+            limit: function(n) { this._limitN = n; return this; },
+            single: function() { return this._resolve(null); },
+            maybeSingle: function() { return this._resolve(null); },
+            _resolve: function(fallback) {
+              var t = this._table;
+              // Return active subscription for subscription tables
+              if (t === 'subscriptions' || t === 'user_subscriptions') {
+                return Promise.resolve({ data: activeSub, error: null });
+              }
+              // Return mock user for user tables
+              if (t === 'profiles' || t === 'users') {
+                return Promise.resolve({ data: mockUser, error: null });
+              }
+              return Promise.resolve({ data: fallback, error: null });
+            },
+            then: function(resolve) {
+              var t = this._table;
+              if (t === 'subscriptions' || t === 'user_subscriptions') {
+                resolve({ data: [activeSub], error: null });
+              } else {
+                resolve({ data: [], error: null });
+              }
+            },
+            insert: function(rows) { return { select: function() { return { single: function() { return Promise.resolve({ data: rows, error: null }); } }; } }; },
+            update: function(data) { return this; },
+            upsert: function(data) { return this; },
+            delete: function() { return this; }
+          };
+          return query;
+        },
+        channel: function(name) { return { on: function() { return this; }, subscribe: function(cb) { cb && cb('SUBSCRIBED'); return this; }, unsubscribe: function() { return Promise.resolve('ok'); }, track: function() { return this; }, send: function() { return this; } }; },
+        removeChannel: function() { return Promise.resolve('ok'); },
+        rpc: function() { return Promise.resolve({ data: null, error: null }); },
+        storage: { from: function() { return { upload: function() { return Promise.resolve({ data: null, error: null }); }, getPublicUrl: function() { return { data: { publicUrl: '' } }; } }; } }
+      };
+    };
+  })();
+  </script>
+  <script src="/assets/b/28b98888f9aaae4a.js"></script>
+  <script src="/assets/b/e60da56565660b05.js"></script>
+  <script src="/assets/vendor/splitting/splitting.min.js"></script>
+  <script>
+    // Initialize Splitting.js for TikFlux brand animations
+    document.addEventListener('DOMContentLoaded', function() {
+      Splitting();
+
+      function wireBrandReplay(root, nameSelector, markSelector) {
+        if (!root) return;
+        var brandElement = root.querySelector(nameSelector);
+        var mark = root.querySelector(markSelector);
+        if (!brandElement) return;
+
+        function replayBrandAnimations() {
+          var chars = brandElement.querySelectorAll('.char');
+          chars.forEach(function (char) {
+            char.style.animation = 'none';
+          });
+          if (mark) mark.style.animation = 'none';
+
+          void brandElement.offsetWidth;
+          if (mark) void mark.offsetWidth;
+
+          chars.forEach(function (char) {
+            char.style.animation = '';
+          });
+          if (mark) mark.style.animation = '';
+        }
+
+        root.addEventListener('click', replayBrandAnimations);
+      }
+
+      wireBrandReplay(
+        document.querySelector('.sidebar-brand'),
+        '.sidebar-brand-name[data-splitting]',
+        '.sidebar-brand-mark'
+      );
+    });
+  </script>
+  <!-- Floating Telegram Button -->
+  <a class="tg-float-btn" href="https://t.me/TikFlux" target="_blank" rel="noopener noreferrer" data-i18n-title="footer.telegramTitle" title="انضم لقناة تلجرام">
+    <div class="tg-float-inner">
+      <div class="tg-icon-wrap">
+        <svg class="tg-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.665 3.717L2.935 10.553c-1.215.486-1.208 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192L9.292 13.32l-.38 4.656c.557 0 .803-.256 1.116-.559l2.678-2.598 4.568 3.372c.842.464 1.449.226 1.658-.78l2.997-14.133c.306-1.226-.47-1.78-1.264-1.561z" fill="currentColor"/>
+        </svg>
+      </div>
+      <span class="tg-label" data-i18n="footer.joinTelegram">انضم للتلجرام</span>
+    </div>
+  </a>
+
+  <script>
+    (function() {
+      function initNavScrollHint() {
+        var menu = document.querySelector('.sidebar .nav-menu');
+        var hint = document.getElementById('navScrollHint');
+        if (!menu || !hint) return;
+
+        function update() {
+          var canScroll = menu.scrollHeight > menu.clientHeight + 2;
+          var nearBottom = menu.scrollTop + menu.clientHeight >= menu.scrollHeight - 8;
+          hint.classList.toggle('is-hidden', !canScroll || nearBottom);
+        }
+
+        menu.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        if (typeof ResizeObserver !== 'undefined') {
+          new ResizeObserver(update).observe(menu);
+        }
+        update();
+        requestAnimationFrame(update);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initNavScrollHint);
+      } else {
+        initNavScrollHint();
+      }
+    })();
+  </script>
+
+  <script src="/assets/b/3fb0cd6587e10244.js"></script>
+  <script>
+    (function() {
+      function initI18n() {
+        if (typeof i18n === 'undefined') return;
+        var base = document.querySelector('base');
+        var baseHref = base ? (base.getAttribute('href') || '/') : '/';
+        if (baseHref === '/') baseHref = '';
+        i18n.setBasePath(baseHref);
+        i18n.init(function() {
+          var lang = i18n.getLang();
+          var arBtn = document.getElementById('langAr');
+          var enBtn = document.getElementById('langEn');
+          var footerArBtn = document.getElementById('footerLangAr');
+          var footerEnBtn = document.getElementById('footerLangEn');
+
+          if (arBtn) { arBtn.classList.toggle('active', lang === 'ar'); arBtn.setAttribute('aria-pressed', lang === 'ar'); }
+          if (enBtn) { enBtn.classList.toggle('active', lang === 'en'); enBtn.setAttribute('aria-pressed', lang === 'en'); }
+          if (footerArBtn) { footerArBtn.classList.toggle('active', lang === 'ar'); }
+          if (footerEnBtn) { footerEnBtn.classList.toggle('active', lang === 'en'); }
+
+          arBtn && arBtn.addEventListener('click', function() { i18n.setLang('ar', updateToggle); });
+          enBtn && enBtn.addEventListener('click', function() { i18n.setLang('en', updateToggle); });
+          footerArBtn && footerArBtn.addEventListener('click', function() { i18n.setLang('ar', updateToggle); });
+          footerEnBtn && footerEnBtn.addEventListener('click', function() { i18n.setLang('en', updateToggle); });
+        });
+        function updateToggle() {
+          var lang = i18n.getLang();
+          var arBtn = document.getElementById('langAr');
+          var enBtn = document.getElementById('langEn');
+          var footerArBtn = document.getElementById('footerLangAr');
+          var footerEnBtn = document.getElementById('footerLangEn');
+
+          if (arBtn) { arBtn.classList.toggle('active', lang === 'ar'); arBtn.setAttribute('aria-pressed', lang === 'ar'); }
+          if (enBtn) { enBtn.classList.toggle('active', lang === 'en'); enBtn.setAttribute('aria-pressed', lang === 'en'); }
+          if (footerArBtn) { footerArBtn.classList.toggle('active', lang === 'ar'); }
+          if (footerEnBtn) { footerEnBtn.classList.toggle('active', lang === 'en'); }
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initI18n);
+      } else {
+        initI18n();
+      }
+    })();
+  </script>
+  <script src="/assets/b/8c386c8dbec5a57f.js"></script>
+  <script src="/assets/b/b667d2dce75c426d.js"></script>
+  <script src="/assets/b/58b741101830934f.js"></script>
+  <script src="/assets/b/40968a81930939db.js"></script>
+  <script src="/assets/b/b466c356e58ad7ed.js"></script>
+  <script type="module" src="/assets/b/e368114bf932e2a5.js"></script>
+  <!-- Post-module override: patch subscription state after module loads -->
+  <script>
+  (function() {
+    var MOCK_SESSION = { user: { id: '550e8400-e29b-41d4-a716-446655440000', email: 'user@gmail.com' }, access_token: 'mock-token-local' };
+
+    function postPatch() {
+      var am = window.authManager;
+      var sf = window.secureFetch;
+      if (!am || !sf) return false;
+
+      // Re-patch auth manager (in case module init overrode our patches)
+      am.cachedSession = MOCK_SESSION;
+      am.cachedUser = MOCK_SESSION.user;
+      am.initialized = true;
+      am.isAuthenticated = function() { return Promise.resolve(true); };
+      am.getSession = function() { return Promise.resolve({ session: MOCK_SESSION, error: null }); };
+      am.getUser = function() { return Promise.resolve({ user: MOCK_SESSION.user, error: null }); };
+      am.getAccessToken = function() { return Promise.resolve({ token: 'mock-token-local', error: null }); };
+
+      // Override SecureFetch.fetch to skip auth requirement
+      var origFetch = sf.fetch.bind(sf);
+      sf.fetch = function(url, opts, cfg) {
+        cfg = cfg || {};
+        cfg.skipAuth = true;
+        cfg.logoutOnAuthFailure = false;
+        return origFetch(url, opts, cfg);
+      };
+
+      console.log('[Local Mock] Post-module patch applied (authManager + secureFetch)');
+      return true;
+    }
+
+    // Poll until both authManager and secureFetch are available
+    var attempts = 0;
+    var interval = setInterval(function() {
+      attempts++;
+      if (postPatch() || attempts > 100) {
+        clearInterval(interval);
+      }
+    }, 100);
+  })();
+  </script>
+
+  <!-- Force Alert Store button visible + link openAlertLibraryBtn to module's built-in picker -->
+  <script>
+  (function() {
+    var attempts = 0;
+    var interval = setInterval(function() {
+      attempts++;
+      
+      // Force show alert store button in sidebar
+      var btn = document.getElementById('alertStoreBtn');
+      if (btn) {
+        btn.classList.remove('alib-hidden');
+        btn.style.display = '';
+        btn.style.cssText = '';
+        btn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.location.href = '/store';
+        };
+      }
+      
+      // Link the "مكتبة الأليرتات" button to open module's built-in picker
+      var openLibBtn = document.getElementById('openAlertLibraryBtn');
+      if (openLibBtn && !openLibBtn._patched) {
+        openLibBtn._patched = true;
+        openLibBtn.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          // Try to open the module's built-in picker
+          if (typeof window.showView === 'function') {
+            window.showView('alertStore');
+          }
+        };
+        console.log('[Store] openAlertLibraryBtn linked to module picker');
+      }
+      
+      if (attempts > 80) clearInterval(interval);
+    }, 200);
+  })();
+  </script>
+
+  <!-- Force auth state - intercept window.authManager BEFORE module creates it -->
+  <script>
+  // Make i18n accessible as a true global (not just window.i18n)
+  // ES modules can't always resolve window.i18n via bare 'i18n'
+  if (window.i18n && !window.i18n.__patched) {
+    window.i18n.__patched = true;
+    // Also set on globalThis and self for module scope access
+    try { globalThis.i18n = window.i18n; } catch(e) {}
+    try { self.i18n = window.i18n; } catch(e) {}
+  }
+  (function() {
+    var MOCK_USER = { id: '550e8400-e29b-41d4-a716-446655440000', email: 'user@gmail.com', user_metadata: { name: 'مستخدم محلي', avatar_url: '' } };
+    var MOCK_SESSION = { user: MOCK_USER, access_token: 'mock-token-local', expires_at: Date.now() + 86400000 };
+
+    function patchAuthObj(am) {
+      if (!am || am.__patched) return;
+      am.__patched = true;
+      am.cachedSession = MOCK_SESSION;
+      am.cachedUser = MOCK_USER;
+      am.initialized = true;
+      if (am.initPromise) { try { am.initPromise.resolve?.(); } catch(e) {} }
+      am.isAuthenticated = function() { return Promise.resolve(true); };
+      am.getSession = function() { return Promise.resolve({ session: MOCK_SESSION, error: null }); };
+      am.getUser = function() { return Promise.resolve({ user: MOCK_USER, error: null }); };
+      am.getAccessToken = function() { return Promise.resolve({ token: 'mock-token-local', error: null }); };
+      console.log('[Local Mock] AuthManager patched IMMEDIATELY');
+    }
+
+    // Use property setter to intercept assignment BEFORE module runs
+    var _realAM = null;
+    try {
+      Object.defineProperty(window, 'authManager', {
+        configurable: true,
+        enumerable: true,
+        get: function() { return _realAM; },
+        set: function(val) {
+          _realAM = val;
+          if (val) patchAuthObj(val);
+        }
+      });
+    } catch(e) { console.warn('[Local Mock] defineProperty failed:', e); }
+
+    // Also poll as backup
+    var attempts = 0;
+    var interval = setInterval(function() {
+      attempts++;
+      var am = window.authManager;
+      if (am) { patchAuthObj(am); }
+      if (attempts > 100) { clearInterval(interval); }
+    }, 100);
+  })();
+  </script>
+  <!-- Bypass subscription guard - runs after main module -->
+  <script>
+  // Error capture - log ALL errors to console and a debug div
+  (function() {
+    var errors = [];
+    window.__ERRORS__ = errors;
+    window.onerror = function(msg, url, line, col, err) {
+      errors.push({msg: String(msg), url: String(url), line: line, col: col, time: Date.now()});
+    };
+    window.addEventListener('unhandledrejection', function(e) {
+      var msg = (e.reason && e.reason.message) ? e.reason.message : String(e.reason || 'unknown');
+      errors.push({msg: 'Unhandled: ' + msg, url: '', line: 0, time: Date.now()});
+    });
+    // Show error count in bottom-right corner (click to see)
+    setInterval(function() {
+      if (errors.length > 0) {
+        var el = document.getElementById('errorBadge');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'errorBadge';
+          el.style.cssText = 'position:fixed;bottom:10px;right:10px;background:#f44336;color:#fff;padding:4px 10px;border-radius:6px;font-size:12px;z-index:99999;cursor:pointer;font-family:monospace';
+          el.title = 'Click to see errors';
+          el.addEventListener('click', function() {
+            var msg = errors.map(function(e) { return e.msg + ' (' + e.url + ':' + e.line + ')'; }).join('\n');
+            alert('Errors (' + errors.length + '):\n\n' + msg);
+          });
+          document.body.appendChild(el);
+        }
+        el.textContent = errors.length + ' errors - click to see';
+      }
+    }, 3000);
+
+    // MutationObserver to remove any dynamically created subscription guard modals
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (node.nodeType !== 1) return;
+          if (node.id === 'subscriptionGuardModal' || node.classList?.contains('subscription-guard-modal')) {
+            node.remove();
+          }
+          if (node.querySelectorAll) {
+            node.querySelectorAll('#subscriptionGuardModal, .subscription-guard-modal').forEach(function(el) { el.remove(); });
+          }
+        });
+      });
+    });
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', function() {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+  })();
+  </script>
+  <script>
+  // Copy to clipboard function
+  window.copyToClipboard = function(inputId) {
+    var input = document.getElementById(inputId);
+    if (!input) {
+      if (window.showToast) window.showToast('Element not found', 'error');
+      return;
+    }
+    var text = input.value || input.textContent || input.innerText;
+    if (!text) {
+      if (window.showToast) window.showToast('No text to copy', 'error');
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        if (window.showToast) window.showToast('Copied!', 'success');
+      }).catch(function() {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+    function fallbackCopy(str) {
+      var ta = document.createElement('textarea');
+      ta.value = str;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        if (window.showToast) window.showToast('Copied!', 'success');
+      } catch(e) {
+        if (window.showToast) window.showToast('Copy failed', 'error');
+      }
+      document.body.removeChild(ta);
+    }
+  };
+  // Fallback copy functions for specific views
+  if (!window.copyTopLikesUrl) window.copyTopLikesUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyTopGiftersUrl) window.copyTopGiftersUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyTopCombinedUrl) window.copyTopCombinedUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyTopSupportersUrl) window.copyTopSupportersUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyHeartMeGoalUrl) window.copyHeartMeGoalUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyFollowGoalUrl) window.copyFollowGoalUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyLikeGoalUrl) window.copyLikeGoalUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyGiftGoalUrl) window.copyGiftGoalUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyDonationGoalUrl) window.copyDonationGoalUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.copyGiftChallengeUrl) window.copyGiftChallengeUrl = function(id) { window.copyToClipboard(id); };
+  if (!window.musicPlayerCopyUrl) window.musicPlayerCopyUrl = function() { window.copyToClipboard('musicPlayerUrl'); };
+
+  // =========================================================================
+  // Social Rotator: Refresh iframe after saving settings
+  // =========================================================================
+  (function() {
+    var origSave = null;
+    function installHook() {
+      if (!window.saveSocialRotatorSettings || origSave) return;
+      origSave = window.saveSocialRotatorSettings;
+      window.saveSocialRotatorSettings = function() {
+        var result = origSave.apply(this, arguments);
+        if (result && typeof result.then === 'function') {
+          result.then(function() {
+            setTimeout(function() {
+              var iframe = document.getElementById('socialRotatorPreview');
+              if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({ type: 'social-rotator-refresh' }, '*');
+              }
+            }, 300);
+          }).catch(function() {});
+        } else {
+          setTimeout(function() {
+            var iframe = document.getElementById('socialRotatorPreview');
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage({ type: 'social-rotator-refresh' }, '*');
+            }
+          }, 300);
+        }
+      };
+    }
+    installHook();
+    setInterval(installHook, 1000);
+  })();
+
+  // =========================================================================
+  // COMPREHENSIVE URL-STATE SYNC: Single Source of Truth
+  // After every save, rebuild the URL with ALL current settings so that
+  // Copy Code always produces a URL that recreates the exact same state.
+  // =========================================================================
+
+  var WIDGET_MAP = {
+    'topLikesOverlayUrl': 'top_likes',
+    'topGiftersOverlayUrl': 'top_gifters',
+    'topCombinedOverlayUrl': 'top_combined',
+    'topSupportersOverlayUrl': 'top_supporters',
+    'likeOverlayUrl': 'likes',
+    'followOverlayUrl': 'follows',
+    'chatCommentsOverlayUrl': 'chat_comments',
+    'obsDocksOverlayUrl': 'obs_docks',
+    'socialRotatorUrl': 'social_rotator',
+    'heartMeGoalOverlayUrl': 'goals_heart_me',
+    'followGoalOverlayUrl': 'goals_follow',
+    'likeGoalOverlayUrl': 'goals_like',
+    'giftGoalOverlayUrl': 'goals_gift',
+    'donationGoalOverlayUrl': 'goals_donation',
+    'giftChallengeOverlayUrl': 'challenges_gift',
+    'supportersChallengeOverlayUrl': 'challenges_supporters',
+    'subathonOverlayUrl': 'challenges_subathon',
+    'teamScoresOverlayUrl': 'challenges_team_scores',
+    'coinJarUrl': 'coin_jar',
+    'fireworkUrl': 'firework',
+    'heartFountainUrl': 'heart_fountain',
+    'highestGiftUrl': 'highest_gift',
+    'totalFollowWidgetUrl': 'total_follow',
+    'topRankersUrl': 'top_rankers',
+    'viewerCountWidgetUrl': 'viewer_count'
+  };
+
+  function captureCurrentSettings() {
+    var settings = {};
+    var themeRadio = document.querySelector('input[name="theme"]:checked') ||
+                     document.querySelector('input[name="topGiftersTheme"]:checked') ||
+                     document.querySelector('input[name="topCombinedTheme"]:checked');
+    if (themeRadio) settings.theme = themeRadio.value;
+    var dirSelect = document.getElementById('directionSelect');
+    if (dirSelect) settings.direction = dirSelect.value;
+    var vrInput = document.getElementById('visibleRanksInput');
+    if (vrInput) settings.visibleRanks = parseInt(vrInput.value, 10) || 10;
+    var arToggle = document.getElementById('topLikesAutoReduction');
+    if (arToggle) settings.autoReductionEnabled = arToggle.checked;
+    var arPercent = document.getElementById('topLikesAutoReductionPercent');
+    if (arPercent) settings.autoReductionPercent = parseInt(arPercent.value, 10) || 10;
+    var classic = {}, cyber = {}, topRankers = {}, neon = {}, rainbow = {}, farashat = {}, df = {};
+    document.querySelectorAll('input[type="color"]').forEach(function(el) {
+      if (!el.id || !el.value || !el.closest('.modal')) return;
+      var id = el.id.toLowerCase();
+      if (id.indexOf('classic') >= 0 || id.indexOf('classicpalette') >= 0) classic[el.id] = el.value;
+      else if (id.indexOf('cyber') >= 0) cyber[el.id] = el.value;
+      else if (id.indexOf('ranker') >= 0) topRankers[el.id] = el.value;
+      else if (id.indexOf('neon') >= 0) neon[el.id] = el.value;
+      else if (id.indexOf('rainbow') >= 0) rainbow[el.id] = el.value;
+      else if (id.indexOf('farashat') >= 0 || id.indexOf('fawanis') >= 0) farashat[el.id] = el.value;
+      else df[el.id] = el.value;
+    });
+    settings.classicColors = Object.keys(classic).length ? classic : null;
+    settings.cyberColors = Object.keys(cyber).length ? cyber : null;
+    settings.topRankersColors = Object.keys(topRankers).length ? topRankers : null;
+    settings.neonShardsColors = Object.keys(neon).length ? neon : null;
+    settings.rainbowCloudsColors = Object.keys(rainbow).length ? rainbow : null;
+    settings.farashatColors = Object.keys(farashat).length ? farashat : null;
+    settings.defaultColors = Object.keys(df).length ? df : null;
+    return settings;
+  }
+
+  function buildWidgetUrl(inputId) {
+    var input = document.getElementById(inputId);
+    if (!input || !input.value || input.value.indexOf('uid=') < 0) return null;
+    try {
+      var url = new URL(input.value);
+      var uid = url.searchParams.get('uid');
+      var ver = url.searchParams.get('v');
+      url.searchParams.forEach(function(val, key) { url.searchParams.delete(key); });
+      if (uid) url.searchParams.set('uid', uid);
+      if (ver) url.searchParams.set('v', ver);
+      var s = captureCurrentSettings();
+      if (s.theme) url.searchParams.set('theme', s.theme);
+      if (s.direction) url.searchParams.set('direction', s.direction);
+      if (s.visibleRanks) url.searchParams.set('visibleRanks', String(s.visibleRanks));
+      if (typeof s.autoReductionEnabled === 'boolean') url.searchParams.set('autoReductionEnabled', String(s.autoReductionEnabled));
+      if (s.autoReductionPercent) url.searchParams.set('autoReductionPercent', String(s.autoReductionPercent));
+      var colorObj = {};
+      if (s.classicColors) colorObj.classicColors = s.classicColors;
+      if (s.cyberColors) colorObj.cyberColors = s.cyberColors;
+      if (s.topRankersColors) colorObj.topRankersColors = s.topRankersColors;
+      if (s.neonShardsColors) colorObj.neonShardsColors = s.neonShardsColors;
+      if (s.rainbowCloudsColors) colorObj.rainbowCloudsColors = s.rainbowCloudsColors;
+      if (s.farashatColors) colorObj.farashatColors = s.farashatColors;
+      if (s.defaultColors) colorObj.defaultColors = s.defaultColors;
+      if (Object.keys(colorObj).length) url.searchParams.set('colors', JSON.stringify(colorObj));
+      return url.toString();
+    } catch(err) { return null; }
+  }
+
+  function rebuildUrl(inputId) {
+    var newUrl = buildWidgetUrl(inputId);
+    if (newUrl) {
+      var input = document.getElementById(inputId);
+      if (input) input.value = newUrl;
+    }
+  }
+
+  function rebuildAllUrls() {
+    Object.keys(WIDGET_MAP).forEach(function(id) { rebuildUrl(id); });
+  }
+
+  function interceptSave(windowKey, callback) {
+    var checkCount = 0;
+    var interval = setInterval(function() {
+      if (typeof window[windowKey] === 'function') {
+        clearInterval(interval);
+        var orig = window[windowKey];
+        window[windowKey] = function() {
+          var result = orig.apply(this, arguments);
+          if (result && typeof result.then === 'function') {
+            return result.then(function(r) { setTimeout(callback, 50); return r; });
+          }
+          setTimeout(callback, 50);
+          return result;
+        };
+      }
+      if (++checkCount > 200) clearInterval(interval);
+    }, 100);
+  }
+
+  function onSettingsChange() {
+    setTimeout(rebuildAllUrls, 100);
+    setTimeout(rebuildAllUrls, 500);
+  }
+
+  interceptSave('saveThemeSelection', onSettingsChange);
+  interceptSave('saveTopGiftersThemeSelection', onSettingsChange);
+  interceptSave('saveTopCombinedThemeSelection', onSettingsChange);
+  interceptSave('saveCoinJarThemeSettings', onSettingsChange);
+  interceptSave('saveFireworkSettings', onSettingsChange);
+  interceptSave('saveHeartFountainSettings', onSettingsChange);
+  interceptSave('saveHighestGiftSettings', onSettingsChange);
+  interceptSave('saveHeartMeGoalSettings', onSettingsChange);
+  interceptSave('saveFollowGoalSettings', onSettingsChange);
+  interceptSave('saveLikeGoalSettings', onSettingsChange);
+  interceptSave('saveGiftGoalSettings', onSettingsChange);
+  interceptSave('saveDonationGoalSettings', onSettingsChange);
+  interceptSave('saveGiftChallengeSettings', onSettingsChange);
+  interceptSave('saveSupportersChallengeSettings', onSettingsChange);
+  interceptSave('saveSubathonSettings', onSettingsChange);
+  interceptSave('saveTeamScoresSettings', onSettingsChange);
+  interceptSave('saveSocialRotatorSettings', onSettingsChange);
+  interceptSave('saveLikeSettings', onSettingsChange);
+  interceptSave('saveFollowSettings', onSettingsChange);
+
+  document.addEventListener('change', function(e) {
+    if (e.target.closest('.modal') || e.target.closest('.settings-section')) {
+      setTimeout(rebuildAllUrls, 50);
+    }
+  });
+  document.addEventListener('input', function(e) {
+    if (e.target.type === 'color' && e.target.closest('.modal')) {
+      setTimeout(rebuildAllUrls, 50);
+    }
+  });
+  setInterval(function() {
+    var modals = document.querySelectorAll('.modal.active, .modal[style*="display: block"]');
+    if (modals.length > 0) rebuildAllUrls();
+  }, 2000);
+
+
+  // Mock i18n translations for local use
+  window.__MOCK_TRANSLATIONS__ = {
+    'supporters.title': "تصنيف الداعمين",
+    'supporters.desc': "جدول داعميك الكامل — يتحدّث تلقائيًا عند كل هدية حقيقية",
+    'supporters.searchLabel': "بحث",
+    'supporters.searchPlaceholder': "ابحث باسم المستخدم...",
+    'supporters.addUser': "إضافة داعم",
+    'supporters.addUserTitle': "إضافة داعم جديد",
+    'supporters.deleteAll': "حذف الكل",
+    'supporters.loading': "جاري التحميل...",
+    'supporters.empty': "لا يوجد داعمين بعد — أول هدية حقيقية تظهر هنا تلقائيًا",
+    'supporters.loadFailed': "فشل تحميل القائمة، حاول مرة أخرى",
+    'supporters.loadMore': "تحميل المزيد",
+    'supporters.colRank': "الترتيب",
+    'supporters.colAvatar': "الصورة",
+    'supporters.colName': "الاسم",
+    'supporters.colDiamonds': "الماس",
+    'supporters.colManage': "إدارة",
+    'supporters.manage': "إدارة",
+    'supporters.manageTitle': "إدارة الداعم",
+    'supporters.deleteUser': "حذف المستخدم",
+    'supporters.delete': "حذف",
+    'supporters.deletingLabel': "جاري الحذف...",
+    'supporters.deleteFailed': "فشل الحذف",
+    'supporters.deleteAllFailed': "فشل حذف الكل",
+    'supporters.confirmDeleteTitle': "تأكيد الحذف",
+    'supporters.confirmDeleteText': "هل أنت متأكد من حذف هذا الداعم؟",
+    'supporters.confirmDeleteAllTitle': "حذف الكل",
+    'supporters.confirmDeleteAllText': "سيتم حذف جميع الداعمين نهائيًا. هل تريد المتابعة؟",
+    'supporters.cancel': "إلغاء",
+    'supporters.close': "إغلاق",
+    'supporters.save': "حفظ",
+    'supporters.savingLabel': "جاري الحفظ...",
+    'supporters.username': "اسم المستخدم",
+    'supporters.usernameLabel': "اسم المستخدم على تيك توك",
+    'supporters.usernamePlaceholder': "مثال: user123",
+    'supporters.nickname': "الاسم",
+    'supporters.id': "المعرف",
+    'supporters.diamondsLabel': "الماس",
+    'supporters.totalDiamonds': "إجمالي الماس",
+    'supporters.deltaLabel': "تعديل الماس",
+    'supporters.deltaPlaceholder': "+/-",
+    'supporters.deltaHint': "قيمة موجبة للإضافة أو سالبة للخصم",
+    'supporters.deltaInvalid': "قيمة غير صالحة",
+    'supporters.deltaFailed': "فشل تعديل الماس",
+    'supporters.apply': "تطبيق",
+    'supporters.lastUpdate': "آخر تحديث",
+    'supporters.openTiktok': "فتح حساب تيك توك",
+    'supporters.errEnterUsername': "اكتب اسم المستخدم",
+    'supporters.errDiamondsPositive': "اكتب رقمًا موجبًا",
+    'supporters.errUserExists': "هذا المستخدم موجود بالفعل:",
+    'supporters.errUserNotFound': "المستخدم غير موجود",
+    'supporters.errAddFailed': "فشلت الإضافة",
+    'supporters.errAddGeneric': "خطأ غير متوقع أثناء الإضافة",
+    'supporters.demoTitle': "تصنيف تجريبي",
+    'supporters.demoSub': "الميزة متاحة في الباقة المدفوعة",
+    'top.topLikesWidget': 'أعلى الإعجابات',
+    'top.topGiftersWidget': 'أعلى المتبرعين',
+    'top.topCombinedWidget': 'الإعجابات + المتبرعين',
+    'top.topSupportersWidget': 'أعلى الداعمين',
+    'top.chooseDesign': 'اختر التصميم',
+    'top.themeDefault': 'افتراضي',
+    'top.themeClassic': 'كلاسيكي',
+    'top.themeCyberBlade': 'سايبر بلاد',
+    'top.themeTopRankers': 'أعلى المراتب',
+    'top.themeNeonShards': 'نيون شاردز',
+    'top.themeFawanis': 'فوانيس',
+    'top.themeRose': 'ورد',
+    'top.themeSkulls': 'جماجم',
+    'top.themeRosePodium': 'منصة ورد',
+    'top.themeFarashat': 'فراشات',
+    'top.themeTaif': 'تيف',
+    'top.themeRainbowClouds': 'سحاب قوس قزح',
+    'top.visibleRanksCount': 'عدد المراتب المرئية',
+    'top.settingsTopLikes': 'إعدادات أعلى الإعجابات',
+    'top.settingsTopGifters': 'إعدادات أعلى المتبرعين',
+    'top.settingsTopCombined': 'إعدادات الإعجابات + المتبرعين',
+    'top.autoReductionTitle': 'التقليل التلقائي',
+    'top.unifiedAdvancedButton': 'الإعدادات المتقدمة',
+    'top.classicAdvancedTitle': 'إعدادات كلاسيكي المتقدمة',
+    'overlays.title': 'التراكبات',
+    'overlays.likeOverlay': 'تراكب الإعجابات',
+    'overlays.followOverlay': 'تراكب المتابعين',
+    'overlays.totalFollowWidget': 'widget إجمالي المتابعين',
+    'overlays.topRankersWidget': 'أعلى المراتب',
+    'overlays.highestGiftWidget': 'أعلى هدية',
+    'overlays.actionsSlider': 'شريط الإجراءات',
+    'overlays.heartFountain': 'نافورة القلوب',
+    'overlays.firework': 'ألعاب نارية',
+    'overlays.coinJar': 'برميل العملات',
+    'overlays.viewerCountWidget': 'عدد المشاهدين',
+    'overlays.settingsLikeOverlay': 'إعدادات تراكب الإعجابات',
+    'overlays.settingsFollowOverlay': 'إعدادات تراكب المتابعين',
+    'overlays.sendTestLike': 'إرسال إعجاب تجريبي',
+    'overlays.sendTestFollow': 'إرسال متابعة تجريبية',
+    'overlays.widgetTheme': 'ثيم الويدجت',
+    'overlays.themeHearts': 'قلوب',
+    'overlays.themeButterfly': 'فراشات',
+    'overlays.reverseLayoutToggle': 'عكس التصميم',
+    'overlays.nameSizeRem': 'حجم الاسم',
+    'common.copy': 'نسخ',
+    'common.copied': 'تم النسخ!',
+    'common.save': 'حفظ',
+    'common.cancel': 'إلغاء',
+    'common.done': 'تم',
+    'common.settings': 'الإعدادات',
+    'common.settingsDesign': 'إعدادات التصميم',
+    'common.reset': 'إعادة تعيين',
+    'common.resetPositions': 'إعادة تعيين المواقع',
+    'common.loadingDots': 'جاري التحميل...',
+    'common.pleaseLogin': 'يرجى تسجيل الدخول',
+    'common.authError': 'خطأ في المصادقة',
+    'common.copyFailed': 'فشل النسخ',
+    'common.serverFull': 'الخادم ممتلئ',
+    'account.desktopAppName': 'TikFlux Desktop',
+    'account.desktopAppAvailable': 'تطبيق سطح المكتب متوفر الآن!',
+    'account.desktopAppDesc': 'احصل على تجربة أفضل وأداء أسرع مع تطبيق TikFlux Desktop. ميزات حصرية مثل Bot Chat الذكي، تحديثات تلقائية، وواجهة محسّنة للبث المباشر!',
+    'account.aboutServiceWhy': 'لماذا TikFlux؟',
+    'account.aboutServiceWhyDesc': 'كل ما تحتاجه لبث مباشر احترافي على TikTok في مكان واحد',
+    'sidebar.linkScenes': 'ربط المشاهد',
+    'sidebar.terms': 'الشروط',
+    'sidebar.privacy': 'الخصوصية',
+    'footer.downloadApp': 'تحميل التطبيق',
+    'footer.telegramTitle': 'انضم لقناة تلجرام',
+    'footer.joinTelegram': 'انضم للتلجرام',
+    'footer.telegramUpdateModalTitle': 'انضم إلى TikFlux على تلجرام',
+    'footer.telegramUpdatePrompt': 'يرجى الانضمام إلى قناة تطبيق TikFlux على تلجرام لتلقي أحدث التحديثات والإجابات على استفساراتك.',
+    'header.animationHint': 'اضغط لإعادة الأنيميشن',
+    'header.tiktokPlaceholder': 'اسم حساب TikTok',
+    'header.viewersNow': 'المشاهدون الآن',
+    'header.viewersTotal': 'إجمالي المشاهدين',
+    'account.aboutServiceWhyDesc': 'كل ما تحتاجه لبث مباشر احترافي على TikTok في مكان واحد',
+    'account.platformTickerTitle': 'نشاط المنصة في الوقت الحالي',
+    'account.platformTickerStreamer': 'الستريمر',
+    'account.platformTickerUser': 'المستخدم',
+    'account.platformTickerConnecting': 'جاري الاتصال…',
+    'account.platformTickerSince': 'منذ',
+    'account.platformTickerLive': 'مباشر',
+    'account.platformTickerEmpty': 'في انتظار أحداث البث...',
+    'account.platformTickerEventGift': 'هدية',
+    'account.platformTickerEventLike': 'إعجاب',
+    'account.platformTickerEventFollow': 'متابعة',
+    'account.platformTickerEventComment': 'تعليق',
+    'account.platformTickerEventJoin': 'دخول',
+    'account.platformTickerEventOther': 'نشاط',
+    'account.platformTickerEvent': 'الحدث',
+    'comments.title': 'الدردشة',
+    'comments.widgetTitle': 'تعليقات الدردشة',
+    'comments.loading': 'جاري التحميل...',
+    'comments.urlError': 'خطأ في رابط URL',
+    'comments.copyFailed': 'فشل نسخ الرابط',
+    'music.copy': 'نسخ رابط المشغل',
+    'alertLibrary.loginRequiredStore': 'يرجى تسجيل الدخول للوصول للمتجر',
+    'alertLibrary.loginToCheckout': 'تسجيل الدخول للشراء',
+    'alertLibrary.total': 'الإجمالي',
+    'alertLibrary.loadingOrders': 'جاري تحميل الطلبات...',
+    'alertLibrary.ordersEmpty': 'لا توجد طلبات',
+    'alertLibrary.ordersLoadFailed': 'فشل تحميل الطلبات',
+    'alertLibrary.removeFromCartBtn': 'إزالة من السلة',
+    'actionAi.copy': 'نسخ الرابط'
+  };
+
+  // Patch i18n: Replace raw translation keys in DOM text with Arabic
+  var TR = window.__MOCK_TRANSLATIONS__;
+  function applyTranslations(root) {
+    if (!root) root = document;
+    // Replace text in data-i18n elements
+    root.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (TR[key]) el.textContent = TR[key];
+    });
+    // Replace text in data-i18n-title elements
+    root.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n-title');
+      if (TR[key]) el.title = TR[key];
+    });
+    // Replace raw translation keys in ALL text nodes (e.g. "top.themeDefault" -> "افتراضي")
+    var walker = document.createTreeWalker(root === document ? document.body : root, NodeFilter.SHOW_TEXT, null, false);
+    var textNodes = [];
+    while (walker.nextNode()) textNodes.push(walker.currentNode);
+    textNodes.forEach(function(node) {
+      var text = node.textContent;
+      if (!text || text.length < 4) return;
+      // Check for any translation key pattern (e.g. "top.themeDefault", "common.save")
+      var changed = false;
+      Object.keys(TR).forEach(function(key) {
+        if (text.indexOf(key) >= 0) {
+          text = text.split(key).join(TR[key]);
+          changed = true;
+        }
+      });
+      if (changed) node.textContent = text;
+    });
+  }
+
+  // Use MutationObserver to auto-translate any new content
+  var translateObserver = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (node.nodeType === 1) applyTranslations(node);
+      });
+    });
+  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      applyTranslations();
+      translateObserver.observe(document.body, { childList: true, subtree: true });
+    });
+  } else {
+    applyTranslations();
+    translateObserver.observe(document.body, { childList: true, subtree: true });
+  }
+  // Re-apply periodically to catch dynamically rendered content
+  setInterval(applyTranslations, 1500);
+
+  (function() {
+    var MOCK_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
+    var mockUser = { id: MOCK_USER_ID, email: 'user@gmail.com', user_metadata: { name: 'مستخدم', avatar_url: '' } };
+    var mockSession = { user: mockUser, access_token: 'mock-token-local', expires_at: Date.now() + 86400000 };
+
+    function patchAuthManager() {
+      var am = window.authManager;
+      if (!am) return false;
+      try {
+        am.getUser = function() { return Promise.resolve({ user: mockUser, error: null }); };
+        am.getAccessToken = function() { return Promise.resolve({ token: 'mock-token-local', error: null }); };
+        am.getSession = function() { return Promise.resolve({ session: mockSession, error: null }); };
+        am.isAuthenticated = function() { return Promise.resolve(true); };
+        am.cachedUser = mockUser;
+        am.cachedSession = mockSession;
+        am.initialized = true;
+        am.supabaseClient = am.supabaseClient || { auth: { getSession: function() { return Promise.resolve({ data: { session: mockSession } }); } } };
+        if (am.onAuthStateChange) {
+          am.onAuthStateChange = function(cb) {
+            if (cb) setTimeout(function() { cb('SIGNED_IN', mockSession); }, 50);
+            return { data: { subscription: { unsubscribe: function(){} } } };
+          };
+        }
+      } catch(e) {}
+      return true;
+    }
+
+    var attempts = 0;
+    var interval = setInterval(function() {
+      attempts++;
+      if (patchAuthManager() || attempts > 50) clearInterval(interval);
+    }, 100);
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        patchAuthManager();
+        setTimeout(patchAuthManager, 300);
+        setTimeout(patchAuthManager, 800);
+        setTimeout(patchAuthManager, 1500);
+      });
+    } else {
+      patchAuthManager();
+      setTimeout(patchAuthManager, 300);
+      setTimeout(patchAuthManager, 800);
+      setTimeout(patchAuthManager, 1500);
+    }
+
+    // Remove subscription guard modals periodically
+    setInterval(function() {
+      document.querySelectorAll('#subscriptionGuardModal, #subscriptionGuardStyles, .subscription-guard-modal').forEach(function(el) {
+        el.remove();
+      });
+    }, 1000);
+  })();
+  </script>
+  
+  <!-- ES Modules (must use type="module") -->
+
+
+
+
+
+
+
+
+  <!-- Asset reload disabled for local -->
+  <script>
+  (function () {
+    function hideLoading() {
+      var el = document.getElementById('appLoadingScreen');
+      if (el) {
+        el.style.transition = 'opacity 0.4s ease';
+        el.style.opacity = '0';
+        setTimeout(function() { if (el.parentNode) el.remove(); }, 500);
+      }
+      document.querySelectorAll('.error-overlay, .connection-overlay, #no-workers-banner, #connection-error-banner, #error-banner').forEach(function(e) { e.remove(); });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() { setTimeout(hideLoading, 300); });
+    } else {
+      setTimeout(hideLoading, 300);
+    }
+    setTimeout(hideLoading, 2000);
+    setTimeout(hideLoading, 5000);
+  })();
+  </script>
+
+  <!-- Local Auth System -->
+  <script>
+  (function() {
+    var USERS_KEY = 'TikFlux_users';
+    var SESSION_KEY = 'TikFlux_session';
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem(USERS_KEY)) || []; }
+      catch(e) { return []; }
+    }
+
+    function saveUsers(users) {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+    function getSession() {
+      try { return JSON.parse(localStorage.getItem(SESSION_KEY)); }
+      catch(e) { return null; }
+    }
+
+    function saveSession(user) {
+      localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+    }
+
+    function clearSession() {
+      localStorage.removeItem(SESSION_KEY);
+    }
+
+    function showStep(stepId) {
+      ['authMethodStep', 'emailStep', 'registerStep'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.classList.toggle('auth-step-hidden', id !== stepId);
+      });
+    }
+
+    function showLoggedIn(user) {
+      var lf = document.getElementById('loginForm');
+      if (lf) lf.style.display = 'none';
+      var container = document.getElementById('accountCardsContainer');
+      if (container) container.style.display = '';
+      var dn = document.getElementById('accountDisplayName');
+      if (dn) dn.textContent = user.name || 'مستخدم';
+      var ue = document.getElementById('userEmail');
+      if (ue) ue.textContent = user.email || '';
+      if (window.authManager && window.authManager.cachedUser) {
+        try { window.authManager.cachedUser.id = '550e8400-e29b-41d4-a716-446655440000'; } catch(e) {}
+      }
+      function tryNavigate(attempts) {
+        if (attempts > 80) return;
+        if (typeof window.showView === 'function' && window.viewManager) {
+          var hash = window.location.hash.replace('#', '');
+          var validViews = ['account','overlays','topLikes','goals','actions','donationAlerts','tts','chat','botChat','musicPlayer','supportersLeaderboard','socialMedia','challenges','linkScenes','latestEvents','stats','alertStore'];
+          var targetView = validViews.indexOf(hash) >= 0 ? hash : 'account';
+          try { window.showView(targetView); } catch(e) {}
+        } else {
+          setTimeout(function() { tryNavigate(attempts + 1); }, 150);
+        }
+      }
+      setTimeout(function() { tryNavigate(0); }, 500);
+    }
+
+    function showLoggedOut() {
+      var lf = document.getElementById('loginForm');
+      if (lf) lf.style.display = '';
+      var cc = document.getElementById('accountCardsContainer');
+      if (cc) cc.style.display = 'none';
+      showStep('authMethodStep');
+    }
+
+    function init() {
+      var session = getSession();
+      if (session) {
+        showLoggedIn(session);
+      } else {
+        // Auto-login for local development (skip if explicitly logged out)
+        var explicitLogout = sessionStorage.getItem('TikFlux_explicit_logout');
+        if (!explicitLogout) {
+          var autoUser = { name: 'مستخدم محلي', email: 'user@gmail.com', provider: 'local' };
+          saveSession(autoUser);
+          showLoggedIn(autoUser);
+        } else {
+          showLoggedOut();
+        }
+      }
+
+      // Email login button
+      var emailLoginBtn = document.getElementById('emailLoginBtn');
+      if (emailLoginBtn) {
+        emailLoginBtn.addEventListener('click', function() {
+          showStep('emailStep');
+        });
+      }
+
+      // Login submit
+      var sendCodeBtn = document.getElementById('sendCodeBtn');
+      if (sendCodeBtn) {
+        sendCodeBtn.addEventListener('click', function() {
+          var email = document.getElementById('emailInput').value.trim();
+          var password = document.getElementById('passwordInput').value;
+          var msg = document.getElementById('emailStepMessage');
+
+          if (!email || !password) {
+            msg.textContent = 'أدخل البريد الإلكتروني وكلمة المرور';
+            msg.style.color = '#6bd0ff';
+            return;
+          }
+
+          var users = getUsers();
+          var user = users.find(function(u) { return u.email === email && u.password === password; });
+
+          if (user) {
+            saveSession(user);
+            showLoggedIn(user);
+          } else {
+            msg.textContent = 'البريد أو كلمة المرور غير صحيحة';
+            msg.style.color = '#6bd0ff';
+          }
+        });
+      }
+
+      // Show register
+      var showRegisterBtn = document.getElementById('showRegisterBtn');
+      if (showRegisterBtn) {
+        showRegisterBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          showStep('registerStep');
+        });
+      }
+
+      // Show login
+      var showLoginBtn = document.getElementById('showLoginBtn');
+      if (showLoginBtn) {
+        showLoginBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          showStep('emailStep');
+        });
+      }
+
+      // Register
+      var registerBtn = document.getElementById('registerBtn');
+      if (registerBtn) {
+        registerBtn.addEventListener('click', function() {
+          var name = document.getElementById('registerNameInput').value.trim();
+          var email = document.getElementById('registerEmailInput').value.trim();
+          var password = document.getElementById('registerPasswordInput').value;
+          var msg = document.getElementById('registerMessage');
+
+          if (!name || !email || !password) {
+            msg.textContent = 'املأ جميع الحقول';
+            msg.style.color = '#6bd0ff';
+            return;
+          }
+
+          var users = getUsers();
+          if (users.find(function(u) { return u.email === email; })) {
+            msg.textContent = 'البريد الإلكتروني مسجل مسبقاً';
+            msg.style.color = '#6bd0ff';
+            return;
+          }
+
+          var newUser = { name: name, email: email, password: password };
+          users.push(newUser);
+          saveUsers(users);
+          saveSession(newUser);
+          showLoggedIn(newUser);
+        });
+      }
+
+      // Google login (simulated)
+      var googleLoginBtn = document.getElementById('googleLoginBtn');
+      if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', function() {
+          var googleUser = {
+            name: 'مستخدم Google',
+            email: 'user@gmail.com',
+            provider: 'google'
+          };
+          saveSession(googleUser);
+          showLoggedIn(googleUser);
+        });
+      }
+
+      // Logout
+      var logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+          clearSession();
+          sessionStorage.setItem('TikFlux_explicit_logout', '1');
+          showLoggedOut();
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+
+  </script>
+
+  <!-- Final i18n patch: ensure module F()/T() can find i18n.t -->
+  <script>
+  (function() {
+    var _t = window.i18n && window.i18n.t;
+    if (!_t) return;
+
+    // Patch i18n.t to prefer the inline dictionaries (always present), then fall back
+    var _origT = _t;
+    function __tfInlineLookup(key) {
+      if (!key) return key;
+      var lang = window.i18n && window.i18n.getLang ? window.i18n.getLang() : 'ar';
+      var src = lang === 'en' ? (window.__I18N_EN__ || window.__I18N_AR__) : (window.__I18N_AR__ || window.__I18N_EN__);
+      if (!src) return null;
+      var parts = String(key).split('.'), obj = src;
+      for (var i = 0; i < parts.length; i++) {
+        if (obj == null || typeof obj !== 'object') return null;
+        obj = obj[parts[i]];
+      }
+      return (typeof obj === 'string') ? obj : null;
+    }
+    window.i18n.t = function(key) {
+      var v = __tfInlineLookup(key);
+      if (v !== null && v !== undefined) return v;
+      return _origT(key);
+    };
+
+    // Periodically re-translate any untranslated [data-i18n] elements
+    function retranslateAll() {
+      if (!window.i18n || !window.i18n.t) return;
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        var val = window.i18n.t(key);
+        if (val && val !== key && el.textContent.trim() === key) {
+          if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') {
+            el.textContent = val;
+          }
+        }
+      });
+    }
+
+    // Run after module loads and periodically
+    setTimeout(retranslateAll, 1000);
+    setTimeout(retranslateAll, 2000);
+    setTimeout(retranslateAll, 3000);
+    setTimeout(retranslateAll, 5000);
+
+    // Also observe for new elements
+    var obs = new MutationObserver(function() { retranslateAll(); });
+    obs.observe(document.body, { childList: true, subtree: true });
+  })();
+  </script>
+</body>
+</html>
+
