@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TOP LIKES Overlay</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; background: transparent; overflow: hidden; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+    #wrap { position: absolute; inset: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px; }
+    .hidden { display: none !important; }
+    .title { text-align: center; font-size: 26px; font-weight: 900; text-shadow: 0 2px 8px rgba(0,0,0,0.7); animation: pop 0.4s ease; }
+    .item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px; padding: 10px 14px;
+      animation: slideIn 0.45s cubic-bezier(.2,.9,.3,1.2) both;
+      opacity: 0;
+    }
+    .item.rank1 { border-color: rgba(224,37,25,0.8); box-shadow: 0 0 24px rgba(224,37,25,0.35); transform-origin: center; }
+    .rank-badge {
+      min-width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px; color: #fff;
+    }
+    .rank-badge.r1 { background: linear-gradient(135deg,#ffd700,#ff9d00); color: #5b3a00; }
+    .rank-badge.r2 { background: linear-gradient(135deg,#e8e8e8,#c0c0c0); color: #444; }
+    .rank-badge.r3 { background: linear-gradient(135deg,#e0a06b,#c8864a); color: #5b2e00; }
+    .avatar { border-radius: 50%; object-fit: cover; background: #333; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3); }
+    .info { flex: 1; min-width: 0; }
+    .name { font-size: 17px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .count { font-size: 15px; font-weight: 700; opacity: 0.85; }
+    @keyframes slideIn { from { transform: translateY(-20px) scale(0.9); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+    .item.fade-in { opacity: 1; }
+    .pop-glow { animation: glow 0.6s ease; }
+    @keyframes glow { 0% { box-shadow: 0 0 0 rgba(224,37,25,0); } 40% { box-shadow: 0 0 40px rgba(224,37,25,0.8); } 100% { box-shadow: 0 0 24px rgba(224,37,25,0.35); } }
+    @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div id="wrap"></div>
+
+  <script>
+    const wrap = document.getElementById('wrap');
+    const token = location.pathname.split('/').pop();
+    const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsUrl = scheme + '://' + location.host + '/ws?token=' + token;
+
+    let settings = { topN: 3, title: '🔥 أكثر الأشخاص إعجابًا', titleColor: '#ffffff', itemBg: 'rgba(0,0,0,0.6)', textColor: '#ffffff', accentColor: '#E02519', avatarSize: 44, showCount: true, animation: 'slide', showTitle: true };
+    let winners = [];
+    let rank1Key = null;
+    let ws = null, reconnectTimer = null;
+
+    function applySettings(cfg) {
+      if (!cfg) return;
+      settings = Object.assign(settings, cfg);
+      document.documentElement.style.setProperty('--titleColor', settings.titleColor);
+      document.documentElement.style.setProperty('--itemBg', settings.itemBg);
+      document.documentElement.style.setProperty('--textColor', settings.textColor);
+      document.documentElement.style.setProperty('--accent', settings.accentColor);
+      document.documentElement.style.setProperty('--avatar', settings.avatarSize + 'px');
+    }
+
+    function render() {
+      wrap.innerHTML = '';
+      const list = winners.slice(0, settings.topN);
+      if (settings.showTitle) {
+        const t = document.createElement('div');
+        t.className = 'title';
+        t.textContent = settings.title;
+        t.style.color = settings.titleColor;
+        wrap.appendChild(t);
+      }
+      if (list.length === 0) {
+        const empty = document.createElement('div');
+        empty.className = 'item';
+        empty.style.opacity = '1';
+        empty.style.justifyContent = 'center';
+        empty.style.fontWeight = '700';
+        empty.style.color = settings.textColor;
+        empty.textContent = 'بانتظار أول إعجاب...';
+        wrap.appendChild(empty);
+        return;
+      }
+      list.forEach((w, i) => {
+        const item = document.createElement('div');
+        item.className = 'item' + (i === 0 ? ' rank1' : '');
+        item.style.background = settings.itemBg;
+        item.style.color = settings.textColor;
+        const badge = document.createElement('div');
+        badge.className = 'rank-badge r' + (i + 1);
+        badge.textContent = '#' + (i + 1);
+        const img = document.createElement('img');
+        img.className = 'avatar';
+        img.width = settings.avatarSize;
+        img.height = settings.avatarSize;
+        img.src = w.avatarUrl
+          ? '/api/tiktok/avatar-proxy?url=' + encodeURIComponent(w.avatarUrl)
+          : 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect fill="#333" width="60" height="60"/><text x="30" y="38" font-size="26" text-anchor="middle" fill="#888">' + (w.nickname || '?').charAt(0) + '</text></svg>');
+        const info = document.createElement('div');
+        info.className = 'info';
+        const name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = w.nickname || w.uniqueId;
+        info.appendChild(name);
+        if (settings.showCount) {
+          const count = document.createElement('div');
+          count.className = 'count';
+          count.textContent = w.count + ' ❤️';
+          info.appendChild(count);
+        }
+        item.appendChild(badge);
+        item.appendChild(img);
+        item.appendChild(info);
+        wrap.appendChild(item);
+        requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add('fade-in')));
+      });
+    }
+
+    function applyState(data) {
+      applySettings(data.settings);
+      if (data.winners) {
+        const r1b = data.winners[0] && data.winners[0].uniqueId;
+        const changed = rank1Key !== null && r1b !== rank1Key;
+        winners = data.winners;
+        render();
+        if (changed && r1b) {
+          const first = wrap.querySelector('.item.rank1');
+          if (first) { first.classList.remove('rank1'); void first.offsetWidth; first.classList.add('rank1'); first.classList.add('pop-glow'); }
+        }
+        rank1Key = r1b || null;
+      }
+    }
+
+    function connect() {
+      try { if (ws) ws.close(); } catch (e) {}
+      try { ws = new WebSocket(wsUrl); } catch (e) { scheduleReconnect(); return; }
+      ws.onopen = () => {
+        fetch('/api/toplikes/stream/' + token)
+          .then((r) => r.json())
+          .then((d) => { if (d.stream) applyState(d.stream); })
+          .catch(() => {});
+      };
+      ws.onmessage = (e) => {
+        try {
+          const msg = JSON.parse(e.data);
+          if (msg.type === 'state') applyState(msg);
+        } catch (err) {}
+      };
+      ws.onclose = () => scheduleReconnect();
+      ws.onerror = () => { try { ws.close(); } catch (e) {} };
+    }
+
+    function scheduleReconnect() {
+      if (reconnectTimer) return;
+      reconnectTimer = setTimeout(() => { reconnectTimer = null; connect(); }, 3000);
+    }
+
+    connect();
+  </script>
+</body>
+</html>

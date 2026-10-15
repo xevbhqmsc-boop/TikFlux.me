@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tikplus — Goals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 50% 0%,rgba(180,20,20,.15) 0%,transparent 60%),radial-gradient(ellipse at 20% 50%,rgba(150,10,10,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 50%,rgba(150,10,10,.08) 0%,transparent 50%);pointer-events:none;z-index:0}
+
+.page{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:20px 24px 40px}
+
+/* Header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px}
+.badge{background:linear-gradient(135deg,#E02519,#b01510);color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(224,37,25,.4);animation:glow-pulse 2s ease-in-out infinite}
+.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:900;color:#E02519;text-shadow:0 0 30px rgba(224,37,25,.5)}
+.logo svg{width:40px;height:40px;filter:drop-shadow(0 0 10px rgba(224,37,25,.6))}
+
+/* Hero */
+.hero{text-align:center;margin-bottom:50px}
+.hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;line-height:1.3;margin-bottom:12px}
+.hero h1 .red{color:#E02519;text-shadow:0 0 40px rgba(224,37,25,.5)}
+.hero p{font-size:clamp(13px,2vw,16px);color:rgba(255,255,255,.5);font-weight:600}
+
+/* Goal Card */
+.goal-card{background:rgba(255,255,255,.03);border:1px solid rgba(224,37,25,.15);border-radius:20px;padding:30px 36px;margin-bottom:24px;position:relative;overflow:hidden;backdrop-filter:blur(10px);transition:all .3s}
+.goal-card:hover{border-color:rgba(224,37,25,.3);box-shadow:0 0 40px rgba(224,37,25,.1)}
+.goal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(224,37,25,.4),transparent)}
+
+.goal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.goal-badge{background:rgba(224,37,25,.12);border:1px solid rgba(224,37,25,.25);color:#E02519;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700}
+.goal-title{font-size:clamp(22px,3.5vw,32px);font-weight:800;color:#fff;text-shadow:0 0 20px rgba(255,255,255,.1)}
+
+/* Progress Bar */
+.progress-wrap{position:relative;margin:16px 0 20px}
+.progress-track{width:100%;height:18px;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;position:relative;border:1px solid rgba(224,37,25,.1)}
+.progress-bar{height:100%;border-radius:12px;background:linear-gradient(90deg,#b01510,#E02519,#ff3b3b);position:relative;transition:width 1.5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 20px rgba(224,37,25,.5),inset 0 1px 0 rgba(255,255,255,.2)}
+.progress-bar::after{content:'';position:absolute;top:0;left:0;right:0;height:50%;background:linear-gradient(180deg,rgba(255,255,255,.15),transparent);border-radius:12px 12px 0 0}
+.progress-glow{position:absolute;top:-2px;bottom:-2px;left:0;border-radius:12px;background:linear-gradient(90deg,transparent,#E02519);filter:blur(8px);opacity:.5;transition:width 1.5s cubic-bezier(.4,0,.2,1)}
+
+/* Flower decorations */
+.flower{position:absolute;top:50%;transform:translateY(-50%);width:80px;height:80px;opacity:.7;pointer-events:none}
+.flower-left{left:20px}
+.flower-right{right:20px}
+.flower svg{width:100%;height:100%;filter:drop-shadow(0 0 15px rgba(224,37,25,.4))}
+
+/* Score */
+.score{display:flex;align-items:baseline;justify-content:center;gap:8px;font-weight:900}
+.score .current{font-size:clamp(28px,4vw,42px);color:#fff;text-shadow:0 0 20px rgba(255,255,255,.2);animation:num-glow 2s ease-in-out infinite}
+.score .sep{font-size:20px;color:rgba(255,255,255,.3)}
+.score .target{font-size:clamp(20px,3vw,30px);color:rgba(255,255,255,.4)}
+
+/* Footer */
+.footer{display:flex;align-items:center;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.06)}
+.footer-brand{font-size:16px;font-weight:800;color:#E02519;text-shadow:0 0 15px rgba(224,37,25,.4)}
+.footer-nav{font-size:12px;color:rgba(255,255,255,.35);font-weight:600}
+
+/* Animations */
+@keyframes glow-pulse{0%,100%{box-shadow:0 4px 20px rgba(224,37,25,.4)}50%{box-shadow:0 4px 30px rgba(224,37,25,.6)}}
+@keyframes num-glow{0%,100%{text-shadow:0 0 20px rgba(255,255,255,.2)}50%{text-shadow:0 0 30px rgba(255,255,255,.4)}}
+@keyframes float{0%,100%{transform:translateY(-50%) rotate(0deg)}50%{transform:translateY(-50%) rotate(5deg)}}
+.flower{animation:float 4s ease-in-out infinite}
+.flower-right{animation-delay:2s}
+
+/* Responsive */
+@media(max-width:768px){
+  .page{padding:16px 16px 30px}
+  .header{flex-direction:column-reverse;gap:12px;text-align:center}
+  .goal-card{padding:20px 16px}
+  .flower{width:50px;height:50px}
+  .flower-left{left:8px}
+  .flower-right{right:8px}
+  .footer{flex-direction:column;gap:10px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="header">
+    <div class="badge">&#1580;&#1583;&#1610;&#1583; &#1601;&#1610; &#1602;&#1587;&#1605; &#1575;&#1604;&#1571;&#1607;&#1583;&#1575;&#1601;</div>
+    <div class="logo">
+      <span>&#1578;&#1610;&#1603; &#1576;&#1604;&#1587;</span>
+      <svg viewBox="0 0 40 40" fill="none"><path d="M20 4L36 12V28L20 36L4 28V12L20 4Z" stroke="#E02519" stroke-width="2"/><path d="M20 8L30 14V26L20 32L10 26V14L20 8Z" fill="#E02519" opacity=".3"/><path d="M14 18L20 12L26 18L20 24Z" fill="#E02519"/></svg>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1><span class="red">&#1603;&#1585;&#1578;&#1606;&#1575; &#1586;&#1607;&#1585;&#1577; &#1575;&#1604;&#1593;&#1606;&#1603;&#1576;&#1608;&#1578;</span> &#1608;&#1589;&#1604; &#1604;&#1610;&#1603;</h1>
+    <p>&#1607;&#1583;&#1601; &#1575;&#1604;&#1605;&#1578;&#1575;&#1576;&#1593;&#1610;&#1606; &#1608;&#1607;&#1583;&#1601; &#1575;&#1604;&#1573;&#1593;&#1580;&#1575;&#1576;&#1575;&#1578; &#183; &#1582;&#1604;&#1601;&#1610;&#1577; &#1588;&#1601;&#1575;&#1601;&#1577; &#183; &#1603;&#1604; &#1604;&#1608;&#1606; &#1608;&#1582;&#1591; &#1608;&#1585;&#1602;&#1605; &#1576;&#1610;&#1583;&#1603;</p>
+  </div>
+
+  <!-- Goal: Followers -->
+  <div class="goal-card" id="goalFollowers">
+    <div class="flower flower-left">
+      <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="8" fill="#E02519" opacity=".8"/><path d="M40 32C40 32 30 20 20 30S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 32C40 32 50 20 60 30S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 30 60 20 50S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 50 60 60 50S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><circle cx="40" cy="40" r="15" stroke="#E02519" stroke-width=".5" fill="none" opacity=".3"/></svg>
+    </div>
+    <div class="flower flower-right">
+      <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="8" fill="#E02519" opacity=".8"/><path d="M40 32C40 32 30 20 20 30S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 32C40 32 50 20 60 30S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 30 60 20 50S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 50 60 60 50S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><circle cx="40" cy="40" r="15" stroke="#E02519" stroke-width=".5" fill="none" opacity=".3"/></svg>
+    </div>
+    <div class="goal-header">
+      <div class="goal-title">Goal Followers</div>
+      <div class="goal-badge">&#1607;&#1583;&#1601; &#1575;&#1604;&#1605;&#1578;&#1575;&#1576;&#1593;&#1610;&#1606;</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-glow" id="glow1" style="width:0%"></div>
+        <div class="progress-bar" id="bar1" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="score">
+      <span class="current" id="current1">0</span>
+      <span class="sep">/</span>
+      <span class="target" id="target1">500</span>
+    </div>
+  </div>
+
+  <!-- Goal: Likes -->
+  <div class="goal-card" id="goalLikes">
+    <div class="flower flower-left">
+      <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="8" fill="#E02519" opacity=".8"/><path d="M40 32C40 32 30 20 20 30S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 32C40 32 50 20 60 30S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 30 60 20 50S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 50 60 60 50S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><circle cx="40" cy="40" r="15" stroke="#E02519" stroke-width=".5" fill="none" opacity=".3"/></svg>
+    </div>
+    <div class="flower flower-right">
+      <svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="8" fill="#E02519" opacity=".8"/><path d="M40 32C40 32 30 20 20 30S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 32C40 32 50 20 60 30S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 30 60 20 50S30 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><path d="M40 48C40 48 50 60 60 50S50 40 40 40" stroke="#E02519" stroke-width="1.5" fill="none" opacity=".6"/><circle cx="40" cy="40" r="15" stroke="#E02519" stroke-width=".5" fill="none" opacity=".3"/></svg>
+    </div>
+    <div class="goal-header">
+      <div class="goal-title">Goal Like</div>
+      <div class="goal-badge">&#1607;&#1583;&#1601; &#1575;&#1604;&#1573;&#1593;&#1580;&#1575;&#1576;&#1575;&#1578;</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track">
+        <div class="progress-glow" id="glow2" style="width:0%"></div>
+        <div class="progress-bar" id="bar2" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="score">
+      <span class="current" id="current2">0</span>
+      <span class="sep">/</span>
+      <span class="target" id="target2">10,000</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-brand">tikplus.live</div>
+    <div class="footer-nav">&#1604;&#1608;&#1581;&#1577; &#1575;&#1604;&#1578;&#1581;&#1603;&#1605; &#8592; &#1575;&#1604;&#1571;&#1607;&#1583;&#1575;&#1601; &#8592; &#1606;&#1587;&#1582; &#1585;&#1575;&#1576;&#1591; OBS</div>
+  </div>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const goals = {
+  followers: { 
+    current: parseInt(params.get('fc')) || 0, 
+    target: parseInt(params.get('ft')) || 500, 
+    label: 'Goal Followers' 
+  },
+  likes: { 
+    current: parseInt(params.get('lc')) || 0, 
+    target: parseInt(params.get('lt')) || 10000, 
+    label: 'Goal Like' 
+  }
+};
+
+function formatNum(n){ return n.toLocaleString('en-US'); }
+
+function animateValue(el, start, end, duration){
+  const range = end - start;
+  const startTime = performance.now();
+  function step(now){
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = formatNum(Math.round(start + range * eased));
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function updateGoal(id, barId, glowId, currentId, targetId, goal){
+  const pct = Math.min((goal.current / goal.target) * 100, 100);
+  const bar = document.getElementById(barId);
+  const glow = document.getElementById(glowId);
+  const currentEl = document.getElementById(currentId);
+  const targetEl = document.getElementById(targetId);
+
+  const oldVal = parseInt(currentEl.textContent.replace(/,/g,'')) || 0;
+  animateValue(currentEl, oldVal, goal.current, 1500);
+  targetEl.textContent = formatNum(goal.target);
+
+  setTimeout(()=>{
+    bar.style.width = pct + '%';
+    glow.style.width = pct + '%';
+  }, 100);
+}
+
+function init(){
+  updateGoal('followers','bar1','glow1','current1','target1', goals.followers);
+  updateGoal('likes','bar2','glow2','current2','target2', goals.likes);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

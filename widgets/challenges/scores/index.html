@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — Team Scores</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;overflow:hidden;font-family:'Cairo',sans-serif}
+#app{position:relative;width:100vw;height:100vh;display:flex;align-items:center;justify-content:center;gap:30px}
+.team{background:rgba(0,0,0,.5);border-radius:16px;padding:24px 30px;text-align:center;backdrop-filter:blur(10px);min-width:160px}
+.name{font-size:18px;font-weight:800;color:#fff;margin-bottom:8px}
+.score{font-size:64px;font-weight:900;line-height:1}
+.vs{font-size:28px;font-weight:900;color:rgba(255,255,255,.5)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const user = new URLSearchParams(window.location.search).get('user') || '';
+const isMock = new URLSearchParams(window.location.search).get('mock') === '1';
+let scores = {team1:0,team2:0};
+let config = {team1Name:'الفريق 1',team2Name:'الفريق 2',team1Color:'#ff0000',team2Color:'#0008ff'};
+async function load(){
+  try{ const d = await (await fetch('/api/challenges/load')).json();
+    if(d.scores) scores = d.scores;
+    if(d.settings&&d.settings.scores) config = {...config, ...d.settings.scores};
+  }catch(e){}
+  render(); if(isMock) startMock();
+}
+function render(){
+  document.getElementById('app').innerHTML = `
+    <div class="team"><div class="name" style="color:${config.team1Color}">${config.team1Name}</div><div class="score" style="color:${config.team1Color}">${scores.team1}</div></div>
+    <div class="vs">VS</div>
+    <div class="team"><div class="name" style="color:${config.team2Color}">${config.team2Name}</div><div class="score" style="color:${config.team2Color}">${scores.team2}</div></div>`;
+}
+function startMock(){ setInterval(()=>{ if(Math.random()>.5) scores.team1+=1; else scores.team2+=1; render(); },2500); }
+async function pollState(){
+  try{ const d = await (await fetch('/api/challenges/state')).json();
+    if(d.scores){ scores = d.scores; render(); }
+    const st = d.status && d.status['scores:'+user];
+    if(st&&st.action==='reset'){ scores={team1:0,team2:0}; render(); }
+  }catch(e){}
+}
+load(); setInterval(pollState,1000);
+</script>
+</body>
+</html>

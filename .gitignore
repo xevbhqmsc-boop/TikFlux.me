@@ -1,0 +1,44 @@
+# ==========================================================
+#  TikFlux  /  Tiklinux Desktop
+#  Keep the repository clean: no dependencies, no build
+#  output, no runtime data, no logs, no secrets.
+# ==========================================================
+
+# ---------- Dependencies ----------
+node_modules/
+**/node_modules/
+
+# ---------- Build output / installers ----------
+dist-desktop/
+dist/
+build/
+*.exe
+*.blockmap
+*.asar
+
+# ---------- Runtime data (secrets + personal data) ----------
+data/
+
+# ---------- Logs & runtime state ----------
+*.log
+*.pid
+.server.pid
+.server.wrapper.pid
+
+# ---------- Environment / secrets ----------
+.env
+.env.*
+*.local
+
+# ---------- Backups (may contain stale secrets) ----------
+*.bak
+*.bak2
+*.bak-*
+*.bak.*
+*.orig
+
+# ---------- OS / editor junk ----------
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Like Goal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lemon&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html,body{width:100%;height:100%;overflow:visible;background:transparent;font-family:'Lemon',sans-serif}
+    body{opacity:0;transition:opacity .4s}
+    body.loaded{opacity:1}
+
+    .like-goal-theme-panel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:visible}
+    #like-goal-theme-root{--goal-accent:#ff0000;--goal-accent-rgb:255,0,0;--wave-stop-1:#5a0000;--wave-stop-2:#af0000;--wave-stop-3:#ff0000;--goal-wave-back:#8d0000;--goal-percent-text-from:#c82424;--goal-percent-text-to:#fff;--goal-label-ink:#fff;--goal-value-text-to:#c6c6c6;--liquid-glow-1:#ff0000;--liquid-glow-2:#ff0000;--liquid-glow-3:#ff0000;--liquid-glow-4:#ff0000;overflow:visible}
+
+    #like-goal-theme-root .scene{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:transparent;overflow:visible}
+    #like-goal-theme-root .goal-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:visible;padding:20px}
+
+    #like-goal-theme-root .heart-container{position:relative;width:min(55vh,420px);height:min(55vh,420px);display:flex;align-items:center;justify-content:center;animation:lgFloatHeart 4.5s ease-in-out infinite;transform-origin:center center;overflow:visible}
+    @keyframes lgFloatHeart{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+    #like-goal-theme-root .liquid-svg,#like-goal-theme-root .heart-shape{position:absolute;inset:0;width:100%;height:100%}
+    #like-goal-theme-root .liquid-svg{overflow:visible}
+    #like-goal-theme-root .heart-shape{z-index:3;pointer-events:none}
+
+    #like-goal-theme-root .goal-center-text{position:absolute;z-index:5;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;text-align:center;padding-top:18px}
+    #like-goal-theme-root .goal-percent{font-family:'Lemon',sans-serif;font-size:clamp(28px,6vw,46px);font-weight:900;letter-spacing:.06em;background:linear-gradient(180deg,var(--goal-percent-text-from,#c82424),var(--goal-percent-text-to,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 1px 0 rgba(0,0,0,.85)) drop-shadow(0 -1px 0 rgba(0,0,0,.65)) drop-shadow(1px 0 0 rgba(0,0,0,.55)) drop-shadow(-1px 0 0 rgba(0,0,0,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.65)) drop-shadow(0 0 12px rgba(var(--goal-accent-rgb,255,21,21),.75)) drop-shadow(0 0 25px rgba(var(--goal-accent-rgb,255,21,21),.5)) drop-shadow(0 0 40px rgba(var(--goal-accent-rgb,255,21,21),.35))}
+
+    #like-goal-theme-root .goal-label{font-family:'Lemon',sans-serif;color:var(--goal-label-ink,#fff);font-size:clamp(22px,5vw,35px);font-weight:700;text-align:center;margin-top:8px;margin-bottom:6px;filter:drop-shadow(0 1px 0 rgba(0,0,0,.5)) drop-shadow(0 2px 4px rgba(0,0,0,.45)) drop-shadow(0 0 12px rgba(var(--goal-accent-rgb,255,21,21),.65)) drop-shadow(0 0 25px rgba(var(--goal-accent-rgb,255,21,21),.45)) drop-shadow(0 0 40px rgba(var(--goal-accent-rgb,255,21,21),.25))}
+    #like-goal-theme-root .goal-value{font-family:'Lemon',sans-serif;font-size:clamp(24px,5.5vw,38px);font-weight:900;line-height:1;letter-spacing:.06em;text-align:center;background:linear-gradient(180deg,#fff,var(--goal-value-text-to,#c6c6c6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 1px 0 rgba(0,0,0,.85)) drop-shadow(0 -1px 0 rgba(0,0,0,.65)) drop-shadow(1px 0 0 rgba(0,0,0,.55)) drop-shadow(-1px 0 0 rgba(0,0,0,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.65)) drop-shadow(0 0 12px rgba(var(--goal-accent-rgb,255,21,21),.75)) drop-shadow(0 0 25px rgba(var(--goal-accent-rgb,255,21,21),.5)) drop-shadow(0 0 40px rgba(var(--goal-accent-rgb,255,21,21),.35))}
+  </style>
+</head>
+<body>
+  <div class="like-goal-theme-panel is-active" id="like-goal-theme-root">
+    <div class="scene">
+      <div class="goal-wrap">
+        <div class="heart-container" id="heartContainer">
+          <svg class="liquid-svg" viewBox="0 0 420 420" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <mask id="heartLiquidMask">
+                <image href="/widgets/goals/like-goal/themes/heart/assets/heart_mask.png" x="0" y="0" width="420" height="420" preserveAspectRatio="xMidYMid meet"/>
+              </mask>
+              <filter id="liquidGlowPremium" x="-75%" y="-75%" width="250%" height="250%">
+                <feGaussianBlur in="SourceAlpha" stdDeviation="26" result="blur1"/>
+                <feFlood flood-color="#ff0000" flood-opacity="0.5" result="color1"/>
+                <feComposite in="color1" in2="blur1" operator="in" result="glow1"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="16" result="blur2"/>
+                <feFlood flood-color="#ff0000" flood-opacity="0.68" result="color2"/>
+                <feComposite in="color2" in2="blur2" operator="in" result="glow2"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur3"/>
+                <feFlood flood-color="#ff0000" flood-opacity="0.88" result="color3"/>
+                <feComposite in="color3" in2="blur3" operator="in" result="glow3"/>
+                <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="blur4"/>
+                <feFlood flood-color="#ff0000" flood-opacity="1" result="color4"/>
+                <feComposite in="color4" in2="blur4" operator="in" result="glow4"/>
+                <feMerge>
+                  <feMergeNode in="glow1"/><feMergeNode in="glow2"/><feMergeNode in="glow3"/><feMergeNode in="glow4"/><feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+              <linearGradient id="waveGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#5a0000"/>
+                <stop offset="50%" stop-color="#af0000"/>
+                <stop offset="100%" stop-color="#ff0000"/>
+              </linearGradient>
+              <linearGradient id="waveGradientBack" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#3d0000"/>
+                <stop offset="50%" stop-color="#8d0000"/>
+                <stop offset="100%" stop-color="#cc0000"/>
+              </linearGradient>
+            </defs>
+            <g filter="url(#liquidGlowPremium)">
+              <path id="waveBack" fill="url(#waveGradientBack)" opacity="0.65" mask="url(#heartLiquidMask)"></path>
+              <g id="bubbles" mask="url(#heartLiquidMask)"></g>
+              <path id="waveFront" fill="url(#waveGradient)" mask="url(#heartLiquidMask)"></path>
+            </g>
+          </svg>
+          <img src="/widgets/goals/like-goal/themes/heart/assets/heart_shape.webp" alt="" class="heart-shape" width="900" height="900"/>
+          <div class="goal-center-text">
+            <div class="goal-percent" id="goalPercentText">0%</div>
+          </div>
+        </div>
+        <div class="goal-label">Like Goal</div>
+        <div class="goal-value" id="goalValueText">0 / 100</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var current = 0;
+    var goal = parseInt(new URLSearchParams(location.search).get('goal')) || 100;
+    var W = 420, H = 420;
+    var amp = 18, freq = 1.8, speed = 0.06;
+    var phase = 0, phaseBack = 0;
+    var waveFront = document.getElementById('waveFront');
+    var waveBack = document.getElementById('waveBack');
+    var bubblesEl = document.getElementById('bubbles');
+    var pctEl = document.getElementById('goalPercentText');
+    var valEl = document.getElementById('goalValueText');
+
+    function getFillY(){
+      var pct = Math.min(current / goal, 1);
+      return H - pct * H;
+    }
+
+    function buildWave(startY, amplitude, frequency, phaseVal){
+      var d = 'M0,' + startY;
+      for(var x = 0; x <= W; x += 4){
+        var y = startY + Math.sin((x / W) * Math.PI * frequency * 2 + phaseVal) * amplitude;
+        d += ' L' + x + ',' + y.toFixed(1);
+      }
+      d += ' L' + W + ',' + H + ' L0,' + H + ' Z';
+      return d;
+    }
+
+    function animate(){
+      phase += speed;
+      phaseBack += speed * 0.7;
+      var fillY = getFillY();
+      waveFront.setAttribute('d', buildWave(fillY, amp, freq, phase));
+      waveBack.setAttribute('d', buildWave(fillY + 4, amp * 0.7, freq * 1.2, phaseBack));
+      requestAnimationFrame(animate);
+    }
+
+    function updateUI(){
+      var pct = Math.min(Math.round((current / goal) * 100), 100);
+      pctEl.textContent = pct + '%';
+      valEl.textContent = current + ' / ' + goal;
+    }
+
+    function addBubble(){
+      var c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      var x = 60 + Math.random() * (W - 120);
+      var r = 3 + Math.random() * 6;
+      c.setAttribute('cx', x);
+      c.setAttribute('r', r);
+      c.setAttribute('fill', 'rgba(255,255,255,0.18)');
+      c.setAttribute('stroke', 'rgba(255,255,255,0.08)');
+      c.setAttribute('stroke-width', '1');
+      bubblesEl.appendChild(c);
+      var dur = 1200 + Math.random() * 1800;
+      var startY = H + 10;
+      var endY = getFillY() - 20 + Math.random() * 40;
+      var start = performance.now();
+      function tickB(now){
+        var t = Math.min((now - start) / dur, 1);
+        var ease = 1 - Math.pow(1 - t, 3);
+        c.setAttribute('cy', (startY + (endY - startY) * ease).toFixed(1));
+        c.setAttribute('opacity', (1 - t).toFixed(2));
+        if(t < 1) requestAnimationFrame(tickB);
+        else c.remove();
+      }
+      requestAnimationFrame(tickB);
+    }
+
+    function bump(n){
+      current = Math.min(current + n, goal * 5);
+      updateUI();
+      addBubble();
+      addBubble();
+      if(current >= goal){
+        waveFront.setAttribute('fill', 'url(#waveGradient)');
+      }
+    }
+
+    var params = new URLSearchParams(location.search);
+    var token = params.get('token') || '';
+    var port = parseInt(location.port) || 3000;
+    var wsUrl = 'ws://' + location.hostname + ':' + port + '/ws' + (token ? '?token=' + token : '');
+
+    try {
+      var ws = null;
+      var reconnectTimer = null;
+
+      function connect() {
+        ws = new WebSocket(wsUrl);
+        ws.onopen = function() {
+          console.log('[like-goal] WS connected');
+        };
+        ws.onmessage = function(e) {
+          try {
+            var data = JSON.parse(e.data);
+            if (data.type === 'hello') return;
+            if (data.type === 'pong') return;
+            if (data.type === 'like' || data.event === 'like') {
+              bump(parseInt(data.detail) || 1);
+            } else if (data.type === 'like-burst' || data.event === 'like-burst') {
+              bump(data.count || parseInt(data.detail) || 5);
+            }
+          } catch(err) {}
+        };
+        ws.onclose = function() {
+          console.log('[like-goal] WS closed, reconnecting in 3s...');
+          if (reconnectTimer) clearTimeout(reconnectTimer);
+          reconnectTimer = setTimeout(connect, 3000);
+        };
+        ws.onerror = function() {};
+      }
+
+      connect();
+
+      setInterval(function() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'ping' }));
+        }
+      }, 15000);
+    } catch(e) {}
+
+    if(params.get('demo') === '1'){
+      setInterval(function(){ bump(1); }, 800);
+    }
+
+    animate();
+    updateUI();
+    document.body.classList.add('loaded');
+  })();
+  </script>
+</body>
+</html>

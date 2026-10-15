@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — Gift Challenge</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;overflow:hidden;font-family:'Cairo',sans-serif}
+#app{position:relative;width:100vw;height:100vh;display:flex;flex-direction:column}
+.header{text-align:center;padding:12px;font-size:26px;font-weight:900;color:#fff;text-shadow:0 0 20px rgba(245,158,11,.6)}
+.teams{flex:1;display:flex;align-items:center;justify-content:center;gap:30px}
+.team{background:rgba(0,0,0,.55);border-radius:16px;padding:20px 26px;text-align:center;min-width:200px;backdrop-filter:blur(10px)}
+.gift{font-size:52px;margin-bottom:10px}
+.tname{font-size:18px;font-weight:800;color:#fff;margin-bottom:6px}
+.count{font-size:40px;font-weight:900}
+.vs{font-size:26px;font-weight:900;color:rgba(255,255,255,.5)}
+.bar{height:8px;border-radius:4px;background:rgba(255,255,255,.15);margin-top:10px;overflow:hidden}
+.bar div{height:100%;border-radius:4px;transition:width .5s}
+.status{text-align:center;font-size:14px;color:rgba(255,255,255,.6);font-weight:700;padding:8px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const BASE = location.origin;
+const user = new URLSearchParams(window.location.search).get('user') || '';
+const isMock = new URLSearchParams(window.location.search).get('mock') === '1';
+
+const GIFT_EMOJI = {rose:'\u{1F339}',heart:'\u2764\uFE0F',star:'\u2B50',panda:'\u{1F43C}',lion:'\u{1F981}',queen:'\u{1F451}',plane:'\u2708\uFE0F',rocket:'\u{1F680}',diamond:'\u{1F48E}'};
+
+let settings = {team1Name:'الفريق 1',team2Name:'الفريق 2',duration:120,team1Gift:'plane',team2Gift:'diamond'};
+let scores = {team1:0,team2:0};
+let status = 'paused';
+let team1 = 0, team2 = 0;
+
+async function load(){
+  try{
+    const r = await fetch('/api/challenges/load');
+    const d = await r.json();
+    if(d.settings && d.settings.gift) settings = d.settings.gift;
+    if(d.scores) scores = d.scores;
+  }catch(e){}
+  render();
+  if(isMock) startMock();
+}
+
+function render(){
+  const app = document.getElementById('app');
+  const pct1 = (team1+team2) ? (team1/(team1+team2)*100) : 50;
+  const pct2 = 100-pct1;
+  app.innerHTML = `
+    <div class="header">🎁 تحدي الهدايا</div>
+    <div class="teams">
+      <div class="team">
+        <div class="gift">${GIFT_EMOJI[settings.team1Gift]||'🎁'}</div>
+        <div class="tname">${settings.team1Name}</div>
+        <div class="count" style="color:#f59e0b">${team1}</div>
+        <div class="bar"><div style="width:${pct1}%;background:#f59e0b"></div></div>
+      </div>
+      <div class="vs">VS</div>
+      <div class="team">
+        <div class="gift">${GIFT_EMOJI[settings.team2Gift]||'🎁'}</div>
+        <div class="tname">${settings.team2Name}</div>
+        <div class="count" style="color:#8b5cf6">${team2}</div>
+        <div class="bar"><div style="width:${pct2}%;background:#8b5cf6"></div></div>
+      </div>
+    </div>
+    <div class="status">${status==='start'?'▶ جاري التحدي':status==='pause'?'⏸ متوقف':'⏹ لم يبدأ'}</div>`;
+}
+
+function startMock(){
+  setInterval(()=>{
+    if(Math.random()>.5) team1 += Math.floor(Math.random()*3)+1;
+    else team2 += Math.floor(Math.random()*3)+1;
+    render();
+  }, 1500);
+}
+
+async function pollState(){
+  try{
+    const r = await fetch('/api/challenges/state');
+    const d = await r.json();
+    const st = d.status && d.status['gift:'+user];
+    if(st){
+      status = st.action;
+      if(st.action==='reset'){ team1=0; team2=0; }
+      render();
+    }
+  }catch(e){}
+}
+
+load();
+setInterval(pollState, 1000);
+</script>
+</body>
+</html>

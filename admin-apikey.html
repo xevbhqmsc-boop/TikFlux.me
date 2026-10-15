@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>tiklinux - إعداد مفتاح TikTool</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0a; color: #fff; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 32px; max-width: 480px; width: 100%; }
+    h1 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+    .subtitle { color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 24px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: rgba(255,255,255,0.7); }
+    input { width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #fff; font-size: 14px; outline: none; direction: ltr; text-align: left; }
+    input:focus { border-color: #E02519; }
+    .btn { width: 100%; padding: 12px; background: #E02519; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px; transition: opacity 0.2s; }
+    .btn:hover { opacity: 0.85; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .msg { margin-top: 12px; padding: 10px 14px; border-radius: 10px; font-size: 13px; display: none; }
+    .msg.ok { display: block; background: rgba(34,197,94,0.12); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+    .msg.err { display: block; background: rgba(239,68,68,0.12); color: #ef4444; border: 1px solid rgba(239,68,68,0.2); }
+    .link { color: #E02519; text-decoration: none; font-weight: 600; }
+    .link:hover { text-decoration: underline; }
+    .info { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 14px; margin-top: 20px; font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.8; }
+    .status { margin-top: 12px; padding: 10px 14px; border-radius: 10px; font-size: 13px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🔑 إعداد مفتاح TikTool</h1>
+    <p class="subtitle">مطلوب للاتصال المباشر مع TikTok Live</p>
+
+    <div class="status" id="currentStatus">جاري التحقق...</div>
+
+    <form id="form">
+      <label for="key">مفتاح API</label>
+      <input type="text" id="key" placeholder="أدخل مفتاحك من tik.tools" autocomplete="off">
+      <button type="submit" class="btn" id="saveBtn">حفظ المفتاح</button>
+    </form>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="info">
+      <b>كيف تحصل على مفتاح مجاني:</b><br>
+      1. اذهب إلى <a href="https://tik.tools" target="_blank" class="link">tik.tools</a><br>
+      2. سجّل حساب مجاني (بدون بطاقة ائتمان)<br>
+      3. انسخ المفتاح من لوحة التحكم<br>
+      4. الصقه هنا واضغط "حفظ المفتاح"<br><br>
+      <b>المجاني يدعم:</b> 5,000 طلب/يوم، 3 اتصالات متزامنة
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const keyInput = document.getElementById('key');
+    const msg = document.getElementById('msg');
+    const status = document.getElementById('currentStatus');
+    const saveBtn = document.getElementById('saveBtn');
+
+    async function checkStatus() {
+      try {
+        const loginRes = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: prompt('كلمة مرور الأدمن:') || '' })
+        });
+        if (!loginRes.ok) { status.textContent = 'كلمة المرور غير صحيحة'; return; }
+        const { token } = await loginRes.json();
+        window._token = token;
+
+        const keyRes = await fetch('/api/admin/tiktool-key', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await keyRes.json();
+        if (data.configured) {
+          status.innerHTML = '✅ المفتاح مُعدّ: <code>' + data.apiKey.substring(0, 8) + '...' + data.apiKey.substring(data.apiKey.length - 4) + '</code>';
+        } else {
+          status.innerHTML = '⚠️ المفتاح غير مُعدّ - <a href="https://tik.tools" target="_blank" class="link">احصل على مفتاح مجاني</a>';
+        }
+      } catch (e) {
+        status.textContent = 'خطأ في الاتصال بالسيرفر';
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const key = keyInput.value.trim();
+      if (!key) { showMsg('الرجاء إدخال المفتاح', true); return; }
+      if (!window._token) { showMsg('الرجاء إدخال كلمة المرور أولاً', true); return; }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'جاري الحفظ...';
+
+      try {
+        const res = await fetch('/api/admin/tiktool-key', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + window._token },
+          body: JSON.stringify({ apiKey: key })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showMsg('تم حفظ المفتاح بنجاح! ✅', false);
+          checkStatus();
+        } else {
+          showMsg('فشل الحفظ', true);
+        }
+      } catch (e) {
+        showMsg('خطأ في الاتصال', true);
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'حفظ المفتاح';
+      }
+    });
+
+    function showMsg(text, isError) {
+      msg.textContent = text;
+      msg.className = 'msg ' + (isError ? 'err' : 'ok');
+      setTimeout(() => { msg.className = 'msg'; }, 5000);
+    }
+
+    checkStatus();
+  </script>
+</body>
+</html>

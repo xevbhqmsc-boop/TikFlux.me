@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — Scene</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;overflow:hidden}
+#scene{position:relative;width:100vw;height:100vh;overflow:hidden;background:#000}
+.layer{position:absolute;overflow:hidden}
+.layer iframe{width:100%;height:100%;border:none;pointer-events:none}
+.layer.hidden{display:none}
+</style>
+</head>
+<body>
+<div id="scene"></div>
+<script>
+const QS = new URLSearchParams(window.location.search);
+const sceneNum = QS.get('scene') || '1';
+const width = parseInt(QS.get('w')) || window.innerWidth;
+const height = parseInt(QS.get('h')) || window.innerHeight;
+const scene = document.getElementById('scene');
+scene.style.width = width + 'px';
+scene.style.height = height + 'px';
+document.title = 'Scene ' + sceneNum;
+
+async function load(){
+  try{
+    const r = await fetch('/api/scenes/load?scene=' + sceneNum);
+    const data = await r.json();
+    const layers = Array.isArray(data.layers) ? data.layers : [];
+    if (data.canvasWidth) scene.style.width = data.canvasWidth + 'px';
+    if (data.canvasHeight) scene.style.height = data.canvasHeight + 'px';
+    scene.innerHTML = '';
+    layers.filter(l => l).sort((a,b)=> (a.zIndex||0)-(b.zIndex||0)).forEach(layer=>{
+      const box = document.createElement('div');
+      box.className = 'layer' + (layer.visible===false?' hidden':'');
+      box.style.left = (layer.x||0)+'px';
+      box.style.top = (layer.y||0)+'px';
+      box.style.width = (layer.width||400)+'px';
+      box.style.height = (layer.height||300)+'px';
+      box.style.zIndex = layer.zIndex || 1;
+      const u = (layer.username||'').trim().replace(/^@/,'');
+      let url = '/widgets/scene/index.html';
+      if (layer.widget && layer.widget.path){
+        url = layer.widget.path + u;
+      }
+      const iframe = document.createElement('iframe');
+      iframe.src = url;
+      iframe.loading = 'lazy';
+      box.appendChild(iframe);
+      scene.appendChild(box);
+    });
+  }catch(e){
+    scene.innerHTML = '<div style="color:#fff;padding:20px;font-family:sans-serif">Scene error</div>';
+  }
+}
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — تجميع الروابط</title>
+<link rel="icon" type="image/png" href="/preview-bg.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#080E10;color:#fff;min-height:100vh;overflow:hidden}
+.app{display:flex;height:100vh}
+
+.sidebar{width:260px;background:#0d1117;border-left:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;flex-shrink:0}
+.sidebar-header{padding:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sidebar-header h2{font-size:15px;font-weight:700;color:#E02519;display:flex;align-items:center;gap:8px}
+.sidebar-header h2 i{font-size:18px}
+.sidebar-actions{padding:12px 16px;display:flex;gap:8px;border-bottom:1px solid rgba(255,255,255,.08)}
+.btn{padding:8px 14px;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-primary{background:#E02519;color:#fff}.btn-primary:hover{background:#c41f15}
+.btn-ghost{background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1)}.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.btn-danger{background:rgba(220,38,38,.15);color:#ef4444;border:1px solid rgba(220,38,38,.2)}.btn-danger:hover{background:rgba(220,38,38,.25)}
+.layers-list{flex:1;overflow-y:auto;padding:8px}
+.layers-list::-webkit-scrollbar{width:4px}.layers-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:4px}
+.layer-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:all .15s;margin-bottom:4px;border:1px solid transparent}
+.layer-item:hover{background:rgba(255,255,255,.05)}
+.layer-item.active{background:rgba(224,37,25,.12);border-color:rgba(224,37,25,.3)}
+.layer-item .layer-icon{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.layer-item .layer-name{flex:1;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.layer-item .layer-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s}
+.layer-item:hover .layer-actions,.layer-item.active .layer-actions{opacity:1}
+.layer-btn{width:26px;height:26px;border:none;border-radius:6px;background:rgba(255,255,255,.06);color:#888;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .15s}
+.layer-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+.layer-btn.active{color:#E02519}
+.layer-btn.danger:hover{background:rgba(220,38,38,.2);color:#ef4444}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.toolbar{display:flex;align-items:center;gap:12px;padding:12px 20px;background:#0d1117;border-bottom:1px solid rgba(255,255,255,.08)}
+.toolbar-group{display:flex;align-items:center;gap:8px}
+.toolbar-label{font-size:12px;color:#888;font-weight:600}
+.toolbar select,.toolbar input[type="text"]{background:#161b22;border:1px solid rgba(255,255,255,.1);color:#fff;padding:6px 10px;border-radius:6px;font-family:inherit;font-size:12px;outline:none}
+.toolbar select:focus,.toolbar input:focus{border-color:#E02519}
+.toolbar input[type="text"]{width:300px}
+.toolbar .sep{width:1px;height:24px;background:rgba(255,255,255,.1)}
+.save-status{font-size:11px;color:#888;display:flex;align-items:center;gap:4px}
+.save-status.saved{color:#22c55e}.save-status.saving{color:#f59e0b}
+
+.canvas-area{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#0a0e12;position:relative}
+.canvas-wrapper{position:relative;background:repeating-conic-gradient(rgba(255,255,255,.03) 0% 25%,transparent 0% 50%) 50%/20px 20px;box-shadow:0 0 60px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.06)}
+.canvas-wrapper.custom-bg{background-size:cover;background-position:center}
+.layer-box{position:absolute;border:2px solid transparent;cursor:move;transition:border-color .15s}
+.layer-box:hover{border-color:rgba(224,37,25,.4)}
+.layer-box.selected{border-color:#E02519}
+.layer-box.locked{cursor:default}
+.layer-box iframe{width:100%;height:100%;border:none;pointer-events:none}
+.layer-box.selected iframe{pointer-events:auto}
+.layer-label{position:absolute;top:-24px;left:0;background:#E02519;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px 4px 0 0;white-space:nowrap;opacity:0;transition:opacity .15s}
+.layer-box.selected .layer-label,.layer-box:hover .layer-label{opacity:1}
+.resize-handle{position:absolute;width:10px;height:10px;background:#E02519;border:2px solid #fff;border-radius:2px;display:none;z-index:10}
+.layer-box.selected .resize-handle{display:block}
+.resize-handle.nw{top:-5px;left:-5px;cursor:nw-resize}
+.resize-handle.ne{top:-5px;right:-5px;cursor:ne-resize}
+.resize-handle.sw{bottom:-5px;left:-5px;cursor:sw-resize}
+.resize-handle.se{bottom:-5px;right:-5px;cursor:se-resize}
+.resize-handle.n{top:-5px;left:50%;transform:translateX(-50%);cursor:n-resize}
+.resize-handle.s{bottom:-5px;left:50%;transform:translateX(-50%);cursor:s-resize}
+.resize-handle.e{right:-5px;top:50%;transform:translateY(-50%);cursor:e-resize}
+.resize-handle.w{left:-5px;top:50%;transform:translateY(-50%);cursor:w-resize}
+
+.widget-picker{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.widget-picker.show{display:flex}
+.widget-picker-modal{background:#161b22;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:24px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto}
+.widget-picker-modal h3{font-size:18px;font-weight:700;margin-bottom:16px;color:#E02519}
+.widget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.widget-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px;cursor:pointer;transition:all .2s;text-align:center}
+.widget-card:hover{background:rgba(224,37,25,.1);border-color:rgba(224,37,25,.3);transform:translateY(-2px)}
+.widget-card i{font-size:24px;color:#E02519;margin-bottom:8px;display:block}
+.widget-card .wc-name{font-size:12px;font-weight:700;color:#fff}
+.widget-card .wc-desc{font-size:10px;color:#888;margin-top:4px}
+.widget-card .wc-url{font-size:9px;color:#555;margin-top:6px;background:rgba(0,0,0,.3);padding:4px 6px;border-radius:4px;direction:ltr;text-align:left;word-break:break-all;font-family:monospace;cursor:pointer;transition:background .2s}
+.widget-card .wc-url:hover{background:rgba(224,37,25,.2);color:#E02519}
+.widget-card .wc-url .copy-hint{color:#E02519;font-weight:600}
+.widget-category{font-size:13px;font-weight:700;color:#888;margin:14px 0 8px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.06)}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+<div class="app">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h2><i class="fas fa-object-group"></i> تجميع الروابط</h2>
+    </div>
+    <div class="sidebar-actions">
+      <button class="btn btn-primary" id="addWidgetBtn"><i class="fas fa-plus"></i> إضافة ويدجت</button>
+      <button class="btn btn-ghost" id="sceneSettingsBtn"><i class="fas fa-cog"></i></button>
+    </div>
+    <div class="layers-list" id="layersList"></div>
+    <div style="padding:12px 16px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:6px">
+      <button class="btn btn-ghost" style="flex:1" id="bringForwardBtn"><i class="fas fa-arrow-up"></i> للأمام</button>
+      <button class="btn btn-ghost" style="flex:1" id="sendBackBtn"><i class="fas fa-arrow-down"></i> للخلف</button>
+      <button class="btn btn-danger" id="deleteLayerBtn"><i class="fas fa-trash"></i></button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="toolbar">
+      <div class="toolbar-group">
+        <span class="toolbar-label">المشهد:</span>
+        <select id="sceneSelect">
+          <option value="1">مشهد 1</option><option value="2">مشهد 2</option><option value="3">مشهد 3</option>
+          <option value="4">مشهد 4</option><option value="5">مشهد 5</option><option value="6">مشهد 6</option>
+          <option value="7">مشهد 7</option><option value="8">مشهد 8</option><option value="9">مشهد 9</option>
+          <option value="10">مشهد 10</option>
+        </select>
+      </div>
+      <div class="sep"></div>
+      <div class="toolbar-group">
+        <span class="toolbar-label">الحجم:</span>
+        <select id="canvasSizeSelect">
+          <option value="1920x1080">1920 × 1080</option>
+          <option value="1080x1920">1080 × 1920</option>
+          <option value="1280x720">1280 × 720</option>
+          <option value="custom">مخصص...</option>
+        </select>
+      </div>
+      <div class="sep"></div>
+      <div class="toolbar-group">
+        <span class="toolbar-label">رابط OBS:</span>
+        <input type="text" id="obsUrl" readonly>
+        <button class="btn btn-ghost" id="copyUrlBtn"><i class="fas fa-copy"></i></button>
+      </div>
+      <div style="flex:1"></div>
+      <div class="save-status" id="saveStatus"><i class="fas fa-check-circle"></i> محفوظ</div>
+      <button class="btn btn-primary" id="saveBtn"><i class="fas fa-save"></i> حفظ</button>
+    </div>
+
+    <div class="canvas-area" id="canvasArea">
+      <div class="canvas-wrapper" id="canvasWrapper" style="width:1920px;height:1080px;transform:scale(0.55);transform-origin:center center"></div>
+    </div>
+  </div>
+</div>
+
+<div class="widget-picker" id="widgetPicker">
+  <div class="widget-picker-modal">
+    <h3><i class="fas fa-puzzle-piece"></i> إضافة ويدجت</h3>
+    <div id="widgetCategories"></div>
+    <div style="margin-top:16px;display:flex;gap:8px;justify-content:space-between;align-items:center">
+      <button class="btn btn-ghost" id="copyAllLinksBtn"><i class="fas fa-copy"></i> نسخ جميع الروابط</button>
+      <button class="btn btn-ghost" id="closePickerBtn">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WIDGETS = [
+  {category:'تنبيهات',items:[
+    {id:'last-follower',name:'آخر متابع',icon:'fa-user-plus',color:'#E02519',path:'/obs-last-follower/'},
+    {id:'last-gift',name:'آخر دعم',icon:'fa-gift',color:'#f59e0b',path:'/obs-last-gift/'},
+    {id:'last-rose',name:'آخر أحبني',icon:'fa-hand-holding-heart',color:'#ec4899',path:'/obs-ahebni/'},
+    {id:'heart-me-goal',name:'هدف أحبني',icon:'fa-bullseye',color:'#E02519',path:'/obs-heart-me/'},
+  ]},
+  {category:'تصنيف',items:[
+    {id:'top-likers',name:'Top تكبيس',icon:'fa-crown',color:'#f59e0b',path:'/obs-top-likers/'},
+    {id:'top-likers-ranking',name:'Top تكبيس Ranking',icon:'fa-trophy',color:'#3b82f6',path:'/obs-top-likers/overlay-ranking.html'},
+    {id:'top-donors',name:'Top دعم',icon:'fa-trophy',color:'#8b5cf6',path:'/obs-top-donors/'},
+  ]},
+  {category:'أدوات',items:[
+    {id:'combined',name:'اختصار',icon:'fa-layer-group',color:'#315B5F',path:'/obs-combined/'},
+    {id:'mini-feed',name:'ميني فيد',icon:'fa-clock-rotate-left',color:'#8b5cf6',path:'/obs-mini-feed/'},
+    {id:'event-feed',name:'سجل الأحداث',icon:'fa-stream',color:'#06b6d4',path:'/obs-event-feed/'},
+    {id:'social-rotator',name:'السوشيال ميديا',icon:'fa-share-nodes',color:'#8b5cf6',path:'/widgets/social-rotator/social-rotator.html'},
+    {id:'gift-challenge',name:'تحدي الهدايا',icon:'fa-gift',color:'#f59e0b',path:'/widgets/challenges/gift/index.html'},
+    {id:'supporters-challenge',name:'تحدي الداعمين',icon:'fa-coins',color:'#8b5cf6',path:'/widgets/challenges/supporters/index.html'},
+    {id:'subathon',name:'سبثون',icon:'fa-hourglass-half',color:'#06b6d4',path:'/widgets/challenges/subathon/index.html'},
+    {id:'team-scores',name:'نتيجة فرق',icon:'fa-chart-bar',color:'#E02519',path:'/widgets/challenges/scores/index.html'},
+  ]}
+];
+
+let scenes = {};
+let currentScene = '1';
+let layers = [];
+let selectedLayerId = null;
+let dragState = null;
+let resizeState = null;
+let idCounter = 0;
+
+function genId(){ return 'layer_' + (++idCounter) + '_' + Date.now(); }
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2000);
+}
+
+function getObsBase(){
+  return window.location.origin;
+}
+
+function updateObsUrl(){
+  const url = getObsBase() + '/widgets/scene/index.html?scene=' + currentScene;
+  document.getElementById('obsUrl').value = url;
+}
+
+function renderWidgetPicker(){
+  const container = document.getElementById('widgetCategories');
+  container.innerHTML = '';
+  WIDGETS.forEach(cat=>{
+    const div = document.createElement('div');
+    div.innerHTML = `<div class="widget-category">${cat.category}</div><div class="widget-grid"></div>`;
+    const grid = div.querySelector('.widget-grid');
+    cat.items.forEach(w=>{
+      const card = document.createElement('div');
+      card.className = 'widget-card';
+      const fullUrl = getObsBase() + w.path;
+      card.innerHTML = `<i class="fas ${w.icon}"></i><div class="wc-name">${w.name}</div><div class="wc-url" title="انسخ الرابط">${fullUrl} <span class="copy-hint">📋</span></div>`;
+      card.querySelector('.wc-url').addEventListener('click', e=>{
+        e.stopPropagation();
+        navigator.clipboard.writeText(fullUrl);
+        showToast('تم نسخ: ' + w.name);
+      });
+      card.onclick = ()=> addWidget(w);
+      grid.appendChild(card);
+    });
+    container.appendChild(div);
+  });
+}
+
+function addWidget(widget){
+  const username = prompt('اسم حساب TikTok:');
+  if(!username) return;
+  const layer = {
+    id: genId(),
+    widget: widget,
+    username: username.trim().replace(/^@/,''),
+    x: 50, y: 50,
+    width: 400, height: 300,
+    visible: true,
+    locked: false,
+    zIndex: layers.length + 1
+  };
+  layers.push(layer);
+  selectedLayerId = layer.id;
+  renderCanvas();
+  renderLayers();
+  document.getElementById('widgetPicker').classList.remove('show');
+  markDirty();
+}
+
+function renderCanvas(){
+  const canvas = document.getElementById('canvasWrapper');
+  canvas.innerHTML = '';
+  layers.forEach(layer=>{
+    const box = document.createElement('div');
+    box.className = 'layer-box' + (layer.id===selectedLayerId?' selected':'') + (layer.locked?' locked':'');
+    box.dataset.id = layer.id;
+    box.style.left = layer.x+'px';
+    box.style.top = layer.y+'px';
+    box.style.width = layer.width+'px';
+    box.style.height = layer.height+'px';
+    box.style.zIndex = layer.zIndex;
+    box.style.display = layer.visible ? 'block' : 'none';
+
+    const label = document.createElement('div');
+    label.className = 'layer-label';
+    label.textContent = layer.widget.name;
+    label.style.background = layer.widget.color;
+    box.appendChild(label);
+
+    const iframe = document.createElement('iframe');
+    iframe.src = getObsBase() + layer.widget.path + layer.username;
+    iframe.loading = 'lazy';
+    box.appendChild(iframe);
+
+    ['nw','ne','sw','se','n','s','e','w'].forEach(dir=>{
+      const h = document.createElement('div');
+      h.className = 'resize-handle '+dir;
+      h.dataset.dir = dir;
+      box.appendChild(h);
+    });
+
+    box.addEventListener('mousedown', e=>{
+      if(e.target.classList.contains('resize-handle')){
+        startResize(e, layer, e.target.dataset.dir);
+        return;
+      }
+      if(layer.locked) return;
+      e.preventDefault();
+      selectedLayerId = layer.id;
+      renderCanvas(); renderLayers();
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.offsetWidth / canvas.scrollWidth;
+      dragState = {
+        layer,
+        startX: e.clientX,
+        startY: e.clientY,
+        origX: layer.x,
+        origY: layer.y
+      };
+    });
+
+    canvas.appendChild(box);
+  });
+  autoScaleCanvas();
+}
+
+function autoScaleCanvas(){
+  const area = document.getElementById('canvasArea');
+  const canvas = document.getElementById('canvasWrapper');
+  const cw = parseInt(canvas.style.width)||1920;
+  const ch = parseInt(canvas.style.height)||1080;
+  const aw = area.clientWidth - 40;
+  const ah = area.clientHeight - 40;
+  const scale = Math.min(aw/cw, ah/ch, 1);
+  canvas.style.transform = 'scale('+scale+')';
+}
+
+function renderLayers(){
+  const list = document.getElementById('layersList');
+  list.innerHTML = '';
+  [...layers].reverse().forEach(layer=>{
+    const item = document.createElement('div');
+    item.className = 'layer-item' + (layer.id===selectedLayerId?' active':'');
+    item.innerHTML = `
+      <div class="layer-icon" style="background:${layer.widget.color}22;color:${layer.widget.color}"><i class="fas ${layer.widget.icon}"></i></div>
+      <div class="layer-name">${layer.widget.name} — ${layer.username}</div>
+      <div class="layer-actions">
+        <button class="layer-btn ${layer.visible?'active':''}" data-action="visibility" title="إظهار/إخفاء"><i class="fas ${layer.visible?'fa-eye':'fa-eye-slash'}"></i></button>
+        <button class="layer-btn ${layer.locked?'active':''}" data-action="lock" title="قفل"><i class="fas ${layer.locked?'fa-lock':'fa-lock-open'}"></i></button>
+        <button class="layer-btn danger" data-action="delete" title="حذف"><i class="fas fa-trash"></i></button>
+      </div>`;
+    item.addEventListener('click', e=>{
+      const action = e.target.closest('[data-action]')?.dataset.action;
+      if(action==='visibility'){ layer.visible=!layer.visible; renderCanvas(); renderLayers(); markDirty(); return; }
+      if(action==='lock'){ layer.locked=!layer.locked; renderCanvas(); renderLayers(); return; }
+      if(action==='delete'){ layers=layers.filter(l=>l.id!==layer.id); if(selectedLayerId===layer.id)selectedLayerId=null; renderCanvas(); renderLayers(); markDirty(); return; }
+      selectedLayerId = layer.id;
+      renderCanvas(); renderLayers();
+    });
+    list.appendChild(item);
+  });
+}
+
+function startResize(e, layer, dir){
+  e.preventDefault(); e.stopPropagation();
+  resizeState = {layer, dir, startX:e.clientX, startY:e.clientY, origX:layer.x, origY:layer.y, origW:layer.width, origH:layer.height};
+}
+
+document.addEventListener('mousemove', e=>{
+  if(dragState){
+    const d = dragState;
+    const canvas = document.getElementById('canvasWrapper');
+    const scale = canvas.getBoundingClientRect().width / canvas.offsetWidth;
+    d.layer.x = Math.max(0, d.origX + (e.clientX - d.startX)/scale);
+    d.layer.y = Math.max(0, d.origY + (e.clientY - d.startY)/scale);
+    const box = document.querySelector(`[data-id="${d.layer.id}"]`);
+    if(box){ box.style.left = d.layer.x+'px'; box.style.top = d.layer.y+'px'; }
+    markDirty();
+  }
+  if(resizeState){
+    const r = resizeState;
+    const canvas = document.getElementById('canvasWrapper');
+    const scale = canvas.getBoundingClientRect().width / canvas.offsetWidth;
+    const dx = (e.clientX - r.startX)/scale;
+    const dy = (e.clientY - r.startY)/scale;
+    const dir = r.dir;
+    if(dir.includes('e')) r.layer.width = Math.max(80, r.origW + dx);
+    if(dir.includes('w')){ r.layer.width = Math.max(80, r.origW - dx); r.layer.x = r.origX + (r.origW - r.layer.width); }
+    if(dir.includes('s')) r.layer.height = Math.max(60, r.origH + dy);
+    if(dir.includes('n')){ r.layer.height = Math.max(60, r.origH - dy); r.layer.y = r.origY + (r.origH - r.layer.height); }
+    renderCanvas();
+    markDirty();
+  }
+});
+
+document.addEventListener('mouseup', ()=>{
+  dragState = null; resizeState = null;
+});
+
+let dirtyTimeout = null;
+function markDirty(){
+  const s = document.getElementById('saveStatus');
+  s.innerHTML = '<i class="fas fa-circle" style="color:#f59e0b;font-size:8px"></i> غير محفوظ';
+  s.className = 'save-status saving';
+  clearTimeout(dirtyTimeout);
+  dirtyTimeout = setTimeout(saveScene, 2000);
+}
+
+async function saveScene(){
+  scenes[currentScene] = JSON.parse(JSON.stringify(layers));
+  const s = document.getElementById('saveStatus');
+  s.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+  s.className = 'save-status saving';
+  try{
+    await fetch('/api/scenes/save',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({scene:currentScene, layers:scenes[currentScene], canvasWidth:parseInt(document.getElementById('canvasWrapper').style.width), canvasHeight:parseInt(document.getElementById('canvasWrapper').style.height)})
+    });
+    s.innerHTML = '<i class="fas fa-check-circle"></i> محفوظ';
+    s.className = 'save-status saved';
+  }catch(e){
+    s.innerHTML = '<i class="fas fa-exclamation-circle"></i> خطأ';
+    s.className = 'save-status';
+  }
+}
+
+async function loadScene(sceneNum){
+  currentScene = String(sceneNum);
+  try{
+    const r = await fetch('/api/scenes/load?scene='+currentScene);
+    const data = await r.json();
+    if(data.layers && data.layers.length){
+      layers = data.layers;
+      idCounter = layers.reduce((max,l)=>{
+        const m = parseInt(l.id.split('_')[1])||0;
+        return m>max?m:max;
+      },0);
+      if(data.canvasWidth) document.getElementById('canvasWrapper').style.width = data.canvasWidth+'px';
+      if(data.canvasHeight) document.getElementById('canvasWrapper').style.height = data.canvasHeight+'px';
+      const sizeVal = (data.canvasWidth||1920)+'x'+(data.canvasHeight||1080);
+      const sel = document.getElementById('canvasSizeSelect');
+      [...sel.options].forEach(o=>{ if(o.value===sizeVal) sel.value=sizeVal; });
+    } else {
+      layers = [];
+      idCounter = 0;
+    }
+  }catch(e){ layers=[]; idCounter=0; }
+  selectedLayerId = null;
+  renderCanvas(); renderLayers(); updateObsUrl();
+}
+
+document.getElementById('addWidgetBtn').onclick = ()=> document.getElementById('widgetPicker').classList.add('show');
+document.getElementById('closePickerBtn').onclick = ()=> document.getElementById('widgetPicker').classList.remove('show');
+document.getElementById('copyAllLinksBtn').onclick = ()=>{
+  const allLinks = WIDGETS.flatMap(cat=>cat.items.map(w=>w.name + ': ' + getObsBase() + w.path)).join('\n');
+  navigator.clipboard.writeText(allLinks);
+  showToast('تم نسخ جميع الروابط');
+};
+document.getElementById('widgetPicker').onclick = e=>{ if(e.target===e.currentTarget) e.currentTarget.classList.remove('show'); };
+document.getElementById('sceneSelect').onchange = e=> loadScene(e.target.value);
+document.getElementById('saveBtn').onclick = saveScene;
+document.getElementById('copyUrlBtn').onclick = ()=>{
+  navigator.clipboard.writeText(document.getElementById('obsUrl').value);
+  showToast('تم نسخ الرابط');
+};
+document.getElementById('bringForwardBtn').onclick = ()=>{
+  if(!selectedLayerId) return;
+  const l = layers.find(l=>l.id===selectedLayerId);
+  if(l) l.zIndex = Math.max(...layers.map(x=>x.zIndex))+1;
+  renderCanvas(); markDirty();
+};
+document.getElementById('sendBackBtn').onclick = ()=>{
+  if(!selectedLayerId) return;
+  const l = layers.find(l=>l.id===selectedLayerId);
+  if(l) l.zIndex = Math.max(1, Math.min(...layers.map(x=>x.zIndex))-1);
+  renderCanvas(); markDirty();
+};
+document.getElementById('deleteLayerBtn').onclick = ()=>{
+  if(!selectedLayerId) return;
+  layers = layers.filter(l=>l.id!==selectedLayerId);
+  selectedLayerId = null;
+  renderCanvas(); renderLayers(); markDirty();
+};
+document.getElementById('canvasSizeSelect').onchange = e=>{
+  if(e.target.value==='custom'){
+    const w = prompt('العرض (640-3840):','1920');
+    const h = prompt('الارتفاع (360-2160):','1080');
+    if(w&&h){
+      document.getElementById('canvasWrapper').style.width = Math.min(3840,Math.max(640,parseInt(w)))+'px';
+      document.getElementById('canvasWrapper').style.height = Math.min(2160,Math.max(360,parseInt(h)))+'px';
+    }
+    return;
+  }
+  const [w,h] = e.target.value.split('x');
+  document.getElementById('canvasWrapper').style.width = w+'px';
+  document.getElementById('canvasWrapper').style.height = h+'px';
+  renderCanvas(); markDirty();
+};
+document.addEventListener('keydown', e=>{
+  if(e.key==='Delete'&&selectedLayerId){
+    layers = layers.filter(l=>l.id!==selectedLayerId);
+    selectedLayerId = null;
+    renderCanvas(); renderLayers(); markDirty();
+  }
+});
+
+renderWidgetPicker();
+loadScene(1);
+window.addEventListener('resize', autoScaleCanvas);
+</script>
+</body>
+</html>

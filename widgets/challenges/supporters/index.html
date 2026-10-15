@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — Supporters Challenge</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;overflow:hidden;font-family:'Cairo',sans-serif}
+#app{position:relative;width:100vw;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+.title{font-size:30px;font-weight:900;color:#fff;text-shadow:0 0 25px rgba(139,92,246,.7)}
+.total{font-size:72px;font-weight:900;color:#fff;line-height:1}
+.total .gem{font-size:34px;color:#8b5cf6}
+.bar{width:70%;height:14px;border-radius:7px;background:rgba(255,255,255,.12);overflow:hidden;box-shadow:0 0 20px rgba(139,92,246,.4)}
+.bar div{height:100%;border-radius:7px;background:linear-gradient(90deg,#8b5cf6,#a855f7);transition:width .5s;box-shadow:0 0 15px rgba(139,92,246,.7)}
+.status{font-size:14px;color:rgba(255,255,255,.6);font-weight:700}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const user = new URLSearchParams(window.location.search).get('user') || '';
+const isMock = new URLSearchParams(window.location.search).get('mock') === '1';
+let diamonds = 0, target = 100000;
+let status = 'paused';
+async function load(){
+  try{ const r = await fetch('/api/challenges/load'); const d = await r.json(); if(d.settings&&d.settings.supporters&&d.settings.supporters.title) ; if(d.settings&&d.settings.supporters) target = (d.settings.supporters.target)||100000; }catch(e){}
+  render(); if(isMock) startMock();
+}
+function render(){
+  const pct = Math.min(diamonds/target*100,100);
+  document.getElementById('app').innerHTML = `
+    <div class="title">🏆 تحدي الداعمين</div>
+    <div class="total"><span class="gem">💎</span> ${diamonds.toLocaleString()}</div>
+    <div class="bar"><div style="width:${pct}%"></div></div>
+    <div class="status">${status==='start'?'▶ جاري التحدي':status==='pause'?'⏸ متوقف':'⏹ لم يبدأ'}</div>`;
+}
+function startMock(){ setInterval(()=>{ diamonds += Math.floor(Math.random()*500)+50; render(); },1500); }
+async function pollState(){
+  try{ const r = await fetch('/api/challenges/state'); const d = await r.json();
+    const st = d.status && d.status['supporters:'+user];
+    if(st){ status = st.action; if(st.action==='reset') diamonds=0; render(); }
+  }catch(e){}
+}
+load(); setInterval(pollState,1000);
+</script>
+</body>
+</html>

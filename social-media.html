@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — السوشيال ميديا</title>
+<link rel="icon" type="image/png" href="/preview-bg.png">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:#080E10;color:#fff;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 20% 20%,rgba(224,37,25,.08) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(78,205,196,.06) 0%,transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(153,102,255,.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+.container{max-width:1000px;margin:0 auto;padding:24px;position:relative;z-index:1}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.btn{padding:10px 18px;border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#E02519,#ff6b5a);color:#fff;box-shadow:0 4px 20px rgba(224,37,25,.3)}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 25px rgba(224,37,25,.4)}
+.btn-ghost{background:rgba(255,255,255,.06);color:#aaa;border:1px solid rgba(255,255,255,.1)}.btn-ghost:hover{background:rgba(255,255,255,.1);color:#fff}
+.obs-url{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(13,17,23,.9),rgba(20,25,35,.9));border:1px solid rgba(78,205,196,.2);border-radius:12px;padding:12px 16px;margin-bottom:24px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.obs-url::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(78,205,196,.1),transparent);animation:shimmer 3s infinite}
+@keyframes shimmer{0%{left:-100%}100%{left:100%}}
+.obs-url input{flex:1;background:transparent;border:none;color:#fff;font-family:inherit;font-size:13px;outline:none}
+.obs-url .copy-btn{background:linear-gradient(135deg,#E02519,#ff6b5a);color:#fff;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:700;font-size:12px;transition:all .2s}
+.obs-url .copy-btn:hover{transform:scale(1.05)}
+.card{background:linear-gradient(135deg,rgba(13,17,23,.95),rgba(15,20,30,.95));border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;margin-bottom:20px;backdrop-filter:blur(10px);transition:all .3s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(224,37,25,.5),transparent)}
+.card:hover{border-color:rgba(224,37,25,.2);box-shadow:0 4px 30px rgba(224,37,25,.1)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#E02519}
+.row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.row label{font-size:13px;font-weight:600;color:#aaa;min-width:100px}
+.row input[type="range"]{flex:1;accent-color:#E02519;height:6px;border-radius:3px}
+.row .val{font-size:13px;font-weight:700;color:#fff;min-width:50px;text-align:center}
+.row input[type="text"],.row select{background:rgba(22,27,34,.8);border:1px solid rgba(255,255,255,.1);color:#fff;padding:8px 12px;border-radius:8px;font-family:inherit;font-size:13px;outline:none;width:140px;transition:all .2s}
+.row input:focus,.row select:focus{border-color:#E02519;box-shadow:0 0 10px rgba(224,37,25,.2)}
+.row input[type="color"]{width:40px;height:34px;border:2px solid rgba(255,255,255,.1);border-radius:8px;cursor:pointer;background:none;padding:2px}
+.designs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.design-card{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.design-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,.05));opacity:0;transition:opacity .3s}
+.design-card:hover{border-color:rgba(224,37,25,.3);transform:translateY(-2px)}
+.design-card:hover::before{opacity:1}
+.design-card.active{border-color:#E02519;background:rgba(224,37,25,.1);box-shadow:0 0 20px rgba(224,37,25,.2)}
+.design-card i{font-size:22px;margin-bottom:6px;display:block}
+.design-card span{font-size:11px;font-weight:700}
+.animations-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+.anim-card{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:12px;padding:10px 6px;text-align:center;cursor:pointer;transition:all .3s}
+.anim-card:hover{border-color:rgba(78,205,196,.3);transform:translateY(-2px)}
+.anim-card.active{border-color:#4ECDC4;background:rgba(78,205,196,.1);box-shadow:0 0 20px rgba(78,205,196,.2)}
+.anim-card i{font-size:16px;margin-bottom:3px;display:block;color:#4ECDC4}
+.anim-card span{font-size:9px;font-weight:700}
+.bgs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.bg-card{background:rgba(255,255,255,.04);border:2px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;text-align:center;cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.bg-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px)}
+.bg-card.active{border-color:#E02519;box-shadow:0 0 15px rgba(224,37,25,.2)}
+.bg-card .bg-preview{width:100%;height:40px;border-radius:6px;margin-bottom:6px}
+.bg-card span{font-size:10px;font-weight:700}
+.layout-btns{display:flex;gap:8px}
+.layout-btn{padding:8px 16px;border:2px solid rgba(255,255,255,.1);border-radius:10px;background:rgba(255,255,255,.04);color:#aaa;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.layout-btn:hover{border-color:rgba(224,37,25,.3);color:#fff}
+.layout-btn.active{border-color:#E02519;color:#E02519;background:rgba(224,37,25,.08)}
+.toggle{width:42px;height:24px;border-radius:12px;background:rgba(255,255,255,.15);position:relative;cursor:pointer;transition:all .2s;flex-shrink:0}
+.toggle.on{background:#E02519}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:2px;right:2px;transition:all .2s}
+.toggle.on::after{right:20px}
+.platforms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.platform-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;display:flex;align-items:center;gap:10px;transition:all .3s;position:relative;overflow:hidden}
+.platform-card:hover{border-color:rgba(255,255,255,.15);transform:translateX(-2px)}
+.platform-card.enabled{border-color:rgba(224,37,25,.4);background:rgba(224,37,25,.06)}
+.platform-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);flex-shrink:0;overflow:hidden;border:2px solid rgba(255,255,255,.1);transition:all .3s;display:flex;align-items:center;justify-content:center}
+.platform-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.platform-avatar .placeholder{font-size:14px;color:rgba(255,255,255,.3)}
+.platform-card.enabled .platform-avatar{border-color:rgba(224,37,25,.5);box-shadow:0 0 10px rgba(224,37,25,.2)}
+.platform-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;overflow:hidden;transition:all .3s}
+.platform-icon img{width:100%;height:100%;object-fit:cover}
+.platform-card:hover .platform-icon{transform:scale(1.1)}
+.platform-info{flex:1;min-width:0}
+.platform-name{font-size:12px;font-weight:700;margin-bottom:3px}
+.platform-input{width:100%;background:rgba(22,27,34,.8);border:1px solid rgba(255,255,255,.1);color:#fff;padding:5px 8px;border-radius:6px;font-size:11px;outline:none;display:none;transition:all .2s}
+.platform-card.enabled .platform-input{display:block}
+.platform-input:focus{border-color:#E02519;box-shadow:0 0 8px rgba(224,37,25,.2)}
+.preview-box{background:linear-gradient(135deg,#000,#111);border-radius:12px;height:200px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,.08);position:relative}
+.preview-box iframe{width:100%;height:100%;border:none}
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.feature-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .3s}
+.feature-card:hover{border-color:rgba(78,205,196,.3);background:rgba(78,205,196,.05)}
+.feature-card.active{border-color:#4ECDC4;background:rgba(78,205,196,.1)}
+.feature-card i{font-size:16px;color:#4ECDC4}
+.feature-card span{font-size:11px;font-weight:700}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:12px 24px;border-radius:12px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;box-shadow:0 4px 20px rgba(34,197,94,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-5px)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="/" style="display:inline-flex;align-items:center;gap:6px;color:#888;text-decoration:none;font-size:13px;margin-bottom:16px;transition:color .2s" onmouseover="this.style.color='#E02519'" onmouseout="this.style.color='#888'"><i class="fas fa-arrow-right"></i> العودة</a>
+<h2 style="text-align:center;margin-bottom:20px;color:#E02519;font-family:'Orbitron',sans-serif;letter-spacing:0.05em">
+<i class="fas fa-share-nodes" style="animation:float 2s ease-in-out infinite"></i> السوشيال ميديا
+</h2>
+
+<div class="obs-url">
+<input type="text" id="obsUrl" readonly>
+<button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('obsUrl').value);showToast('تم نسخ الرابط')"><i class="fas fa-copy"></i> نسخ</button>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-palette"></i> التصميم</h3>
+<div class="designs-grid" id="designsGrid"></div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-wand-magic-sparkles"></i> الأنيميشن <span style="font-size:10px;color:#4ECDC4;margin-right:auto;font-weight:700" id="animCount"></span></h3>
+<div class="animations-grid" id="animationsGrid"></div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-image"></i> الخلفية</h3>
+<div class="bgs-grid" id="bgsGrid"></div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-arrows-left-right"></i> التخطيط</h3>
+<div class="layout-btns">
+<button class="layout-btn active" data-layout="horizontal" onclick="setLayout('horizontal')"><i class="fas fa-arrows-left-right"></i> أفقي</button>
+<button class="layout-btn" data-layout="vertical" onclick="setLayout('vertical')"><i class="fas fa-arrows-up-down"></i> عمودي</button>
+</div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-sliders"></i> الإعدادات</h3>
+<div class="row"><label>مدة العرض:</label><input type="range" id="duration" min="1" max="10" value="3"><span class="val" id="durationVal">3</span> ثانية</div>
+<div class="row"><label>لون الإطار:</label><input type="color" id="borderColor" value="#E02519"></div>
+<div class="row"><label>حجم الخط:</label><input type="range" id="fontSize" min="10" max="30" value="16"><span class="val" id="fontSizeVal">16</span> px</div>
+<div class="row"><label>الشفافية:</label><input type="range" id="opacity" min="20" max="100" value="100"><span class="val" id="opacityVal">100</span>%</div>
+<div class="row"><label>سرعة الأنيميشن:</label><input type="range" id="animSpeed" min="0.3" max="3" step="0.1" value="1"><span class="val" id="animSpeedVal">1</span>x</div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-toggle-on"></i> المميزات</h3>
+<div class="features-grid" id="featuresGrid"></div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-list"></i> المنصات</h3>
+<div class="platforms-grid" id="platformsGrid"></div>
+</div>
+
+<div class="card">
+<h3><i class="fas fa-eye"></i> معاينة حية</h3>
+<div class="preview-box"><iframe id="previewFrame"></iframe></div>
+</div>
+
+<div class="card" style="text-align:center">
+<button class="btn btn-primary" onclick="save()" style="padding:14px 40px;font-size:15px">
+<i class="fas fa-save"></i> حفظ الإعدادات
+</button>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PLATFORMS=[
+  {id:'ig',name:'Instagram',icon:'fa-instagram',color:'#E1306C'},
+  {id:'tk',name:'TikTok',icon:'',color:'#00F2EA',img:'/tiktok-logo.png'},
+  {id:'yt',name:'YouTube',icon:'fa-youtube',color:'#FF0000'},
+  {id:'fb',name:'Facebook',icon:'fa-facebook',color:'#1877F2'},
+  {id:'tw',name:'Twitter',icon:'fa-twitter',color:'#1DA1F2'},
+  {id:'sc',name:'Snapchat',icon:'fa-snapchat',color:'#FFFC00'},
+  {id:'twitch',name:'Twitch',icon:'fa-twitch',color:'#9146FF'},
+  {id:'discord',name:'Discord',icon:'fa-discord',color:'#5865F2'},
+  {id:'linkedin',name:'LinkedIn',icon:'fa-linkedin',color:'#0A66C2'},
+  {id:'pinterest',name:'Pinterest',icon:'fa-pinterest',color:'#E60023'},
+  {id:'reddit',name:'Reddit',icon:'fa-reddit',color:'#FF4500'},
+  {id:'telegram',name:'Telegram',icon:'fa-telegram',color:'#0088cc'},
+  {id:'whatsapp',name:'WhatsApp',icon:'fa-whatsapp',color:'#25D366'},
+  {id:'kick',name:'Kick',icon:'fa-kick',color:'#53FC18'},
+];
+
+const DESIGNS=[
+  {id:'minimal',name:'بسيط',icon:'fa-minus'},
+  {id:'gradient',name:'تدرج',icon:'fa-palette'},
+  {id:'glow',name:'متوهج',icon:'fa-star'},
+  {id:'neon',name:'نيون',icon:'fa-bolt'},
+  {id:'glass',name:'زجاجي',icon:'fa-droplet'},
+  {id:'neon-border',name:'حدود نيون',icon:'fa-border-all'},
+  {id:'hologram',name:'هولوغرام',icon:'fa-circle-half-stroke'},
+  {id:'cyber',name:'سايبر',icon:'fa-microchip'},
+];
+
+const ANIMATIONS=[
+  {id:'slide',name:'انزلاق',icon:'fa-arrow-left'},
+  {id:'slideRight',name:'انزلاق يمين',icon:'fa-arrow-right'},
+  {id:'slideUp',name:'انزلاق فوق',icon:'fa-arrow-up'},
+  {id:'slideDown',name:'انزلاق تحت',icon:'fa-arrow-down'},
+  {id:'bounce',name:'قفز',icon:'fa-up-right-and-down-left-from-center'},
+  {id:'elastic',name:'مرن',icon:'fa-expand'},
+  {id:'bounceIn',name:'دخول قفز',icon:'fa-door-open'},
+  {id:'flip',name:'قلب',icon:'fa-rotate'},
+  {id:'flipX',name:'قلب أفقي',icon:'fa-arrows-left-right'},
+  {id:'zoomIn',name:'تكبير',icon:'fa-magnifying-glass-plus'},
+  {id:'zoomOut',name:'تصغير',icon:'fa-magnifying-glass-minus'},
+  {id:'rotateIn',name:'دخول دوران',icon:'fa-sync'},
+  {id:'rotateOut',name:'خروج دوران',icon:'fa-sync-alt'},
+  {id:'swing',name:'تأرجح',icon:'fa-left-right'},
+  {id:'tada',name:'تادا',icon:'fa-party-horn'},
+  {id:'wobble',name:'تذبذب',icon:'fa-wave-square'},
+  {id:'jello',name:'جلا',icon:'fa-water'},
+  {id:'pulse',name:'نبض',icon:'fa-heart-pulse'},
+  {id:'flash',name:'وميض',icon:'fa-bolt-lightning'},
+  {id:'shakeX',name:'اهتزاز أفقي',icon:'fa-arrows-left-right'},
+  {id:'shakeY',name:'اهتزاز عمودي',icon:'fa-arrows-up-down'},
+  {id:'glitch',name:'غلتش',icon:'fa-bug'},
+  {id:'typewriter',name:'آلة كاتبة',icon:'fa-keyboard'},
+  {id:'neonFlicker',name:'نيون رجفة',icon:'fa-lightbulb'},
+  {id:'morph',name:'تحول',icon:'fa-shapes'},
+  {id:'threeDFlip',name:'ثلاثي الأبعاد',icon:'fa-cube'},
+  {id:'hinge',name:'مفصلة',icon:'fa-door-closed'},
+  {id:'rollIn',name:'لف دخول',icon:'fa-circle-arrow-right'},
+  {id:'rollOut',name:'لف خروج',icon:'fa-circle-arrow-left'},
+  {id:'backInUp',name:'رجعة فوق',icon:'fa-person-running'},
+  {id:'backInDown',name:'رجعة تحت',icon:'fa-person-falling'},
+];
+
+const BACKGROUNDS=[
+  {id:'blur',name:'ضبابي',preview:'linear-gradient(135deg,rgba(0,0,0,.7),rgba(0,0,0,.5))'},
+  {id:'solid',name:'صلب',preview:'linear-gradient(135deg,#0a0a0a,#1a1a1a)'},
+  {id:'gradient',name:'تدرج',preview:'linear-gradient(135deg,#1a0533,#0d1a4a,#0a2a1a)'},
+  {id:'glass',name:'زجاجي',preview:'linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.05))'},
+  {id:'aurora',name:'شفق',preview:'linear-gradient(135deg,#0a2a1a,#1a0533,#0d1a4a)'},
+  {id:'sunset',name:'غروب',preview:'linear-gradient(135deg,#2a1a0a,#1a0a2a)'},
+  {id:'ocean',name:'محيط',preview:'linear-gradient(135deg,#0a1a2a,#0a2a2a)'},
+  {id:'fire',name:'نار',preview:'linear-gradient(135deg,#2a0a0a,#1a1a0a)'},
+  {id:'matrix',name:'ماتريكس',preview:'linear-gradient(135deg,#000a00,#001a00)'},
+  {id:'galaxy',name:'مجرة',preview:'linear-gradient(135deg,#0a002a,#2a001a,#001a2a)'},
+  {id:'candy',name:'كاندي',preview:'linear-gradient(135deg,#2a0a2a,#0a2a2a)'},
+  {id:'none',name:'بدون',preview:'linear-gradient(135deg,#000,#111)'},
+];
+
+const FEATURES=[
+  {id:'showAvatar',name:'صورة الحساب',icon:'fa-user-circle'},
+  {id:'showUsername',name:'اسم المستخدم',icon:'fa-at'},
+  {id:'showPlatform',name:'اسم المنصة',icon:'fa-share'},
+  {id:'showFollowers',name:'عدد المتابعين',icon:'fa-users'},
+];
+
+let settings={design:'gradient',animation:'slide',layout:'horizontal',bg:'blur',duration:3,borderColor:'#E02519',fontSize:16,opacity:100,animSpeed:1,features:{showAvatar:true,showUsername:true,showPlatform:true,showFollowers:false},platforms:{}};
+
+function showToast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+function renderDesigns(){
+  const g=document.getElementById('designsGrid');g.innerHTML='';
+  DESIGNS.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='design-card'+(settings.design===d.id?' active':'');
+    c.innerHTML=`<i class="fas ${d.icon}"></i><span>${d.name}</span>`;
+    c.onclick=()=>{settings.design=d.id;renderDesigns();updatePreview()};
+    g.appendChild(c);
+  });
+}
+
+function renderAnimations(){
+  const g=document.getElementById('animationsGrid');g.innerHTML='';
+  document.getElementById('animCount').textContent=ANIMATIONS.length+' أنيميشن';
+  ANIMATIONS.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='anim-card'+(settings.animation===d.id?' active':'');
+    c.innerHTML=`<i class="fas ${d.icon}"></i><span>${d.name}</span>`;
+    c.onclick=()=>{settings.animation=d.id;renderAnimations();updatePreview()};
+    g.appendChild(c);
+  });
+}
+
+function renderBackgrounds(){
+  const g=document.getElementById('bgsGrid');g.innerHTML='';
+  BACKGROUNDS.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='bg-card'+(settings.bg===d.id?' active':'');
+    c.innerHTML=`<div class="bg-preview" style="background:${d.preview}"></div><span>${d.name}</span>`;
+    c.onclick=()=>{settings.bg=d.id;renderBackgrounds();updatePreview()};
+    g.appendChild(c);
+  });
+}
+
+function renderFeatures(){
+  const g=document.getElementById('featuresGrid');g.innerHTML='';
+  FEATURES.forEach(d=>{
+    const c=document.createElement('div');
+    c.className='feature-card'+(settings.features[d.id]?' active':'');
+    c.innerHTML=`<i class="fas ${d.icon}"></i><span>${d.name}</span>`;
+    c.onclick=()=>{settings.features[d.id]=!settings.features[d.id];renderFeatures();updatePreview()};
+    g.appendChild(c);
+  });
+}
+
+function setLayout(l){settings.layout=l;document.querySelectorAll('.layout-btn').forEach(b=>b.classList.toggle('active',b.dataset.layout===l));updatePreview()}
+
+function updatePreview(){
+  const params=new URLSearchParams({design:settings.design,animation:settings.animation,layout:settings.layout,bg:settings.bg,duration:settings.duration,border:settings.borderColor,fontSize:settings.fontSize,opacity:settings.opacity,animSpeed:settings.animSpeed,features:JSON.stringify(settings.features)});
+  document.getElementById('obsUrl').value=location.origin+'/widgets/social-rotator/social-rotator.html?'+params.toString();
+  document.getElementById('previewFrame').src=document.getElementById('obsUrl').value;
+}
+
+function renderPlatforms(){
+  const g=document.getElementById('platformsGrid');g.innerHTML='';
+  PLATFORMS.forEach(p=>{
+    const d=document.createElement('div');
+    d.className='platform-card'+(settings.platforms[p.id]?.enabled?' enabled':'');
+    const avatarUrl=settings.platforms[p.id]?.avatar||'';
+    d.innerHTML=`<div class="platform-avatar" id="avatar-${p.id}">${avatarUrl?`<img src="${avatarUrl}" onerror="this.parentElement.innerHTML='<i class=\\'placeholder\\'></i>'">`:'<i class="fas fa-user placeholder"></i>'}</div><div class="platform-icon" style="background:${p.color}22;color:${p.color}">${p.img?`<img src="${p.img}" alt="${p.name}">`:`<i class="fab ${p.icon}"></i>`}</div><div class="platform-info"><div class="platform-name">${p.name}</div><input class="platform-input" placeholder="اسم الحساب" value="${settings.platforms[p.id]?.username||''}"></div><div class="toggle ${settings.platforms[p.id]?.enabled?'on':''}" data-id="${p.id}"></div>`;
+    d.querySelector('.toggle').onclick=()=>{const id=p.id;settings.platforms[id]=settings.platforms[id]||{};settings.platforms[id].enabled=!settings.platforms[id].enabled;renderPlatforms();updatePreview()};
+    d.querySelector('.platform-input').oninput=e=>{const id=p.id;settings.platforms[id]=settings.platforms[id]||{};settings.platforms[id].username=e.target.value;updatePreview();fetchAvatar(id,e.target.value)};
+    g.appendChild(d);
+    if(settings.platforms[p.id]?.username)fetchAvatar(p.id,settings.platforms[p.id].username);
+  });
+}
+
+let avatarTimers={};
+let avatarCache={};
+function fetchAvatar(platformId,username){
+  if(avatarTimers[platformId])clearTimeout(avatarTimers[platformId]);
+  if(!username||username.length<2){const avatarEl=document.getElementById(`avatar-${platformId}`);if(avatarEl)avatarEl.innerHTML='<i class="fas fa-user placeholder"></i>';return;}
+  const cacheKey=platformId+':'+username.toLowerCase();
+  if(avatarCache[cacheKey]){const avatarEl=document.getElementById(`avatar-${platformId}`);if(avatarEl)avatarEl.innerHTML=`<img src="${avatarCache[cacheKey]}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-user placeholder\\'></i>'">`;return;}
+  avatarTimers[platformId]=setTimeout(async()=>{
+    try{
+      let avatarUrl=null;
+      if(platformId==='tk'){const r=await fetch(`https://www.tiktok.com/oembed?url=https://www.tiktok.com/@${encodeURIComponent(username)}`);if(r.ok){const d=await r.json();if(d.thumbnail_url)avatarUrl=d.thumbnail_url;}}
+      else if(platformId==='yt'){const r=await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/@${encodeURIComponent(username)}&format=json`);if(r.ok){const d=await r.json();if(d.thumbnail_url)avatarUrl=d.thumbnail_url;}}
+      else{const r=await fetch(`https://unavatar.io/${platformId}/${encodeURIComponent(username)}`);if(r.ok&&r.status===200)avatarUrl=r.url;}
+      const avatarEl=document.getElementById(`avatar-${platformId}`);
+      if(avatarUrl){avatarCache[cacheKey]=avatarUrl;if(avatarEl)avatarEl.innerHTML=`<img src="${avatarUrl}" onerror="this.parentElement.innerHTML='<i class=\\'fas fa-user placeholder\\'></i>'">`;}
+      else{if(avatarEl)avatarEl.innerHTML='<i class="fas fa-user placeholder"></i>';}
+    }catch(e){const avatarEl=document.getElementById(`avatar-${platformId}`);if(avatarEl)avatarEl.innerHTML='<i class="fas fa-user placeholder"></i>';}
+  },800);
+}
+
+document.getElementById('duration').oninput=e=>{settings.duration=parseInt(e.target.value);document.getElementById('durationVal').textContent=e.target.value;updatePreview()};
+document.getElementById('fontSize').oninput=e=>{settings.fontSize=parseInt(e.target.value);document.getElementById('fontSizeVal').textContent=e.target.value;updatePreview()};
+document.getElementById('opacity').oninput=e=>{settings.opacity=parseInt(e.target.value);document.getElementById('opacityVal').textContent=e.target.value;updatePreview()};
+document.getElementById('borderColor').oninput=e=>{settings.borderColor=e.target.value;updatePreview()};
+document.getElementById('animSpeed').oninput=e=>{settings.animSpeed=parseFloat(e.target.value);document.getElementById('animSpeedVal').textContent=e.target.value;updatePreview()};
+
+async function save(){
+  try{
+    await fetch('/api/social-rotator/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(settings)});
+    showToast('تم الحفظ بنجاح');
+  }catch(e){showToast('خطأ في الحفظ')}
+}
+
+async function load(){
+  try{
+    const r=await fetch('/api/social-rotator/settings');
+    const d=await r.json();
+    if(d.platforms)settings.platforms=d.platforms;
+    if(d.design)settings.design=d.design;
+    if(d.animation)settings.animation=d.animation;
+    if(d.layout)settings.layout=d.layout;
+    if(d.bg)settings.bg=d.bg;
+    if(d.duration)settings.duration=d.duration;
+    if(d.borderColor)settings.borderColor=d.borderColor;
+    if(d.fontSize)settings.fontSize=d.fontSize;
+    if(d.opacity)settings.opacity=d.opacity;
+    if(d.animSpeed)settings.animSpeed=d.animSpeed;
+    if(d.features)settings.features={...settings.features,...d.features};
+    document.getElementById('duration').value=settings.duration;
+    document.getElementById('durationVal').textContent=settings.duration;
+    document.getElementById('fontSize').value=settings.fontSize;
+    document.getElementById('fontSizeVal').textContent=settings.fontSize;
+    document.getElementById('opacity').value=settings.opacity;
+    document.getElementById('opacityVal').textContent=settings.opacity;
+    document.getElementById('borderColor').value=settings.borderColor;
+    document.getElementById('animSpeed').value=settings.animSpeed;
+    document.getElementById('animSpeedVal').textContent=settings.animSpeed;
+    document.querySelectorAll('.layout-btn').forEach(b=>b.classList.toggle('active',b.dataset.layout===settings.layout));
+    renderDesigns();renderAnimations();renderBackgrounds();renderFeatures();renderPlatforms();updatePreview();
+  }catch(e){renderDesigns();renderAnimations();renderBackgrounds();renderFeatures();renderPlatforms();updatePreview()}
+}
+
+renderDesigns();renderAnimations();renderBackgrounds();renderFeatures();renderPlatforms();load();
+</script>
+</body>
+</html>

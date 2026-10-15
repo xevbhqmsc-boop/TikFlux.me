@@ -1,0 +1,112 @@
+{
+  "name": "tiklinux-desktop",
+  "version": "1.0.0",
+  "description": "Tiklinux Desktop — تطبيق إدارة البث المباشر على TikTok",
+  "main": "desktop/main.js",
+  "author": {
+    "name": "tiklinux",
+    "email": "support@tiklinux.com"
+  },
+  "license": "MIT",
+  "homepage": "https://tiklinux.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tiklinux/desktop"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "desktop:dev": "electron .",
+    "desktop:build": "electron-builder --win --x64",
+    "desktop:installer": "electron-builder --win --x64 --publish never",
+    "desktop:portable": "electron-builder --win portable --x64"
+  },
+  "dependencies": {
+    "@tiktool/live": "^2.12.1",
+    "7zip-bin": "^5.2.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "electron-log": "^5.2.4",
+    "electron-updater": "^6.3.9",
+    "express": "^4.21.0",
+    "tiktok-live-api": "^1.4.9",
+    "uuid": "^10.0.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "electron": "^33.4.0",
+    "electron-builder": "^25.1.8",
+    "jimp": "^1.6.1",
+    "png-to-ico": "^3.0.2"
+  },
+  "build": {
+    "appId": "com.tiklinux.desktop",
+    "productName": "Tiklinux Desktop",
+    "copyright": "Copyright © 2025 tiklinux",
+    "directories": {
+      "output": "dist-desktop",
+      "buildResources": "desktop/build-resources"
+    },
+    "files": [
+      "server.js",
+      "desktop/main.js",
+      "desktop/preload.js",
+      "desktop/updater.js",
+      "src/**/*",
+      "data/**/*",
+      "obs-top-likers/**/*",
+      "obs-top-donors/**/*",
+      "*.html",
+      "*.js",
+      "*.css",
+      "*.png",
+      "*.jpg",
+      "*.webp",
+      "*.json",
+      "!node_modules/.cache",
+      "!dist-desktop",
+      "!desktop/build-resources"
+    ],
+    "extraResources": [
+      {
+        "from": "data/config.json",
+        "to": "data/config.json"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "desktop/build-resources/icon.ico",
+      "artifactName": "Tiklinux-Desktop-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "installerIcon": "desktop/build-resources/icon.ico",
+      "uninstallerIcon": "desktop/build-resources/icon.ico",
+      "installerHeaderIcon": "desktop/build-resources/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Tiklinux Desktop",
+      "uninstallDisplayName": "Tiklinux Desktop",
+      "deleteAppDataOnUninstall": false
+    },
+    "publish": {
+      "provider": "generic",
+      "url": "https://github.com/tiklinux/desktop-releases/releases/download/latest/"
+    }
+  }
+}

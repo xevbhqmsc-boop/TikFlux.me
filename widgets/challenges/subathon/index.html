@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tiklinux — Subathon</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:transparent;overflow:hidden;font-family:'Cairo',sans-serif}
+#app{position:relative;width:100vw;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.title{font-size:28px;font-weight:900;color:#fff;text-shadow:0 0 25px rgba(6,182,212,.7)}
+.time{font-size:80px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;line-height:1;font-family:'Cairo',monospace}
+.status{font-size:14px;color:rgba(255,255,255,.6);font-weight:700}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const user = new URLSearchParams(window.location.search).get('user') || '';
+const isMock = new URLSearchParams(window.location.search).get('mock') === '1';
+let remaining = 3600; // seconds
+let status = 'paused';
+let settings = {subathon:{startDuration:3600}};
+
+async function load(){
+  try{ const d = await (await fetch('/api/challenges/load')).json(); if(d.settings&&d.settings.subathon) remaining = d.settings.subathon.startDuration || 3600; }catch(e){}
+  render(); if(isMock){ status='start'; }
+  setInterval(()=>{ if(status==='start'&&remaining>0){ remaining--; render(); } },1000);
+  if(isMock){ setInterval(()=>{ remaining += 30; render(); },4000); }
+}
+function fmt(s){ s=Math.max(0,Math.floor(s)); const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60; return (h<10?'0':'')+h+':'+(m<10?'0':'')+m+':'+(sec<10?'0':'')+sec; }
+function render(){
+  document.getElementById('app').innerHTML = `
+    <div class="title">⏳ سبثون</div>
+    <div class="time">${fmt(remaining)}</div>
+    <div class="status">${status==='start'?'▶ تفاعلي الآن':status==='pause'?'⏸ متوقف':'⏹ لم يبدأ'}</div>`;
+}
+async function pollState(){
+  try{ const d = await (await fetch('/api/challenges/state')).json();
+    const st = d.status && d.status['subathon:'+user];
+    if(st){ if(st.action==='start') status='start'; else if(st.action==='pause') status='pause'; else if(st.action==='reset'){ status='pause'; try{ const d2=await (await fetch('/api/challenges/load')).json(); remaining = (d2.settings&&d2.settings.subathon&&d2.settings.subathon.startDuration)||3600; }catch(e){} }
+    }
+  }catch(e){}
+}
+load(); setInterval(pollState,1000);
+</script>
+</body>
+</html>
