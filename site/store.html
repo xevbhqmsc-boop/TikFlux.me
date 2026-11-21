@@ -454,7 +454,7 @@
       try {
         const r = await fetch(API + '/api/alert-library');
         const data = await r.json();
-        allAlerts = data.items || [];
+        allAlerts = Array.isArray(data) ? data : (data.items || []);
         renderCategories();
         renderStats();
         renderGrid();
