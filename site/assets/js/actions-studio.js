@@ -21,7 +21,8 @@
     plus: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5v14"/></svg>',
     folderPlus: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10v6"/><path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
     copy: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
-    external: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>'
+    external: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
+    close: '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
   };
 
   var REQUIRED = [
@@ -436,12 +437,30 @@
     bind(root, legacy);
   }
 
+  /* The create-action modal is mounted into a portal outside #actionsView.
+     Keep its original id/listener, but give it the studio dialog close look. */
+  function upgradeDialogClose() {
+    var btn = document.getElementById('closeModalBtn');
+    if (!btn || btn.dataset.dialogX === '1') return;
+    btn.dataset.dialogX = '1';
+    btn.setAttribute('type', 'button');
+    btn.setAttribute('data-slot', 'dialog-close');
+    btn.setAttribute('aria-label', 'إغلاق');
+    btn.classList.remove('modal-close');
+    btn.classList.add('dialog-x');
+    btn.innerHTML = ICON.close;
+  }
+
   function start() {
     build();
+    upgradeDialogClose();
     var view = document.getElementById(VIEW_ID);
-    if (!view) return;
-    var mo = new MutationObserver(function () { build(); });
-    mo.observe(view, { childList: true });
+    if (view) {
+      var mo = new MutationObserver(function () { build(); });
+      mo.observe(view, { childList: true });
+    }
+    var docMo = new MutationObserver(function () { upgradeDialogClose(); });
+    docMo.observe(document.documentElement, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);

@@ -730,6 +730,34 @@
   border-color: #67e8f9;
 }
 
+/* --------------------------------------------------- new-action close button */
+button.dialog-x[data-slot="dialog-close"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--tf-muted);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+button.dialog-x[data-slot="dialog-close"] svg {
+  display: block;
+  color: currentColor;
+}
+
+button.dialog-x[data-slot="dialog-close"]:hover,
+button.dialog-x[data-slot="dialog-close"]:focus-visible {
+  background: rgba(125, 211, 252, 0.14);
+  color: #fff;
+  outline: none;
+}
+
 /* -------------------------------------------------------------- behaviour */
 .actions-studio-main.motion-reduced *,
 .actions-studio-main.motion-reduced *::before,
