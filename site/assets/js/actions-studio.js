@@ -531,6 +531,42 @@
     host.insertAdjacentHTML('beforeend', ICON.coins);
   }
 
+  /* Cosmetic only: the upload handlers and the 50MB guard live in the app bundle. */
+  function skinUploadControls() {
+    var area = document.getElementById('videoUploadArea');
+    var libBtn = document.getElementById('openAlertLibraryBtn');
+    var row = libBtn && libBtn.closest('.alib-upload-row');
+
+    if (row) row.classList.add('tf-upload-row');
+    if (libBtn) {
+      libBtn.classList.add('tf-library-btn');
+      /* goals.html adds an inline handler that switches the page to the store.
+         The bundle listener still opens the picker; keep only that behaviour. */
+      libBtn.onclick = null;
+      var libOld = libBtn.querySelector('i');
+      if (libOld) libOld.style.display = 'none';
+      if (!libBtn.querySelector('.tf-type-icon')) libBtn.insertAdjacentHTML('afterbegin', ICON.image);
+    }
+
+    if (!area) return;
+    area.classList.add('tf-dropzone');
+    var iconHost = area.querySelector(':scope > div:first-child');
+    var oldIcon = iconHost && iconHost.querySelector('i');
+    if (oldIcon) oldIcon.style.display = 'none';
+    if (iconHost && !iconHost.querySelector('.tf-type-icon')) iconHost.insertAdjacentHTML('afterbegin', ICON.image);
+    var maxHint = area.querySelector('[data-i18n="actions.max50mb"]');
+    if (maxHint && maxHint.parentElement) maxHint.parentElement.classList.add('tf-max-hint');
+
+    if (area.dataset.uploadSkinBound === '1') return;
+    area.dataset.uploadSkinBound = '1';
+    ['dragenter', 'dragover'].forEach(function (type) {
+      area.addEventListener(type, function () { area.classList.add('tf-dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(function (type) {
+      area.addEventListener(type, function () { area.classList.remove('tf-dragover'); });
+    });
+  }
+
   function bindPreview(form) {
     function syncText() {
       var name = document.getElementById('actionName');
@@ -612,7 +648,7 @@
     var modal = document.getElementById('createActionModal');
     var form = document.getElementById('createActionForm');
     if (!modal || !form) return;
-    if (form.dataset.studioSkinned === '1') { bindPreview(form); paintEventIcon(); return; }
+    if (form.dataset.studioSkinned === '1') { bindPreview(form); paintEventIcon(); skinUploadControls(); return; }
     form.dataset.studioSkinned = '1';
 
     modal.classList.add('studio-action-modal');
@@ -764,6 +800,7 @@
     }
 
     bindPreview(form);
+    skinUploadControls();
   }
 
   function refreshStudioChrome() {

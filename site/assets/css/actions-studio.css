@@ -1010,6 +1010,78 @@ button.dialog-x[data-slot="dialog-close"]:focus-visible {
   color: #fff;
 }
 
+/* ---------------------------------- alert library + video dropzone */
+#createActionModal .alib-upload-row.tf-upload-row {
+  margin-bottom: 10px !important;
+}
+#createActionModal .alib-open-library-btn.tf-library-btn {
+  width: 100%;
+  height: 34px;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 12px !important;
+  border: 1px solid rgba(34, 211, 238, 0.42) !important;
+  border-radius: 7px !important;
+  background: rgba(11, 34, 53, 0.85) !important;
+  color: #d9f5ff !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition: border-color 0.16s, box-shadow 0.16s, background 0.16s;
+}
+#createActionModal .alib-open-library-btn.tf-library-btn:hover {
+  border-color: #67e8f9 !important;
+  background: rgba(14, 48, 70, 0.95) !important;
+  box-shadow: 0 0 16px rgba(0, 207, 255, 0.18);
+}
+#createActionModal .tf-library-btn .tf-type-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  color: #67e8f9;
+}
+
+#createActionModal #videoUploadArea.tf-dropzone {
+  border: 1px dashed rgba(125, 211, 252, 0.42) !important;
+  border-radius: 9px !important;
+  padding: 14px 12px !important;
+  background: rgba(8, 24, 39, 0.58) !important;
+  transition: border-color 0.16s, background 0.16s, box-shadow 0.16s !important;
+}
+#createActionModal #videoUploadArea.tf-dropzone:hover,
+#createActionModal #videoUploadArea.tf-dropzone.tf-dragover {
+  border-color: #22d3ee !important;
+  border-style: solid !important;
+  background: rgba(34, 211, 238, 0.11) !important;
+  box-shadow: inset 0 0 22px rgba(0, 207, 255, 0.12), 0 0 18px rgba(0, 207, 255, 0.12);
+}
+#createActionModal #videoUploadArea.tf-dropzone > div {
+  color: #cfe5f2 !important;
+}
+#createActionModal #videoUploadArea.tf-dropzone > div:first-child {
+  margin-bottom: 8px !important;
+  color: #67e8f9 !important;
+}
+#createActionModal #videoUploadArea.tf-dropzone .tf-type-icon {
+  width: 26px;
+  height: 26px;
+  color: #67e8f9;
+}
+#createActionModal #videoUploadArea.tf-dropzone .tf-max-hint {
+  color: #8ea6bb !important;
+  font-size: 11.5px !important;
+}
+#createActionModal #videoUploadProgress,
+#createActionModal #videoDisplay {
+  margin-top: 10px !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(125, 211, 252, 0.16) !important;
+  border-radius: 9px !important;
+  background: rgba(6, 19, 31, 0.7) !important;
+}
+
 .studio-action-form .range-field > div:first-child label {
   font-size: 12.5px !important;
 }
