@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
-<head><title>TikFlux Debug</title></head>
+<head><meta charset="UTF-8"><title>تشخيص TikFlux</title></head>
 <body style="background:#111;color:#0f0;font-family:monospace;padding:20px;">
-<h2>TikFlux Connection Debug</h2>
+<h2>تشخيص اتصال TikFlux</h2>
 <div id="log"></div>
 <script>
 function log(msg, color) {
@@ -11,24 +11,24 @@ function log(msg, color) {
   console.log(msg);
 }
 
-log('1. Script started');
+log('1. تم بدء التشغيل');
 
 // Check ENV_CONFIG
-log('2. ENV_CONFIG: ' + JSON.stringify(window.ENV_CONFIG));
+log('2. إعدادات البيئة: ' + JSON.stringify(window.ENV_CONFIG));
 
 // Check API URL
 var oo = window.ENV_CONFIG?.API_URL || 'https://api.tikoverlay.live';
-log('3. API URL (oo): ' + oo);
+log('3. رابط الواجهة (oo): ' + oo);
 
 // Check supabase
-log('4. window.supabase: ' + (typeof window.supabase));
+log('4. قاعدة البيانات: ' + (typeof window.supabase));
 
 // Check authManager
-log('5. window.authManager: ' + (typeof window.authManager));
+log('5. مدير الدخول: ' + (typeof window.authManager));
 if (window.authManager) {
-  log('   isAuthenticated: ' + (typeof window.authManager.isAuthenticated));
-  log('   cachedSession: ' + JSON.stringify(!!window.authManager.cachedSession));
-  log('   initialized: ' + window.authManager.initialized);
+  log('   تم تسجيل الدخول: ' + (typeof window.authManager.isAuthenticated));
+  log('   الجلسة المحفوظة: ' + JSON.stringify(!!window.authManager.cachedSession));
+  log('   تم التهيئة: ' + window.authManager.initialized);
 }
 
 // Test /config endpoint
@@ -46,7 +46,7 @@ fetch(oo + '/api/subscriptions/status', {method:'GET'}).then(function(r) { retur
 });
 
 // Test /stream/connect
-log('8. Testing /stream/connect...');
+log('8. جارٍ اختبار /stream/connect...');
 fetch(oo + '/stream/connect', {
   method: 'POST',
   headers: {'Content-Type': 'application/json'},
@@ -58,10 +58,10 @@ fetch(oo + '/stream/connect', {
 });
 
 // Test WebSocket
-log('10. Testing WebSocket...');
+log('10. جارٍ اختبار WebSocket...');
 try {
   var wsUrl = window.ENV_CONFIG?.EDGE_WS_URL || 'ws://localhost:3000/ws';
-  log('    WS URL: ' + wsUrl);
+  log('    رابط المقبس: ' + wsUrl);
   var ws = new WebSocket(wsUrl);
   ws.onopen = function() {
     log('    WS OPEN!', '#0ff');
