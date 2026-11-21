@@ -1073,6 +1073,14 @@ button.dialog-x[data-slot="dialog-close"]:focus-visible {
   color: #8ea6bb !important;
   font-size: 11.5px !important;
 }
+/* Keep the picker available immediately, without needing the video checkbox first. */
+#createActionModal #videoUploadGroup.action-type-body {
+  display: block !important;
+  opacity: 1 !important;
+  max-height: none !important;
+  padding: 12px !important;
+  overflow: visible !important;
+}
 #createActionModal #videoUploadProgress,
 #createActionModal #videoDisplay {
   margin-top: 10px !important;
