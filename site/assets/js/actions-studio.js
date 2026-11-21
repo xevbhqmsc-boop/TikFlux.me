@@ -22,7 +22,18 @@
     folderPlus: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 10v6"/><path d="M9 13h6"/><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg>',
     copy: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>',
     external: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
-    close: '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>'
+    close: '<svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>',
+    coins: '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-coins" aria-hidden="true"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"></path><path d="M15 6h1v4"></path><path d="m6.134 14.768.866-.5 2 3.464"></path><circle cx="16" cy="8" r="6"></circle></svg>',
+    message: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-message-square" aria-hidden="true"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"></path></svg>',
+    image: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-image" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><circle cx="9" cy="9" r="2"></circle><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path></svg>',
+    volume: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-volume2 lucide-volume-2" aria-hidden="true"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"></path><path d="M16 9a5 5 0 0 1 0 6"></path><path d="M19.364 18.364a9 9 0 0 0 0-12.728"></path></svg>',
+    mic: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-mic" aria-hidden="true"><path d="M12 19v3"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><rect x="9" y="2" width="6" height="13" rx="3"></rect></svg>',
+    keyboard: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-type-icon lucide lucide-keyboard" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M7 12h.001M11 12h.001M15 12h.001M8 16h8"></path></svg>',
+    gift: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-gift" aria-hidden="true"><path d="M12 7v14"></path><path d="M20 11v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8"></path><path d="M7.5 7a1 1 0 0 1 0-5A4.8 8 0 0 1 12 7a4.8 8 0 0 1 4.5-5 1 1 0 0 1 0 5"></path><rect x="3" y="7" width="18" height="4" rx="1"></rect></svg>',
+    rotate: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-rotate-ccw" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>',
+    grid: '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-grid2x2 lucide-grid-2x2" aria-hidden="true"><path d="M12 3v18"></path><path d="M3 12h18"></path><rect x="3" y="3" width="18" height="18" rx="2"></rect></svg>',
+    settings: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings2 lucide-settings-2" aria-hidden="true"><path d="M14 17H5"></path><path d="M19 7h-9"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>',
+    chevronDownSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="tf-select-chevron lucide lucide-chevron-down" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>'
   };
 
   var REQUIRED = [
@@ -437,8 +448,153 @@
     bind(root, legacy);
   }
 
+  /* ------------------------------------------------ studio create-action dialog */
+
+  function previewMarkup() {
+    return '<div class="al-player">' +
+      '<div class="al-stage al-checker" id="tfPreviewStage">' +
+        '<svg class="ts-brand-logo al-preview-logo" viewBox="0 0 1254 1254" aria-hidden="true" focusable="false">' +
+          '<defs>' +
+            '<image id="tf-modal-logo-art" href="/assets/img/tx-logo.png" width="1254" height="1254"></image>' +
+            '<clipPath id="tf-modal-logo-crop" clipPathUnits="userSpaceOnUse"><path d="M97 87H1164V991H368V930H97Z"></path></clipPath>' +
+          '</defs>' +
+          '<g clip-path="url(#tf-modal-logo-crop)"><use href="#tf-modal-logo-art"></use></g>' +
+        '</svg>' +
+        '<div class="al-transition" id="tfPreviewTransition">' +
+          '<div class="action-output">' +
+            '<div class="action-avatar-position">' +
+              '<div class="action-avatar-shell action-profile-circle">' +
+                '<div class="action-avatar-face"><img src="/ranking-avatars/man-gold.webp" alt=""></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="action-copy-position">' +
+              '<strong id="tfPreviewName">مستخدم تجريبي</strong>' +
+              '<div id="tfPreviewMessage">رسالة تجريبية</div>' +
+              '<span class="action-gift-image">' + ICON.gift + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="al-player-controls">' +
+        '<button type="button" id="tfPreviewPlay" aria-label="تشغيل المعاينة">' + ICON.play + '</button>' +
+        '<button type="button" id="tfPreviewReplay" aria-label="إعادة المعاينة">' + ICON.rotate + '</button>' +
+        '<input class="al-preview-seek" id="tfPreviewSeek" dir="ltr" min="0" max="5" step="0.1" value="0" type="range" aria-label="تقدم المعاينة">' +
+        '<span dir="ltr" id="tfPreviewTime">0.0 / 5ث</span>' +
+        '<button type="button" id="tfPreviewChecker" aria-pressed="true" aria-label="خلفية الشفافية">' + ICON.grid + '</button>' +
+      '</div>' +
+    '</div>' +
+    '<div id="tfPreviewAdvancedHost" class="tf-preview-advanced-host"></div>' +
+    '<p class="al-rule-preview-note">اضبط مواضع الصورة والاسم والرسالة والألوان والأحجام من الإعدادات المتقدمة.</p>';
+  }
+
+  function directChild(el, root) {
+    while (el && el.parentElement && el.parentElement !== root) el = el.parentElement;
+    return el && el.parentElement === root ? el : null;
+  }
+
+  function hintNode(text) {
+    var p = document.createElement('p');
+    p.className = 'field-hint';
+    p.textContent = text;
+    return p;
+  }
+
+  function insertToken(input, token) {
+    if (!input) return;
+    var start = input.selectionStart == null ? input.value.length : input.selectionStart;
+    var end = input.selectionEnd == null ? start : input.selectionEnd;
+    var before = input.value.slice(0, start);
+    var after = input.value.slice(end);
+    var padBefore = before && !/\s$/.test(before) ? ' ' : '';
+    var padAfter = after && !/^\s/.test(after) ? ' ' : '';
+    var value = before + padBefore + token + padAfter + after;
+    input.value = value.substring(0, 240);
+    var caret = Math.min(input.value.length, before.length + padBefore.length + token.length + padAfter.length);
+    try { input.focus(); input.setSelectionRange(caret, caret); } catch (e) {}
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function addSelectChevron(node) {
+    if (!node || node.querySelector('.tf-select-chevron')) return;
+    var old = node.querySelector('.event-type-trigger-chevron, i.fa-chevron-down, i.fas.fa-chevron-down');
+    if (old) old.style.display = 'none';
+    node.classList.add('choice');
+    node.setAttribute('data-slot', 'select-trigger');
+    node.insertAdjacentHTML('beforeend', ICON.chevronDownSmall);
+  }
+
+  function paintEventIcon() {
+    var host = document.querySelector('#eventTypeTrigger .event-type-trigger-icon');
+    if (!host || host.querySelector('svg')) return;
+    var old = host.querySelector('i');
+    if (old) old.style.display = 'none';
+    host.insertAdjacentHTML('beforeend', ICON.coins);
+  }
+
+  function bindPreview(form) {
+    function syncText() {
+      var name = document.getElementById('actionName');
+      var msg = document.getElementById('messageText');
+      var outName = document.getElementById('tfPreviewName');
+      var outMsg = document.getElementById('tfPreviewMessage');
+      var nextName = (name && name.value.trim()) || 'مستخدم تجريبي';
+      var nextMsg = (msg && msg.value.trim()) || 'رسالة تجريبية';
+      if (outName && outName.textContent !== nextName) outName.textContent = nextName;
+      if (outMsg && outMsg.textContent !== nextMsg) outMsg.textContent = nextMsg;
+    }
+
+    if (form.dataset.previewBound === '1') { syncText(); return; }
+    form.dataset.previewBound = '1';
+
+    var stage = document.getElementById('tfPreviewStage');
+    var transition = document.getElementById('tfPreviewTransition');
+    var seek = document.getElementById('tfPreviewSeek');
+    var time = document.getElementById('tfPreviewTime');
+    var checker = document.getElementById('tfPreviewChecker');
+    var play = document.getElementById('tfPreviewPlay');
+    var replay = document.getElementById('tfPreviewReplay');
+    var duration = document.getElementById('duration');
+
+    function maxSeconds() {
+      var n = duration ? parseInt(duration.value, 10) : 5;
+      if (!isFinite(n) || n < 2) n = 2;
+      if (n > 120) n = 120;
+      return n;
+    }
+    function paint() {
+      if (!seek || !time || !transition || !stage) return;
+      var m = maxSeconds();
+      var v = Math.min(m, Math.max(0, Number(seek.value) || 0));
+      seek.max = String(m);
+      seek.value = String(v);
+      time.textContent = v.toFixed(1) + ' / ' + m + 'ث';
+      var on = v > 0;
+      transition.style.opacity = on ? '1' : '0';
+      stage.classList.toggle('is-playing', on);
+    }
+    if (seek) seek.addEventListener('input', paint);
+    if (duration) duration.addEventListener('input', paint);
+    if (play) play.addEventListener('click', function () {
+      if (!seek) return;
+      seek.value = Number(seek.value) > 0 ? '0' : String(Math.min(maxSeconds(), 5));
+      paint();
+    });
+    if (replay) replay.addEventListener('click', function () { if (seek) { seek.value = '0'; paint(); } });
+    if (checker && stage) checker.addEventListener('click', function () {
+      var off = stage.classList.toggle('no-checker');
+      checker.setAttribute('aria-pressed', String(!off));
+    });
+    [document.getElementById('actionName'), document.getElementById('messageText')].forEach(function (el) {
+      if (el) el.addEventListener('input', syncText);
+    });
+    form.addEventListener('reset', function () { setTimeout(function () { syncText(); paint(); }, 0); });
+
+    syncText();
+    paint();
+  }
+
   /* The create-action modal is mounted into a portal outside #actionsView.
-     Keep its original id/listener, but give it the studio dialog close look. */
+     Its markup is reshaped here, but every original id and listener is kept. */
   function upgradeDialogClose() {
     var btn = document.getElementById('closeModalBtn');
     if (!btn || btn.dataset.dialogX === '1') return;
@@ -451,15 +607,179 @@
     btn.innerHTML = ICON.close;
   }
 
+  function upgradeCreateActionForm() {
+    upgradeDialogClose();
+    var modal = document.getElementById('createActionModal');
+    var form = document.getElementById('createActionForm');
+    if (!modal || !form) return;
+    if (form.dataset.studioSkinned === '1') { bindPreview(form); paintEventIcon(); return; }
+    form.dataset.studioSkinned = '1';
+
+    modal.classList.add('studio-action-modal');
+    form.classList.add('studio-action-form');
+    var content = modal.querySelector('.modal-content');
+    var header = modal.querySelector('.modal-header');
+    var body = modal.querySelector('.modal-body');
+    var actions = modal.querySelector('.form-actions');
+    if (content) content.classList.add('studio-action-dialog');
+    if (header) header.classList.add('studio-dialog-header');
+    if (body) body.classList.add('studio-dialog-body');
+
+    var layout = document.createElement('div');
+    layout.className = 'al-rule-layout';
+    var fields = document.createElement('fieldset');
+    fields.className = 'action-editor-fields';
+    var preview = document.createElement('div');
+    preview.className = 'al-rule-preview';
+    preview.innerHTML = previewMarkup();
+    layout.appendChild(fields);
+    layout.appendChild(preview);
+
+    while (form.firstChild) fields.appendChild(form.firstChild);
+    form.appendChild(layout);
+    if (actions) {
+      actions.classList.add('dialog-footer');
+      form.appendChild(actions);
+    }
+
+    var advanced = document.getElementById('advancedSettingsBtn');
+    var advancedHost = layout.querySelector('#tfPreviewAdvancedHost');
+    if (advanced && advancedHost) {
+      advanced.style.cssText = '';
+      advanced.classList.add('action-advanced-button');
+      if (!advanced.querySelector('svg')) advanced.insertAdjacentHTML('afterbegin', ICON.settings);
+      advancedHost.appendChild(advanced);
+    }
+    var cancel = document.getElementById('cancelModalBtn');
+    var save = document.getElementById('saveActionBtn');
+    if (cancel) {
+      cancel.classList.add('dialog-btn', 'dialog-btn-outline');
+      cancel.setAttribute('data-slot', 'button');
+      cancel.setAttribute('data-variant', 'outline');
+      cancel.setAttribute('data-size', 'default');
+    }
+    if (save) {
+      save.classList.add('dialog-btn', 'dialog-btn-primary');
+      save.setAttribute('data-slot', 'button');
+      save.setAttribute('data-variant', 'default');
+      save.setAttribute('data-size', 'default');
+    }
+
+    fields.querySelectorAll('.form-group').forEach(function (g) { g.classList.add('field'); });
+    fields.querySelectorAll('input,select,textarea').forEach(function (el) {
+      if (el.type === 'hidden' || el.type === 'checkbox' || el.type === 'range' || el.type === 'file') return;
+      if (el.classList.contains('event-type-select-native') || el.id === 'giftSelect' || el.id === 'countryFilter') return;
+      el.setAttribute('data-slot', 'input');
+    });
+    fields.querySelectorAll('label').forEach(function (l) {
+      if (!l.closest('.action-type-toggle') && !l.closest('.action-actor-filter')) l.setAttribute('data-slot', 'label');
+    });
+
+    var typeCards = [
+      ['messageCard', ICON.message], ['videoCard', ICON.image],
+      ['audioCard', ICON.volume], ['ttsCard', ICON.mic], ['keyboardCard', ICON.keyboard]
+    ];
+    typeCards.forEach(function (pair) {
+      var card = document.getElementById(pair[0]);
+      if (!card) return;
+      card.classList.add('action-type');
+      var label = card.querySelector(':scope > label');
+      if (label) {
+        label.classList.add('action-type-toggle');
+        var cb = label.querySelector('input[type="checkbox"]');
+        var text = cb && cb.nextElementSibling;
+        if (text && !text.querySelector('.tf-type-icon')) text.insertAdjacentHTML('afterbegin', pair[1]);
+      }
+    });
+    [['messageTextGroup', 'action-type-body'], ['videoUploadGroup', 'action-type-body'],
+      ['audioUploadGroup', 'action-type-body'], ['ttsMessageGroup', 'action-type-body'],
+      ['keyboardConfigGroup', 'action-type-body']].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (el) el.classList.add(pair[1]);
+    });
+    var messageCard = document.getElementById('messageCard');
+    var typeGroup = messageCard && messageCard.closest('.form-group');
+    var typeTitle = typeGroup && typeGroup.querySelector(':scope > label');
+    if (typeTitle) typeTitle.classList.add('action-types-title');
+
+    var actor = document.getElementById('actorFilterGroup');
+    if (actor) {
+      actor.classList.add('action-actor-filter');
+      var choiceRow = actor.querySelector(':scope > div');
+      if (choiceRow) choiceRow.classList.add('action-actor-choices');
+    }
+    var screenSelect = document.getElementById('targetScreen');
+    var screenGroup = screenSelect && screenSelect.closest('.form-group');
+    if (screenGroup && screenGroup.parentElement) screenGroup.parentElement.classList.add('form-columns');
+
+    var delay = document.getElementById('infoDelaySeconds');
+    var volume = document.getElementById('volumeLevel');
+    var delayBlock = delay && directChild(delay, fields);
+    var volumeBlock = volume && directChild(volume, fields);
+    if (delayBlock) delayBlock.classList.add('field', 'range-field');
+    if (volumeBlock) volumeBlock.classList.add('field', 'range-field');
+    fields.querySelectorAll('div').forEach(function (d) {
+      if ((d.textContent || '').trim() === 'اختر وقت ظهور المعلومات' ||
+          (d.textContent || '').trim() === 'اضبط مستوى الصوت') d.classList.add('field-hint');
+    });
+    var countryCard = document.getElementById('countryFilterCard');
+    if (countryCard) {
+      countryCard.classList.add('field', 'switch-row');
+      var countryLabel = countryCard.querySelector(':scope > label');
+      if (countryLabel) countryLabel.classList.add('switch-row');
+    }
+
+    var minCoins = document.getElementById('minCoinsGroup');
+    if (minCoins && !minCoins.querySelector('.field-hint')) {
+      minCoins.appendChild(hintNode('يعمل أعلى حد مطابق فقط. الهدية المحددة لها الأولوية.'));
+    }
+    var messageBody = document.getElementById('messageTextGroup');
+    if (messageBody && !messageBody.querySelector('.action-variable-chips')) {
+      var chips = document.createElement('div');
+      chips.className = 'action-variable-chips';
+      ['{name}', '{count}', '{comment}'].forEach(function (token) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'tf-variable-chip';
+        chip.textContent = token;
+        chip.addEventListener('click', function () { insertToken(document.getElementById('messageText'), token); });
+        chips.appendChild(chip);
+      });
+      messageBody.appendChild(chips);
+    }
+    var ttsToken = document.querySelector('.tts-action-token-btn');
+    if (ttsToken && ttsToken.parentElement) {
+      ttsToken.parentElement.classList.add('action-variable-chips');
+      fields.querySelectorAll('.tts-action-token-btn').forEach(function (b) { b.classList.add('tf-variable-chip'); });
+    }
+    [document.getElementById('eventTypeTrigger'), document.getElementById('giftSelectTrigger'),
+      document.getElementById('emoteSelectTrigger'), document.getElementById('modalGroupTrigger')]
+      .forEach(addSelectChevron);
+
+    var eventHost = document.querySelector('#eventTypeTrigger .event-type-trigger-icon');
+    paintEventIcon();
+    if (eventHost && !eventHost.dataset.iconWatched) {
+      eventHost.dataset.iconWatched = '1';
+      new MutationObserver(paintEventIcon).observe(eventHost, { childList: true });
+    }
+
+    bindPreview(form);
+  }
+
+  function refreshStudioChrome() {
+    upgradeDialogClose();
+    upgradeCreateActionForm();
+  }
+
   function start() {
     build();
-    upgradeDialogClose();
+    refreshStudioChrome();
     var view = document.getElementById(VIEW_ID);
     if (view) {
       var mo = new MutationObserver(function () { build(); });
       mo.observe(view, { childList: true });
     }
-    var docMo = new MutationObserver(function () { upgradeDialogClose(); });
+    var docMo = new MutationObserver(refreshStudioChrome);
     docMo.observe(document.documentElement, { childList: true, subtree: true });
   }
 
