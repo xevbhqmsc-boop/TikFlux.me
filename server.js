@@ -213,6 +213,7 @@ app.post('/dashboard/session/end', (req, res) => {
 // === Data Store ===
 const widgetSettingsStore = {};
 const latestEventsStore = {};
+const actionScreens = new Map();
 const WIDGET_SETTINGS_KEYS = new Set([
   'top_likes', 'top_gifters', 'social-rotator', 'latest-events',
   'like-overlay', 'follow-overlay', 'like-goal', 'follow-goal',
@@ -528,6 +529,41 @@ app.post('/api/alert-library/attach', (req, res) => {
   } else {
     res.json({ ok: true, attached: true, alertId, library_alert_id: alertId });
   }
+});
+
+// Actions dashboard — same-origin responses so the view never crashes on a missing API
+app.get('/api/internal/actions-dashboard-bundle', (req, res) => {
+  const readJson = (name) => {
+    try {
+      const p = path.join(USER_DATA, name);
+      return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
+    } catch (e) { return []; }
+  };
+  const actions = readJson('actions.json');
+  const groups = readJson('action_groups.json');
+  res.json({
+    success: true,
+    actions: Array.isArray(actions) ? actions : [],
+    groups: Array.isArray(groups) ? groups : [],
+    alertsMasterEnabled: true,
+    source: 'local'
+  });
+});
+
+app.get('/api/actions/screens-status/:uid', (req, res) => {
+  const uid = req.params.uid;
+  res.json({
+    ok: true,
+    screens: [1, 2, 3, 4, 5].map(n => {
+      const key = uid + ':' + n;
+      const ts = actionScreens.get(key);
+      return { screen: n, online: !!ts, lastSeen: ts || null };
+    })
+  });
+});
+
+app.get('/api/dashboard/country-lookups', (req, res) => {
+  res.json({ ok: true, entries: [] });
 });
 
 // Test events
@@ -1312,6 +1348,15 @@ function broadcast(type, data) {
 
 function broadcastToAll(type, data) { broadcast(type, data); }
 
+function broadcastActionScreens() {
+  broadcast('action_screens_status', {
+    screens: [1, 2, 3, 4, 5].map(n => ({
+      screen: n,
+      online: [...actionScreens.keys()].some(k => k.endsWith(':' + n))
+    }))
+  });
+}
+
 // === Latest Events (آخر الأحداث) ===
 function pushLatestEvent(eventType, eventData, extra) {
   const payload = { eventType, event: rewriteAvatars(eventData), ts: Date.now(), ...(extra || {}) };
@@ -1449,6 +1494,12 @@ wss.on('connection', (ws) => {
       const msg = JSON.parse(raw.toString());
       if (msg.type === 'subscribe' || msg.action === 'subscribe') {
         ws.streamerId = msg.streamerId;
+        if (msg.clientType === 'action-screen' || msg.clientType === 'action-console') {
+          const n = Math.min(5, Math.max(1, Number(msg.screen) || 1));
+          ws.actionScreenKey = String(msg.streamerId || '') + ':' + n;
+          actionScreens.set(ws.actionScreenKey, Date.now());
+          broadcastActionScreens();
+        }
         ws.send(JSON.stringify({ type: 'subscribed', streamerId: msg.streamerId, ts: Date.now() }));
         const st = getStatus();
         ws.send(JSON.stringify(Object.assign({
@@ -1467,6 +1518,10 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     const clientSet = sessions.get(sessionId);
     if (clientSet) { clientSet.delete(ws); if (clientSet.size === 0) sessions.delete(sessionId); }
+    if (ws.actionScreenKey) {
+      actionScreens.delete(ws.actionScreenKey);
+      broadcastActionScreens();
+    }
   });
 });
 

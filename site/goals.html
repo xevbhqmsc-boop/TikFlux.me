@@ -1200,6 +1200,11 @@
     var originalFetch = window.fetch;
     window.fetch = function(url, opts) {
       var urlStr = typeof url === 'string' ? url : (url?.url || '');
+      if (urlStr.includes('localhost:3000')) {
+        if (typeof url === 'string') url = url.replaceAll('http://localhost:3000', window.location.origin).replaceAll('ws://localhost:3000', window.location.origin.replace(/^http/, 'ws'));
+        else if (url && url.url) url.url = url.url.replaceAll('http://localhost:3000', window.location.origin).replaceAll('ws://localhost:3000', window.location.origin.replace(/^http/, 'ws'));
+        urlStr = typeof url === 'string' ? url : (url.url || '');
+      }
       if (urlStr.includes('/stream/')) {
         return originalFetch.call(window, url, opts);
       }
@@ -1207,8 +1212,8 @@
         return Promise.resolve(new Response(JSON.stringify({
           supabaseUrl: 'https://placeholder.supabase.co',
           supabaseAnonKey: 'placeholder-key',
-          apiUrl: 'http://localhost:3000',
-          edgeWsUrl: 'ws://localhost:3000/ws',
+          apiUrl: window.location.origin,
+          edgeWsUrl: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws',
           paypalClientId: '',
           paypalMode: 'sandbox',
           paypalPlanIds: {}
@@ -1238,8 +1243,8 @@
     if (!window.ENV_CONFIG) {
       window.ENV_CONFIG = {
         environment: 'local',
-        API_URL: 'http://localhost:3000',
-        EDGE_WS_URL: 'ws://localhost:3000/ws',
+        API_URL: window.location.origin,
+        EDGE_WS_URL: (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws',
         WEB_URL: window.location.origin,
         SUPABASE_URL: 'https://placeholder.supabase.co',
         SUPABASE_ANON_KEY: 'placeholder-key',
@@ -1254,8 +1259,8 @@
         getApiUrl: function(p) { return this.API_URL + '/' + p.replace(/^\//, ''); }
       };
     }
-    window.API_URL = window.ENV_CONFIG.API_URL || 'http://localhost:3000';
-    window.EDGE_WS_URL = window.ENV_CONFIG.EDGE_WS_URL || 'ws://localhost:3000/ws';
+    window.API_URL = window.ENV_CONFIG.API_URL || window.location.origin;
+    window.EDGE_WS_URL = window.ENV_CONFIG.EDGE_WS_URL || (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.host + '/ws';
     window.TikFlux_DESKTOP = { isDesktop: false };
   })();
   </script>

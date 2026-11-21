@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة إجراءات TikFlux</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; background: transparent; overflow: hidden; font-family: 'Tajawal', 'Cairo', sans-serif; color: #fff; }
+  #stage { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .badge { position: fixed; top: 18px; right: 22px; font-size: 13px; color: rgba(255,255,255,.55); background: rgba(10,25,45,.45); border: 1px solid rgba(0,174,255,.35); border-radius: 999px; padding: 5px 14px; backdrop-filter: blur(6px); }
+  .card { min-width: 320px; max-width: 70vw; text-align: center; padding: 26px 38px; border-radius: 22px; background: linear-gradient(145deg, rgba(8,22,42,.92), rgba(4,12,26,.86)); border: 1px solid rgba(0,174,255,.55); box-shadow: 0 0 42px rgba(0,174,255,.35), inset 0 0 24px rgba(0,174,255,.12); opacity: 0; transform: translateY(24px) scale(.94); transition: opacity .28s ease, transform .28s ease; }
+  .card.show { opacity: 1; transform: translateY(0) scale(1); }
+  .card.exit { opacity: 0; transform: translateY(-18px) scale(1.04); }
+  .icon { font-size: 44px; line-height: 1; margin-bottom: 8px; filter: drop-shadow(0 0 14px rgba(0,174,255,.7)); }
+  .title { font-size: 30px; font-weight: 800; color: #00aeff; text-shadow: 0 0 18px rgba(0,174,255,.5); margin-bottom: 6px; }
+  .name { font-size: 21px; font-weight: 700; margin-bottom: 4px; }
+  .text { font-size: 18px; color: rgba(255,255,255,.88); }
+  .meta { font-size: 14px; color: rgba(255,255,255,.55); margin-top: 8px; }
+  img.avatar { width: 62px; height: 62px; border-radius: 50%; border: 2px solid rgba(0,174,255,.7); object-fit: cover; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+  <div class="badge" id="badge">الشاشة 1</div>
+  <div id="stage"></div>
+
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  var screen = Math.min(5, Math.max(1, parseInt(params.get('screen') || '1', 10) || 1));
+  var uid = params.get('uid') || '';
+  var preview = params.get('preview') === '1';
+  var stage = document.getElementById('stage');
+  var badge = document.getElementById('badge');
+  badge.textContent = 'الشاشة ' + screen;
+
+  var LABELS = {
+    gift: ['🎁', 'هدية جديدة'],
+    follow: ['⭐', 'متابعة جديدة'],
+    like: ['❤️', 'لايكات'],
+    chat: ['💬', 'تعليق جديد'],
+    share: ['🔁', 'مشاركة'],
+    subscribe: ['👑', 'اشتراك جديد'],
+    join: ['👋', 'انضم إلى البث'],
+    member_join_overlay_update: ['👋', 'انضم إلى البث'],
+    gift_overlay_update: ['🎁', 'هدية جديدة'],
+    follow_overlay_update: ['⭐', 'متابعة جديدة'],
+    subscribe_overlay_update: ['👑', 'اشتراك جديد'],
+    latest_event_update: ['✨', 'حدث جديد']
+  };
+  var EVENT_KEYS = {
+    gift: 'gift', like: 'like', follow: 'follow', share: 'share', subscribe: 'subscribe',
+    join: 'join', chat: 'chat', comment: 'chat', member_join: 'join'
+  };
+
+  function esc(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function show(kind, name, text, avatar, meta) {
+    var label = LABELS[kind] || ['✨', 'إجراء جديد'];
+    var html = '';
+    if (avatar) html += '<img class="avatar" src="' + esc(avatar) + '" alt="" onerror="this.style.display=\'none\'">';
+    html += '<div class="icon">' + label[0] + '</div>';
+    html += '<div class="title">' + esc(label[1]) + '</div>';
+    if (name) html += '<div class="name">' + esc(name) + '</div>';
+    if (text) html += '<div class="text">' + esc(text) + '</div>';
+    if (meta) html += '<div class="meta">' + esc(meta) + '</div>';
+    stage.innerHTML = '<div class="card">' + html + '</div>';
+    var card = stage.firstElementChild;
+    requestAnimationFrame(function () { card.classList.add('show'); });
+    setTimeout(function () {
+      card.classList.remove('show');
+      card.classList.add('exit');
+      setTimeout(function () { if (card.parentNode) card.remove(); }, 450);
+    }, 5200);
+  }
+
+  var KNOWN = { gift: 1, like: 1, follow: 1, share: 1, subscribe: 1, join: 1, chat: 1,
+    member_join_overlay_update: 1, gift_overlay_update: 1, follow_overlay_update: 1,
+    subscribe_overlay_update: 1, latest_event_update: 1 };
+
+  function handle(type, data) {
+    if (!data) return;
+    var event = data.event || data;
+    var eventType = data.eventType || event.eventType || '';
+    var key = EVENT_KEYS[type] || EVENT_KEYS[eventType] || (KNOWN[type] ? type : '');
+    if (!KNOWN[key]) return;
+    if (key === 'latest_event_update' && eventType) key = EVENT_KEYS[eventType] || key;
+    if (!KNOWN[key]) return;
+    var user = data.user || event.user || event;
+    var name = user.nickname || user.uniqueId || user.username || event.username || '';
+    var text = '';
+    if (key === 'gift') {
+      var gift = data.gift || event.gift || {};
+      text = (gift.name || gift.giftName || event.giftName || 'هدية') + (gift.diamondCount ? ' · ' + gift.diamondCount + ' عملة' : '');
+    } else if (key === 'like') text = 'أرسل ' + (data.likeCount || event.likeCount || 1) + ' لايك';
+    else if (key === 'chat') text = data.comment || data.message || event.comment || event.message || '';
+    else if (key === 'subscribe') text = 'اشتراك في القناة';
+    else if (key === 'share') text = 'شارك البث';
+    show(key, name, text, user.avatar || user.profilePicture || event.avatar || '', 'شاشة ' + screen);
+  }
+
+  function connect() {
+    var proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    var ws;
+    try { ws = new WebSocket(proto + location.host + '/ws'); } catch (e) { return; }
+    ws.onopen = function () {
+      ws.send(JSON.stringify({ type: 'subscribe', streamerId: uid, clientType: 'action-screen', screen: screen }));
+    };
+    ws.onmessage = function (msg) {
+      var packet;
+      try { packet = JSON.parse(msg.data); } catch (e) { return; }
+      if (packet.type === 'pong' || packet.type === 'connected' || packet.type === 'subscribed') return;
+      handle(packet.type, packet.data || packet);
+    };
+    ws.onclose = function () { setTimeout(connect, 3000); };
+    ws.onerror = function () { try { ws.close(); } catch (e) {} };
+  }
+
+  if (preview) {
+    setTimeout(function () { show('gift', 'مستخدم تجريبي', 'وردة · 1 عملة', '', 'معاينة'); }, 700);
+  }
+  connect();
+})();
+</script>
+</body>
+</html>
