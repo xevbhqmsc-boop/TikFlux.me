@@ -363,6 +363,133 @@
     } else fallback();
   }
 
+  /* The copied screen link must carry the alert itself, not just a uid. The
+     bundles build a bare /overlay/actions.html?uid=..&screen=.. link, so we add
+     the current video and overlay settings to any copied screen URL. */
+  function fieldValue(id) {
+    var el = document.getElementById(id);
+    return el ? String(el.value || '').trim() : '';
+  }
+  function fieldChecked(id) {
+    var el = document.getElementById(id);
+    return !el || el.checked !== false;
+  }
+  function fieldNumber(id, fallback) {
+    var n = parseInt(fieldValue(id), 10);
+    return isFinite(n) ? n : fallback;
+  }
+  function absoluteUrl(url) {
+    if (!url) return '';
+    try { return new URL(url, window.location.href).href; } catch (e) { return String(url); }
+  }
+  function currentVideoUrl() {
+    var nameEl = document.getElementById('currentVideoName');
+    var name = nameEl ? String(nameEl.textContent || '').replace(/\s+/g, ' ').trim() : '';
+    var lib = window.__tfLastLibraryAlert;
+    /* Library previews are proxied through our own origin; the catalog URL can
+       expire or return 403 when opened directly in OBS. */
+    if (lib && lib.id && (!name || name === lib.name || name.indexOf(lib.name) >= 0 || lib.name.indexOf(name) >= 0)) {
+      return absoluteUrl('/api/alert-library/previews/' + encodeURIComponent(lib.id) + '/video');
+    }
+    var sign = window.__tfLastUploadSign;
+    if (sign && sign.videoUrl && (!name || name === (sign.videoFilename || sign.video_filename))) {
+      return absoluteUrl(sign.videoUrl);
+    }
+    var stageVideo = document.getElementById('tfStageVideo');
+    var src = stageVideo ? (stageVideo.getAttribute('src') || stageVideo.currentSrc || '') : '';
+    if (!src || /^blob:/i.test(src)) {
+      var advanced = document.getElementById('advancedPreviewVideo');
+      if (advanced) src = advanced.getAttribute('data-src') || advanced.getAttribute('src') || '';
+    }
+    return absoluteUrl(src);
+  }
+  function currentAlertConfig() {
+    var mirror = document.getElementById('tfLinkedMirror');
+    var nameField = document.getElementById('actionName');
+    var messageField = document.getElementById('messageText');
+    var nameOut = mirror && mirror.querySelector('[data-tf-src-id="previewName"]');
+    var messageOut = mirror && mirror.querySelector('[data-tf-src-id="previewMessage"]');
+    var avatar = document.getElementById('previewAvatar');
+    var gift = document.querySelector('#previewGiftWrap img');
+    var shape = document.querySelector('input[name="avatarShape"]:checked');
+    return {
+      video: currentVideoUrl(),
+      name: (nameField && nameField.value.trim()) || (nameOut && nameOut.textContent) || 'مستخدم تجريبي',
+      message: (messageField && messageField.value.trim()) || (messageOut && messageOut.textContent) || '',
+      avatar: absoluteUrl((avatar && avatar.getAttribute('src')) || '/assets/img/avatar1.png'),
+      gift: absoluteUrl((gift && gift.getAttribute('src')) || '/assets/img/tx-logo.png'),
+      avatarSize: fieldNumber('avatarSize', 150),
+      avatarShape: (shape && shape.value) || 'circle',
+      borderColor: fieldValue('borderColor') || '#00aeff',
+      nameColor: fieldValue('nameColor') || '#00aeff',
+      messageColor: fieldValue('messageColor') || '#ffffff',
+      nameFontSize: fieldNumber('nameFontSize', 28),
+      messageFontSize: fieldNumber('messageFontSize', 22),
+      nameFontFamily: fieldValue('nameFontFamily') || "'Thmanyah Sans', sans-serif",
+      messageFontFamily: fieldValue('messageFontFamily') || "'Thmanyah Sans', sans-serif",
+      showAvatar: fieldChecked('overlayShowAvatar'),
+      showName: fieldChecked('overlayShowName'),
+      showGift: fieldChecked('overlayShowGiftImage'),
+      avatarPosX: fieldNumber('avatarPosX', 0),
+      avatarPosY: fieldNumber('avatarPosY', -34),
+      textPosX: fieldNumber('textPosX', 0),
+      textPosY: fieldNumber('textPosY', 12),
+      duration: fieldNumber('duration', 5),
+      volume: fieldNumber('volumeLevel', 80),
+      screen: fieldNumber('targetScreen', 1),
+      type: fieldValue('eventTypeSelect') || 'gift'
+    };
+  }
+  var ENRICHABLE_LINK = /\/overlay\/actions\.html|\/widgets\/action-alert-console\/index\.html/i;
+  function enrichCopiedLink(value) {
+    var text = String(value || '');
+    if (!ENRICHABLE_LINK.test(text)) return text;
+    try {
+      var url = new URL(text, window.location.href);
+      if (url.searchParams.get('tf') === '1') return url.href;
+      var cfg = currentAlertConfig();
+      url.searchParams.set('tf', '1');
+      url.searchParams.set('v', cfg.video);
+      url.searchParams.set('a', cfg.avatar);
+      url.searchParams.set('g', cfg.gift);
+      url.searchParams.set('n', cfg.name);
+      url.searchParams.set('m', cfg.message);
+      url.searchParams.set('cfg', JSON.stringify(cfg));
+      window.__tfLastCopiedText = url.href;
+      return url.href;
+    } catch (e) { return text; }
+  }
+  function installScreenCopyEnricher() {
+    if (window.__tfScreenCopyEnricher === '1') return;
+    window.__tfScreenCopyEnricher = '1';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      var originalWrite = navigator.clipboard.writeText;
+      navigator.clipboard.writeText = function (text) {
+        var enriched = enrichCopiedLink(text);
+        window.__tfLastCopiedText = enriched;
+        return originalWrite.call(navigator.clipboard, enriched);
+      };
+    }
+    var originalExec = document.execCommand;
+    document.execCommand = function (command) {
+      if (String(command).toLowerCase() === 'copy') {
+        var active = document.activeElement;
+        if (active && active.value && ENRICHABLE_LINK.test(active.value)) {
+          var enriched = enrichCopiedLink(active.value);
+          if (enriched !== active.value) {
+            var old = active.value;
+            active.value = enriched;
+            if (active.setSelectionRange) active.setSelectionRange(0, enriched.length);
+            var result = originalExec.apply(document, arguments);
+            active.value = old;
+            return result;
+          }
+        }
+      }
+      return originalExec.apply(document, arguments);
+    };
+  }
+
   function bind(root, legacy) {
     var active = 1;
     var store = document.getElementById('screensContainer');
@@ -381,8 +508,9 @@
     function syncScreen() {
       var src = sourceInput(active);
       if (!src) return;
-      urlInput.value = src.value || '';
-      openBtn.href = src.value || '#';
+      var link = enrichCopiedLink(src.value || '');
+      urlInput.value = link;
+      openBtn.href = link;
       var q = sourceQueue(active);
       if (q) queueInput.value = q.value || 10;
       var st = sourceStatus(active);
@@ -1315,6 +1443,7 @@
     installAlertTranslations();
     build();
     rememberVideoChoices();
+    installScreenCopyEnricher();
     refreshStudioChrome();
     var view = document.getElementById(VIEW_ID);
     if (view) {

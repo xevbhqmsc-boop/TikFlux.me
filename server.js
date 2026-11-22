@@ -929,6 +929,166 @@ function serveStatic(req, res) {
   res.status(404).end();
 }
 
+// A copied Actions screen link carries the selected alert and its settings in
+// the query string. Serve the legacy overlay with an additive layer that plays
+// that alert, so OBS/TikTok LIVE Studio sees the video and the saved overlay.
+const ALERT_SCREEN_PATCH = `
+<script>
+(function () {
+  'use strict';
+  var params = new URLSearchParams(location.search);
+  if (params.get('tf') !== '1') return;
+  var cfg = {};
+  try { cfg = JSON.parse(params.get('cfg') || '{}') || {}; } catch (e) {}
+  function param(k, d) { return String(params.get(k) || d || ''); }
+  function num(k, d) { var n = Number(cfg[k]); return isFinite(n) ? n : d; }
+  function clamp(n, a, b) { return Math.min(b, Math.max(a, n)); }
+  function esc(v) { return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function color(v, d) { v = String(v || ''); return /^#[0-9a-fA-F]{3,8}$/.test(v) ? v : d; }
+  function font(v) { v = String(v || ''); return /^[\\w\\s,'-]+$/.test(v) ? v : "'Thmanyah Sans', sans-serif"; }
+
+  var oldStage = document.getElementById('stage');
+  if (oldStage) oldStage.style.display = 'none';
+  var oldBadge = document.getElementById('badge');
+  if (oldBadge) oldBadge.style.display = 'none';
+  var legacyWrap = document.querySelector('.wrap');
+  if (legacyWrap) legacyWrap.style.display = 'none';
+
+  var root = document.createElement('div');
+  root.id = 'tfAlertRoot';
+  root.style.cssText = 'position:fixed;inset:0;overflow:hidden;background:transparent;opacity:0;transition:opacity .18s ease;pointer-events:none;';
+  document.body.appendChild(root);
+
+  var canvas = document.createElement('div');
+  canvas.style.cssText = 'position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:top left;';
+  function fit() {
+    var scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    canvas.style.transform = 'scale(' + scale + ')';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  root.appendChild(canvas);
+
+  var video = document.createElement('video');
+  video.src = param('v');
+  video.autoplay = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.muted = false;
+  video.volume = clamp(num('volume', 80) / 100, 0, 1);
+  video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;';
+  canvas.appendChild(video);
+
+  var size = clamp(num('avatarSize', 150), 80, 300);
+  var shape = String(cfg.avatarShape || 'circle').toLowerCase();
+  var factor = shape === 'diamond' ? 1.55 : (shape === 'rounded' || shape === 'hexagon' ? 1.4 : 340 / 320);
+  var wrapSize = Math.round(size * factor);
+  var radius = shape === 'rounded' ? '22%' : (shape === 'circle' ? '50%' : '0');
+  var frame = color(cfg.borderColor, '#00aeff');
+  var clip = shape === 'hexagon' ? 'polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0% 50%)' : (shape === 'diamond' ? 'polygon(50% 0,100% 50%,50% 100%,0 50%)' : 'none');
+
+  var avatarLayer = document.createElement('div');
+  avatarLayer.style.cssText = 'position:absolute;z-index:2;left:' + (50 + num('avatarPosX', 0)) + '%;top:' + (50 + num('avatarPosY', -34)) + '%;transform:translate(-50%,-50%);text-align:center;display:' + (cfg.showAvatar === false ? 'none' : 'block') + ';';
+  var wrap = document.createElement('div');
+  wrap.style.cssText = 'position:relative;width:' + wrapSize + 'px;height:' + wrapSize + 'px;border:3px solid ' + esc(frame) + ';box-sizing:border-box;box-shadow:0 0 30px ' + esc(frame) + ',inset 0 0 18px rgba(0,174,255,.25);background:rgba(4,12,26,.5);display:flex;align-items:center;justify-content:center;clip-path:' + clip + ';border-radius:' + radius + ';';
+  var avatarImg = document.createElement('img');
+  avatarImg.src = param('a', '/assets/img/avatar1.png');
+  avatarImg.onerror = function () { this.onerror = null; this.src = '/assets/img/avatar1.png'; };
+  avatarImg.style.cssText = 'width:' + size + 'px;height:' + size + 'px;object-fit:cover;border-radius:' + radius + ';display:block;' + (shape === 'diamond' ? 'transform:rotate(-45deg) scale(.72);' : '');
+  wrap.appendChild(avatarImg);
+  avatarLayer.appendChild(wrap);
+  canvas.appendChild(avatarLayer);
+
+  var textLayer = document.createElement('div');
+  textLayer.style.cssText = 'position:absolute;z-index:3;left:' + (50 + num('textPosX', 0)) + '%;top:' + (50 + num('textPosY', 12)) + '%;transform:translate(-50%,-50%);width:1100px;text-align:center;';
+  var nameEl = document.createElement('div');
+  nameEl.style.cssText = 'color:' + esc(color(cfg.nameColor, '#00aeff')) + ';font-size:' + num('nameFontSize', 28) + 'px;font-weight:800;line-height:1.1;text-shadow:0 0 18px rgba(0,174,255,.6);display:' + (cfg.showName === false ? 'none' : 'block') + ';font-family:' + esc(font(cfg.nameFontFamily)) + ';';
+  nameEl.textContent = param('n', 'مستخدم تجريبي');
+  var messageEl = document.createElement('div');
+  messageEl.style.cssText = 'color:' + esc(color(cfg.messageColor, '#ffffff')) + ';font-size:' + num('messageFontSize', 22) + 'px;font-weight:700;margin-top:10px;line-height:1.35;font-family:' + esc(font(cfg.messageFontFamily)) + ';text-shadow:0 2px 10px rgba(0,0,0,.75);';
+  messageEl.textContent = param('m');
+  var giftWrap = document.createElement('div');
+  giftWrap.style.cssText = 'margin-top:12px;display:' + (cfg.showGift === false ? 'none' : 'inline-block') + ';';
+  var giftImg = document.createElement('img');
+  giftImg.src = param('g', '/assets/img/tx-logo.png');
+  giftImg.onerror = function () { this.onerror = null; this.src = '/assets/img/tx-logo.png'; };
+  giftImg.style.cssText = 'width:64px;height:64px;object-fit:contain;border-radius:50%;box-shadow:0 0 18px rgba(0,174,255,.5);';
+  giftWrap.appendChild(giftImg);
+  textLayer.appendChild(nameEl);
+  textLayer.appendChild(messageEl);
+  textLayer.appendChild(giftWrap);
+  canvas.appendChild(textLayer);
+
+  var hideTimer = null;
+  function play(name, text, avatar, duration) {
+    if (name) nameEl.textContent = name;
+    if (text) messageEl.textContent = text;
+    if (avatar) avatarImg.src = avatar;
+    root.style.opacity = '1';
+    try { video.currentTime = 0; } catch (e) {}
+    var started = video.play();
+    if (started && started.catch) started.catch(function () {
+      video.muted = true;
+      var retry = video.play();
+      if (retry && retry.catch) retry.catch(function () {});
+    });
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(function () {
+      root.style.opacity = '0';
+      try { video.pause(); } catch (e) {}
+    }, clamp(Number(duration) || num('duration', 5), 1, 120) * 1000);
+  }
+  play(param('n', 'مستخدم تجريبي'), param('m'), param('a'), num('duration', 5));
+
+  var KNOWN = { gift: 1, like: 1, follow: 1, share: 1, subscribe: 1, join: 1, chat: 1,
+    member_join_overlay_update: 1, gift_overlay_update: 1, follow_overlay_update: 1,
+    subscribe_overlay_update: 1 };
+  var EVENT_KEYS = { gift: 'gift', like: 'like', follow: 'follow', share: 'share',
+    subscribe: 'subscribe', join: 'join', chat: 'chat', comment: 'chat', member_join: 'join' };
+  function connect() {
+    var proto = location.protocol === 'https:' ? 'wss://' : 'ws://';
+    var ws;
+    try { ws = new WebSocket(proto + location.host + '/ws'); } catch (e) { return; }
+    ws.onopen = function () {
+      ws.send(JSON.stringify({ type: 'subscribe', streamerId: param('uid'), clientType: 'action-screen', screen: num('screen', 1) }));
+    };
+    ws.onmessage = function (msg) {
+      var packet;
+      try { packet = JSON.parse(msg.data); } catch (e) { return; }
+      if (!packet || packet.type === 'pong' || packet.type === 'connected' || packet.type === 'subscribed') return;
+      var data = packet.data || packet;
+      var key = EVENT_KEYS[packet.type] || EVENT_KEYS[data.eventType] || (KNOWN[packet.type] ? packet.type : '');
+      if (!KNOWN[key]) return;
+      var user = data.user || data;
+      var name = user.nickname || user.uniqueId || user.username || data.username || '';
+      var text = '';
+      if (key === 'gift') {
+        var gift = data.gift || {};
+        text = (gift.name || gift.giftName || 'هدية') + (gift.diamondCount ? ' · ' + gift.diamondCount + ' عملة' : '');
+      } else if (key === 'like') text = 'أرسل ' + (data.likeCount || 1) + ' لايك';
+      else if (key === 'chat') text = data.comment || data.message || '';
+      else if (key === 'share') text = 'شارك البث';
+      else if (key === 'subscribe') text = 'اشتراك في القناة';
+      else if (key === 'join') text = 'انضم إلى البث';
+      play(name, param('m', text), user.avatar || user.profilePicture || param('a'), num('duration', 5));
+    };
+    ws.onclose = function () { setTimeout(connect, 3000); };
+    ws.onerror = function () { try { ws.close(); } catch (e) {} };
+  }
+  connect();
+})();
+<\/script>`;
+
+function sendAlertScreenPage(relPath, res) {
+  const file = path.join(APP_DATA, relPath);
+  if (!fs.existsSync(file)) return res.status(404).end();
+  const html = fs.readFileSync(file, 'utf8').replace(/<\/body>/i, ALERT_SCREEN_PATCH + '</body>');
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
+  res.send(html);
+}
+app.get('/overlay/actions.html', (req, res) => sendAlertScreenPage('overlay/actions.html', res));
+app.get('/widgets/action-alert-console/index.html', (req, res) => sendAlertScreenPage('widgets/action-alert-console/index.html', res));
+
 // Serve static files
 app.use(serveStatic);
 
