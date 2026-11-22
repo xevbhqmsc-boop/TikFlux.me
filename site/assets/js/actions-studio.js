@@ -53,6 +53,167 @@
     return fallback;
   }
 
+  /* The alert-library picker is rendered by the untouched Actions bundle and
+     writes raw translation keys as plain text. Keep the whole Actions area
+     Arabic by supplying those keys through a small additive layer. */
+  var ALERT_AR = {
+    'alertLibrary.title': 'مكتبة الأليرتات',
+    'alertLibrary.storeTitle': 'متجر الأليرتات',
+    'alertLibrary.backToLibrary': 'العودة للمكتبة',
+    'alertLibrary.backToLibraryAria': 'العودة إلى مكتبة الأليرتات',
+    'alertLibrary.closeAria': 'إغلاق',
+    'alertLibrary.mineBtn': 'أليرتاتي',
+    'alertLibrary.mineTitle': 'أليرتاتي',
+    'alertLibrary.ordersBtn': 'طلباتي',
+    'alertLibrary.ordersTitle': 'طلباتي',
+    'alertLibrary.cartBtn': 'السلة',
+    'alertLibrary.cartBtnAria': 'فتح سلة الأليرتات',
+    'alertLibrary.cartTitle': 'سلة الأليرتات',
+    'alertLibrary.cartEmpty': 'سلتك فارغة حالياً',
+    'alertLibrary.clearCart': 'إفراغ السلة',
+    'alertLibrary.removeFromCart': 'إزالة من السلة',
+    'alertLibrary.removeFromCartBtn': 'إزالة من السلة',
+    'alertLibrary.goToCart': 'اذهب للسلة',
+    'alertLibrary.inCart': 'في السلة',
+    'alertLibrary.checkoutTitle': 'إتمام الشراء',
+    'alertLibrary.loginRequiredStore': 'يرجى تسجيل الدخول للوصول للمتجر',
+    'alertLibrary.loginToCheckout': 'تسجيل الدخول للشراء',
+    'alertLibrary.total': 'الإجمالي',
+    'alertLibrary.loading': 'جارٍ التحميل...',
+    'alertLibrary.loadingOrders': 'جاري تحميل الطلبات...',
+    'alertLibrary.loadFailed': 'تعذّر تحميل الأليرتات، حاول مرة ثانية',
+    'alertLibrary.ordersEmpty': 'لا توجد طلبات',
+    'alertLibrary.ordersLoadFailed': 'فشل تحميل الطلبات',
+    'alertLibrary.selectFailed': 'تعذّر اختيار الأليرت، حاول مرة ثانية',
+    'alertLibrary.emptyAll': 'ما فيه أليرتات متاحة الآن',
+    'alertLibrary.emptyCategory': 'ما فيه أليرتات في هذا التصنيف',
+    'alertLibrary.emptyDefault': 'ما فيه أليرتات',
+    'alertLibrary.emptyFree': 'ما فيه أليرتات مجانية الآن',
+    'alertLibrary.emptyMine': 'ما عندك أليرتات محفوظة لسه',
+    'alertLibrary.emptyNew': 'ما فيه أليرتات جديدة الآن',
+    'alertLibrary.emptyPaid': 'ما فيه أليرتات مدفوعة الآن',
+    'alertLibrary.filters.all': 'الكل',
+    'alertLibrary.filters.new': 'جديد',
+    'alertLibrary.filters.free': 'مجاني',
+    'alertLibrary.filters.paid': 'مدفوع',
+    'alertLibrary.categories.likes': 'لايكات',
+    'alertLibrary.categories.countries': 'دول',
+    'alertLibrary.categories.boys': 'أولاد',
+    'alertLibrary.categories.girls': 'بنات',
+    'alertLibrary.categories.love': 'حب',
+    'alertLibrary.categories.follow': 'فولو',
+    'alertLibrary.categories.anime': 'أنمي',
+    'alertLibrary.badgeNew': 'جديد',
+    'alertLibrary.badgeFree': 'مجاني',
+    'alertLibrary.badgePurchased': 'مشتري',
+    'alertLibrary.use': 'استخدم',
+    'alertLibrary.useHint': 'استخدم هذا الأليرت في الإجراء',
+    'alertLibrary.useInAction': 'استخدم في الإجراء',
+    'alertLibrary.apply': 'تطبيق',
+    'alertLibrary.buyNow': 'اشترِ الآن',
+    'alertLibrary.addToCart': 'أضف للسلة',
+    'alertLibrary.cancel': 'إلغاء',
+    'alertLibrary.ownershipNote': 'الأليرتات المدفوعة تحتاج شراء قبل استخدامها',
+    'alertLibrary.alertLocked': 'هذا الأليرت مقفل، اشترِه أولاً',
+    'alertLibrary.transparencyHint': 'شفافية الأليرت',
+    'alertLibrary.durationTitle': 'المدة',
+    'alertLibrary.durationUnit': 'ثانية',
+    'alertLibrary.durationWord': 'مدة',
+    'alertLibrary.playerPlayAria': 'تشغيل المعاينة',
+    'alertLibrary.playerSeekAria': 'تقدّم الفيديو',
+    'alertLibrary.playerVolumeAria': 'مستوى الصوت',
+    'alertLibrary.paySuccessTitle': 'تم الدفع بنجاح',
+    'alertLibrary.paySuccessSub': 'الأليرت صار متاح في أليرتاتي',
+    'alertLibrary.checkoutErrors.generic': 'تعذّر إتمام الشراء، حاول مرة ثانية',
+    'alertLibrary.orderStatus.pending': 'قيد الانتظار',
+    'alertLibrary.orderStatus.paid': 'مدفوع',
+    'alertLibrary.orderStatus.failed': 'فاشل',
+    'alertLibrary.orderStatus.refunded': 'مسترجع'
+  };
+
+  function installAlertTranslations() {
+    if (window.__tfAlertI18nInstalled === '1') return;
+    window.__tfAlertI18nInstalled = '1';
+
+    try {
+      if (!window.__I18N_AR__) window.__I18N_AR__ = {};
+      var nested = {};
+      Object.keys(ALERT_AR).forEach(function (key) {
+        var parts = key.split('.');
+        var cur = nested;
+        for (var i = 1; i < parts.length; i++) {
+          if (!cur[parts[i]]) cur[parts[i]] = {};
+          cur = cur[parts[i]];
+        }
+      });
+      Object.keys(ALERT_AR).forEach(function (key) {
+        var parts = key.split('.');
+        var cur = nested;
+        for (var i = 1; i < parts.length - 1; i++) cur = cur[parts[i]];
+        cur[parts[parts.length - 1]] = ALERT_AR[key];
+      });
+      window.__I18N_AR__.alertLibrary = nested.alertLibrary;
+    } catch (e) {}
+
+    try {
+      if (window.__MOCK_TRANSLATIONS__) {
+        Object.keys(ALERT_AR).forEach(function (key) {
+          if (!window.__MOCK_TRANSLATIONS__[key]) window.__MOCK_TRANSLATIONS__[key] = ALERT_AR[key];
+        });
+      }
+    } catch (e) {}
+
+    try {
+      if (window.i18n && typeof window.i18n.t === 'function' && !window.i18n.__tfAlertWrapped) {
+        var origT = window.i18n.t;
+        window.i18n.__tfAlertWrapped = true;
+        window.i18n.t = function (key) {
+          if (ALERT_AR[key]) return ALERT_AR[key];
+          return origT.apply(this, arguments);
+        };
+      }
+    } catch (e) {}
+  }
+
+  function translateAlertText(root) {
+    var scope = root || document;
+    var walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+    var nodes = [];
+    var node;
+    while ((node = walker.nextNode())) nodes.push(node);
+    nodes.forEach(function (n) {
+      var value = n.textContent;
+      if (!value) return;
+      var trimmed = value.replace(/^\s+|\s+$/g, '');
+      if (Object.prototype.hasOwnProperty.call(ALERT_AR, trimmed) && value !== ALERT_AR[trimmed]) {
+        n.textContent = value.replace(trimmed, ALERT_AR[trimmed]);
+      }
+    });
+    var attrs = ['title', 'aria-label', 'placeholder'];
+    scope.querySelectorAll && scope.querySelectorAll('[title],[aria-label],[placeholder]').forEach(function (el) {
+      attrs.forEach(function (attr) {
+        var value = el.getAttribute(attr);
+        if (!value) return;
+        var trimmed = value.replace(/^\s+|\s+$/g, '');
+        if (Object.prototype.hasOwnProperty.call(ALERT_AR, trimmed) && value !== ALERT_AR[trimmed]) {
+          el.setAttribute(attr, ALERT_AR[trimmed]);
+        }
+      });
+    });
+  }
+
+  function fixBrokenAvatars() {
+    var fallback = '/assets/img/avatar1.png';
+    var avatar = document.getElementById('roomAvatar');
+    if (avatar && avatar.getAttribute('src') === '/' && !avatar.dataset.tfAvatarFixed) {
+      avatar.dataset.tfAvatarFixed = '1';
+      avatar.setAttribute('src', fallback);
+    }
+    document.querySelectorAll('.action-avatar-face img[src="/ranking-avatars/man-gold.webp"]').forEach(function (img) {
+      img.setAttribute('src', fallback);
+    });
+  }
+
   function move(id, host, prepend) {
     var el = document.getElementById(id);
     if (!el || !host) return null;
@@ -464,7 +625,7 @@
           '<div class="action-output">' +
             '<div class="action-avatar-position">' +
               '<div class="action-avatar-shell action-profile-circle">' +
-                '<div class="action-avatar-face"><img src="/ranking-avatars/man-gold.webp" alt=""></div>' +
+                '<div class="action-avatar-face"><img src="/assets/img/avatar1.png" alt=""></div>' +
               '</div>' +
             '</div>' +
             '<div class="action-copy-position">' +
@@ -961,9 +1122,12 @@
     upgradeDialogClose();
     upgradeCreateActionForm();
     syncVideoPreview();
+    fixBrokenAvatars();
+    translateAlertText();
   }
 
   function start() {
+    installAlertTranslations();
     build();
     rememberVideoChoices();
     refreshStudioChrome();
