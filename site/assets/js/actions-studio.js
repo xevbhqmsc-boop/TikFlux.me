@@ -12,6 +12,7 @@
     zap: '<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15.914 4a1.5 1.5 0 0 0-2.474-1.561l-9 9A1.5 1.5 0 0 0 5.5 14h4.002a.5.5 0 0 1 .471.666L8.086 20a1.5 1.5 0 0 0 2.475 1.56l9-9A1.5 1.5 0 0 0 18.5 10h-3.997a.5.5 0 0 1-.472-.667z"/></svg>',
     square: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>',
     play: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>',
+    pause: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>',
     sliders: '<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5H3"/><path d="M12 19H3"/><path d="M14 3v4"/><path d="M16 17v4"/><path d="M21 12h-9"/><path d="M21 19h-5"/><path d="M21 5h-7"/><path d="M8 10v4"/><path d="M8 12H3"/></svg>',
     activity: '<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>',
     clapper: '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12.296 3.464 3.02 3.956"/><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="m6.18 5.276 3.1 3.899"/></svg>',
@@ -772,6 +773,24 @@
     }, true);
   }
 
+  function syncVideoTimeUI() {
+    var video = document.getElementById('tfStageVideo');
+    var seek = document.getElementById('tfPreviewSeek');
+    var time = document.getElementById('tfPreviewTime');
+    if (!video || !seek || !time) return;
+    var durationField = document.getElementById('duration');
+    var fallback = durationField ? parseInt(durationField.value, 10) : 5;
+    if (!isFinite(fallback) || fallback < 2) fallback = 5;
+    var total = (isFinite(video.duration) && video.duration > 0) ? video.duration : fallback;
+    var current = Math.min(total, Math.max(0, video.currentTime || 0));
+    seek.max = String(Math.round(total * 10) / 10);
+    seek.value = String(Math.round(current * 10) / 10);
+    time.textContent = current.toFixed(1) + ' / ' + total.toFixed(1) + 'ث';
+    var transition = document.getElementById('tfPreviewTransition');
+    if (transition) transition.style.opacity = '1';
+    document.getElementById('tfPreviewStage')?.classList.add('is-playing');
+  }
+
   function syncVideoPreview() {
     var display = document.getElementById('videoDisplay');
     var stage = document.getElementById('tfPreviewStage');
@@ -874,12 +893,154 @@
       stage.insertBefore(stageVideo, stage.firstChild);
       stageVideo.addEventListener('error', function () { stage.classList.remove('tf-has-video'); });
       stageVideo.addEventListener('loadeddata', function () { stage.classList.add('tf-has-video'); });
+      stageVideo.addEventListener('loadedmetadata', syncVideoTimeUI);
+      stageVideo.addEventListener('timeupdate', syncVideoTimeUI);
+      stageVideo.addEventListener('play', function () {
+        var btn = document.getElementById('tfPreviewPlay');
+        if (btn) btn.innerHTML = ICON.pause;
+      });
+      stageVideo.addEventListener('pause', function () {
+        var btn = document.getElementById('tfPreviewPlay');
+        if (btn) btn.innerHTML = ICON.play;
+      });
     }
     if (stageVideo.getAttribute('src') !== src) {
       if (src) { stageVideo.src = src; stageVideo.load(); }
       else { stageVideo.removeAttribute('src'); stageVideo.load(); stage.classList.remove('tf-has-video'); }
     }
     if (!src) stage.classList.remove('tf-has-video');
+    var transition = document.getElementById('tfPreviewTransition');
+    var wantOpacity = src ? '1' : '0';
+    if (transition && transition.style.opacity !== wantOpacity) transition.style.opacity = wantOpacity;
+    stage.classList.toggle('is-playing', !!src);
+  }
+
+  /* Link the studio preview to the real advanced-settings preview. The bundle
+     writes its overlay styles on #previewAvatarLayer / #previewTextLayer; we
+     mirror those layers (ids stripped) into the studio stage and keep them in
+     sync. Nothing in the bundles is changed. */
+  function cloneAdvancedLayer(id) {
+    var src = document.getElementById(id);
+    if (!src) return null;
+    var clone = src.cloneNode(true);
+    function mark(node) {
+      if (!node || node.nodeType !== 1) return;
+      if (node.id) {
+        node.setAttribute('data-tf-src-id', node.id);
+        node.removeAttribute('id');
+      }
+      Array.prototype.forEach.call(node.children, mark);
+    }
+    mark(clone);
+    return clone;
+  }
+
+  function ensureLinkedMirror() {
+    if (window.__tfLinkedMirrorBuilt === '1') return;
+    var stage = document.getElementById('tfPreviewStage');
+    var transition = document.getElementById('tfPreviewTransition');
+    var output = transition && transition.querySelector('.action-output');
+    if (!stage || !output || !document.getElementById('previewAvatarLayer') || !document.getElementById('previewTextLayer')) return;
+    window.__tfLinkedMirrorBuilt = '1';
+
+    var mirror = document.createElement('div');
+    mirror.id = 'tfLinkedMirror';
+    mirror.className = 'tf-linked-mirror';
+    var canvas = document.createElement('div');
+    canvas.id = 'tfLinkedCanvas';
+    canvas.className = 'tf-linked-canvas actions-advanced-preview__canvas';
+    canvas.appendChild(cloneAdvancedLayer('previewAvatarLayer'));
+    canvas.appendChild(cloneAdvancedLayer('previewTextLayer'));
+    mirror.appendChild(canvas);
+    output.appendChild(mirror);
+    output.classList.add('tf-linked-ready');
+    syncLinkedMirror();
+  }
+
+  function setStyleText(el, value) {
+    if (el && el.style.cssText !== value) el.style.cssText = value;
+  }
+  function setClassText(el, value) {
+    if (el && (el.getAttribute('class') || '') !== value) el.setAttribute('class', value);
+  }
+  function setAttr(el, name, value) {
+    if (el && el.getAttribute(name) !== value) el.setAttribute(name, value);
+  }
+  function setText(el, value) {
+    if (el && el.textContent !== value) el.textContent = value;
+  }
+
+  function syncLinkedMirror() {
+    var stage = document.getElementById('tfPreviewStage');
+    var transition = document.getElementById('tfPreviewTransition');
+    var mirror = document.getElementById('tfLinkedMirror');
+    var canvas = document.getElementById('tfLinkedCanvas');
+    if (!stage || !mirror || !canvas) { ensureLinkedMirror(); return; }
+
+    var scale = Math.max(0.04, stage.clientWidth / 1920);
+    var transform = 'translate(-50%, -50%) scale(' + scale + ')';
+    setStyleText(canvas, 'width: 1920px; height: 1080px; left: 50%; top: 50%; transform: ' + transform + ';');
+
+    ['previewAvatarLayer', 'previewTextLayer'].forEach(function (id) {
+      var src = document.getElementById(id);
+      var dst = mirror.querySelector('[data-tf-src-id="' + id + '"]');
+      if (!src || !dst) return;
+      setStyleText(dst, src.style.cssText);
+      setClassText(dst, src.getAttribute('class') || '');
+      var srcNodes = [src].concat(Array.prototype.slice.call(src.querySelectorAll('[id]')));
+      srcNodes.forEach(function (sn) {
+        var dn = sn === src ? dst : mirror.querySelector('[data-tf-src-id="' + sn.id + '"]');
+        if (!dn) return;
+        if (sn !== src) {
+          setStyleText(dn, sn.style.cssText);
+          setClassText(dn, sn.getAttribute('class') || '');
+        }
+        if (sn.tagName === 'IMG' && sn.getAttribute('src')) setAttr(dn, 'src', sn.getAttribute('src'));
+      });
+    });
+
+    var nameField = document.getElementById('actionName');
+    var messageField = document.getElementById('messageText');
+    setText(mirror.querySelector('[data-tf-src-id="previewName"]'), (nameField && nameField.value.trim()) || 'مستخدم تجريبي');
+    setText(mirror.querySelector('[data-tf-src-id="previewMessage"]'), (messageField && messageField.value.trim()) || 'رسالة تجريبية');
+
+    var wrap = document.getElementById('previewAvatarWrap');
+    var frame = wrap ? wrap.style.getPropertyValue('--frame-color').trim() : '';
+    var output = transition && transition.querySelector('.action-output');
+    if (output && frame && output.style.getPropertyValue('--action-border').trim() !== frame) {
+      output.style.setProperty('--action-border', frame);
+    }
+
+    var video = document.getElementById('tfStageVideo');
+    var hasVideo = !!(video && video.getAttribute('src'));
+    var wantOpacity = hasVideo ? '1' : '0';
+    if (transition && transition.style.opacity !== wantOpacity) transition.style.opacity = wantOpacity;
+    stage.classList.toggle('is-playing', hasVideo);
+  }
+
+  function bindAdvancedSync() {
+    if (window.__tfAdvancedSyncBound === '1') return;
+    window.__tfAdvancedSyncBound = '1';
+    ensureLinkedMirror();
+
+    var canvas = document.getElementById('advancedPreviewCanvas');
+    if (canvas) {
+      new MutationObserver(syncLinkedMirror).observe(canvas, {
+        attributes: true, childList: true, subtree: true, characterData: true
+      });
+    }
+    var form = document.getElementById('advancedSettingsForm');
+    if (form) {
+      ['input', 'change'].forEach(function (type) {
+        form.addEventListener(type, syncLinkedMirror, true);
+      });
+    }
+    var later = function () { setTimeout(function () { setTimeout(syncLinkedMirror, 0); }, 0); };
+    var advancedBtn = document.getElementById('advancedSettingsBtn');
+    if (advancedBtn) advancedBtn.addEventListener('click', later);
+    var saveBtn = document.getElementById('saveAdvancedSettingsBtn');
+    if (saveBtn) saveBtn.addEventListener('click', later);
+    window.addEventListener('resize', syncLinkedMirror);
   }
 
   function bindPreview(form) {
@@ -892,6 +1053,7 @@
       var nextMsg = (msg && msg.value.trim()) || 'رسالة تجريبية';
       if (outName && outName.textContent !== nextName) outName.textContent = nextName;
       if (outMsg && outMsg.textContent !== nextMsg) outMsg.textContent = nextMsg;
+      syncLinkedMirror();
     }
 
     if (form.dataset.previewBound === '1') { syncText(); return; }
@@ -905,6 +1067,7 @@
     var play = document.getElementById('tfPreviewPlay');
     var replay = document.getElementById('tfPreviewReplay');
     var duration = document.getElementById('duration');
+    function getVideo() { return document.getElementById('tfStageVideo'); }
 
     function maxSeconds() {
       var n = duration ? parseInt(duration.value, 10) : 5;
@@ -919,18 +1082,39 @@
       seek.max = String(m);
       seek.value = String(v);
       time.textContent = v.toFixed(1) + ' / ' + m + 'ث';
-      var on = v > 0;
+      var on = v > 0 || !!(getVideo() && getVideo().getAttribute('src'));
       transition.style.opacity = on ? '1' : '0';
       stage.classList.toggle('is-playing', on);
     }
-    if (seek) seek.addEventListener('input', paint);
+    if (seek) seek.addEventListener('input', function () {
+      var video = getVideo();
+      if (video && isFinite(video.duration) && video.duration > 0) {
+        var ratio = Number(seek.value) / Math.max(0.1, Number(seek.max) || maxSeconds());
+        video.currentTime = Math.max(0, Math.min(video.duration, ratio * video.duration));
+        syncVideoTimeUI();
+      } else paint();
+    });
     if (duration) duration.addEventListener('input', paint);
     if (play) play.addEventListener('click', function () {
+      var video = getVideo();
+      if (video && video.getAttribute('src')) {
+        if (video.paused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+        else video.pause();
+        return;
+      }
       if (!seek) return;
       seek.value = Number(seek.value) > 0 ? '0' : String(Math.min(maxSeconds(), 5));
       paint();
     });
-    if (replay) replay.addEventListener('click', function () { if (seek) { seek.value = '0'; paint(); } });
+    if (replay) replay.addEventListener('click', function () {
+      var video = getVideo();
+      if (video && video.getAttribute('src')) {
+        video.currentTime = 0;
+        var p = video.play(); if (p && p.catch) p.catch(function () {});
+        return;
+      }
+      if (seek) { seek.value = '0'; paint(); }
+    });
     if (checker && stage) checker.addEventListener('click', function () {
       var off = stage.classList.toggle('no-checker');
       checker.setAttribute('aria-pressed', String(!off));
@@ -940,6 +1124,7 @@
     });
     form.addEventListener('reset', function () { setTimeout(function () { syncText(); paint(); }, 0); });
 
+    bindAdvancedSync();
     syncText();
     paint();
   }

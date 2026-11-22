@@ -1188,6 +1188,27 @@ button.dialog-x[data-slot="dialog-close"]:focus-visible {
   z-index: 0;
   pointer-events: none;
 }
+
+/* Live mirror of the advanced-settings overlay inside the studio preview. */
+#createActionModal .tf-linked-mirror {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+#createActionModal .tf-linked-canvas {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+#createActionModal .action-output.tf-linked-ready > .action-avatar-position,
+#createActionModal .action-output.tf-linked-ready > .action-copy-position {
+  display: none !important;
+}
 #createActionModal #tfPreviewStage.tf-has-video .al-preview-logo { opacity: 0; }
 #createActionModal #tfPreviewStage.tf-has-video.al-checker::after { opacity: 0.45; }
 #createActionModal #tfPreviewStage.tf-has-video::before {
