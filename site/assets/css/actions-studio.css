@@ -1090,6 +1090,120 @@ button.dialog-x[data-slot="dialog-close"]:focus-visible {
   background: rgba(6, 19, 31, 0.7) !important;
 }
 
+/* ---------------------------------- selected-video preview + advanced settings */
+#createActionModal #videoDisplay .tf-video-selection {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(125, 211, 252, 0.14);
+}
+#createActionModal .tf-video-thumb {
+  position: relative;
+  width: 92px;
+  height: 56px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(34, 211, 238, 0.38);
+  border-radius: 7px;
+  overflow: hidden;
+  background: #06131f;
+}
+#createActionModal .tf-video-thumb-player,
+#createActionModal .tf-video-thumb-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#createActionModal .tf-video-thumb-player { z-index: 2; }
+#createActionModal .tf-video-thumb-poster { z-index: 1; opacity: 0.9; }
+#createActionModal .tf-preview-failed .tf-video-thumb-player { display: none; }
+#createActionModal .tf-video-thumb-play {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(6, 19, 31, 0.78);
+  color: #67e8f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  pointer-events: none;
+}
+#createActionModal .tf-preview-failed .tf-video-thumb-play { display: none; }
+#createActionModal .tf-video-selection-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+#createActionModal .tf-video-selection-name {
+  color: #e6f7ff;
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#createActionModal .tf-video-selection-kind {
+  color: #8ea6bb;
+  font-size: 11px;
+}
+#createActionModal .tf-preview-failed .tf-video-selection-kind::after {
+  content: ' • تعذّر عرض المعاينة';
+  color: #fca5a5;
+}
+#createActionModal .tf-video-advanced-btn {
+  flex: 0 0 auto;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px solid rgba(34, 211, 238, 0.42) !important;
+  border-radius: 6px !important;
+  background: rgba(11, 34, 53, 0.85) !important;
+  color: #d9f5ff !important;
+  font-size: 11.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#createActionModal .tf-video-advanced-btn:hover {
+  border-color: #67e8f9 !important;
+  background: rgba(14, 48, 70, 0.95) !important;
+}
+
+#createActionModal .tf-stage-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+#createActionModal #tfPreviewStage.tf-has-video .al-preview-logo { opacity: 0; }
+#createActionModal #tfPreviewStage.tf-has-video.al-checker::after { opacity: 0.45; }
+#createActionModal #tfPreviewStage.tf-has-video::before {
+  content: 'معاينة الفيديو';
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 9px;
+  padding: 3px 8px;
+  border: 1px solid rgba(103, 232, 249, 0.35);
+  border-radius: 20px;
+  background: rgba(5, 18, 30, 0.8);
+  color: #a5f3fc;
+  font-size: 10.5px;
+}
+
 .studio-action-form .range-field > div:first-child label {
   font-size: 12.5px !important;
 }

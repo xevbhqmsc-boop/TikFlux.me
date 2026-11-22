@@ -567,6 +567,160 @@
     });
   }
 
+  /* Remember the URL returned by our local sign endpoint, and the alert the
+     library picker was clicked on. The bundles keep both states private, so we
+     observe them without editing the bundles. */
+  function rememberVideoChoices() {
+    if (window.__tfVideoChoiceHook === '1') return;
+    window.__tfVideoChoiceHook = '1';
+
+    var originalFetch = window.fetch;
+    window.fetch = function () {
+      var args = arguments;
+      var input = args[0];
+      var url = typeof input === 'string' ? input : (input && input.url) || '';
+      var promise = originalFetch.apply(this, args);
+      if (String(url).indexOf('/api/actions/upload-video/sign') !== -1 && promise && promise.then) {
+        promise.then(function (resp) {
+          if (resp && resp.ok && resp.clone) {
+            resp.clone().json().then(function (data) {
+              if (data && data.videoUrl) window.__tfLastUploadSign = data;
+            }).catch(function () {});
+          }
+        }).catch(function () {});
+      }
+      return promise;
+    };
+
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      if (!target || !target.closest) return;
+      var card = target.closest('.alib-card');
+      if (!card) return;
+      var thumb = card.querySelector('[data-url]');
+      if (!thumb) return;
+      var nameEl = card.querySelector('.alib-card__name');
+      var poster = card.querySelector('.alib-card__poster');
+      window.__tfLastLibraryAlert = {
+        id: thumb.getAttribute('data-id') || '',
+        url: thumb.getAttribute('data-url') || '',
+        name: thumb.getAttribute('data-name') || (nameEl ? nameEl.textContent.trim() : ''),
+        duration: thumb.getAttribute('data-duration') || '',
+        poster: poster ? (poster.getAttribute('src') || '') : ''
+      };
+    }, true);
+  }
+
+  function syncVideoPreview() {
+    var display = document.getElementById('videoDisplay');
+    var stage = document.getElementById('tfPreviewStage');
+    if (!display || !stage) return;
+
+    var nameEl = document.getElementById('currentVideoName');
+    var name = nameEl ? nameEl.textContent.replace(/\s+/g, ' ').trim() : '';
+    var visible = display.style.display === 'block' || getComputedStyle(display).display !== 'none';
+    var src = '';
+    var kind = '';
+    var poster = '';
+    var duration = '';
+
+    if (visible && name) {
+      var lib = window.__tfLastLibraryAlert;
+      if (lib && lib.url && lib.name === name) {
+        src = lib.url;
+        kind = 'مكتبة الأليرتات';
+        poster = lib.poster || '';
+        duration = lib.duration || '';
+      } else {
+        var up = window.__tfLastUploadSign;
+        if (up && up.videoUrl && (!up.videoFilename || up.videoFilename === name)) {
+          src = up.videoUrl;
+          kind = 'من سطح المكتب';
+        }
+      }
+    }
+
+    var row = display.querySelector('.tf-video-selection');
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'tf-video-selection';
+      row.innerHTML =
+        '<div class="tf-video-thumb">' +
+          '<video class="tf-video-thumb-player" muted playsinline preload="metadata"></video>' +
+          '<img class="tf-video-thumb-poster" src="/assets/img/tx-logo.png" alt="">' +
+          '<span class="tf-video-thumb-play" aria-hidden="true">▶</span>' +
+        '</div>' +
+        '<div class="tf-video-selection-info">' +
+          '<strong class="tf-video-selection-name"></strong>' +
+          '<span class="tf-video-selection-kind"></span>' +
+        '</div>' +
+        '<button type="button" class="tf-video-advanced-btn" data-slot="advanced-settings"></button>';
+      display.appendChild(row);
+
+      var fallback = row.querySelector('.tf-video-thumb-poster');
+      fallback.addEventListener('error', function () {
+        if (this.getAttribute('src') !== '/assets/img/tx-logo.png') {
+          this.setAttribute('src', '/assets/img/tx-logo.png');
+        }
+      });
+      row.querySelector('.tf-video-advanced-btn').addEventListener('click', function () {
+        var advanced = document.getElementById('advancedSettingsBtn');
+        if (advanced) advanced.click();
+      });
+    }
+
+    var label = row.querySelector('.tf-video-selection-name');
+    var meta = row.querySelector('.tf-video-selection-kind');
+    var advancedBtn = row.querySelector('.tf-video-advanced-btn');
+    var advanced = document.getElementById('advancedSettingsBtn');
+    var advancedText = advanced ? advanced.textContent.replace(/\s+/g, ' ').trim() : 'إعدادات متقدمة';
+    var metaText = kind + (duration ? ' • ' + duration + 'ث' : '');
+    if (label && label.textContent !== name) label.textContent = name;
+    if (meta && meta.textContent !== metaText) meta.textContent = metaText;
+    if (advancedBtn && advancedBtn.textContent !== advancedText) advancedBtn.textContent = advancedText;
+
+    var player = row.querySelector('.tf-video-thumb-player');
+    var posterEl = row.querySelector('.tf-video-thumb-poster');
+    if (row.getAttribute('data-src') !== src) {
+      row.setAttribute('data-src', src);
+      row.classList.toggle('tf-preview-failed', false);
+      if (player) {
+        if (src) { player.src = src; player.load(); }
+        else { player.removeAttribute('src'); player.load(); }
+      }
+      if (posterEl && poster) posterEl.setAttribute('src', poster);
+    }
+    if (player && player.dataset.previewBound !== '1') {
+      player.dataset.previewBound = '1';
+      player.addEventListener('error', function () {
+        row.classList.add('tf-preview-failed');
+        stage.classList.remove('tf-has-video');
+      });
+      player.addEventListener('loadeddata', function () {
+        row.classList.remove('tf-preview-failed');
+        stage.classList.add('tf-has-video');
+      });
+    }
+
+    var stageVideo = document.getElementById('tfStageVideo');
+    if (!stageVideo) {
+      stageVideo = document.createElement('video');
+      stageVideo.id = 'tfStageVideo';
+      stageVideo.className = 'tf-stage-video';
+      stageVideo.setAttribute('muted', '');
+      stageVideo.setAttribute('playsinline', '');
+      stageVideo.setAttribute('preload', 'metadata');
+      stage.insertBefore(stageVideo, stage.firstChild);
+      stageVideo.addEventListener('error', function () { stage.classList.remove('tf-has-video'); });
+      stageVideo.addEventListener('loadeddata', function () { stage.classList.add('tf-has-video'); });
+    }
+    if (stageVideo.getAttribute('src') !== src) {
+      if (src) { stageVideo.src = src; stageVideo.load(); }
+      else { stageVideo.removeAttribute('src'); stageVideo.load(); stage.classList.remove('tf-has-video'); }
+    }
+    if (!src) stage.classList.remove('tf-has-video');
+  }
+
   function bindPreview(form) {
     function syncText() {
       var name = document.getElementById('actionName');
@@ -806,10 +960,12 @@
   function refreshStudioChrome() {
     upgradeDialogClose();
     upgradeCreateActionForm();
+    syncVideoPreview();
   }
 
   function start() {
     build();
+    rememberVideoChoices();
     refreshStudioChrome();
     var view = document.getElementById(VIEW_ID);
     if (view) {
