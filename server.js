@@ -8,6 +8,7 @@ const http = require('http');
 const { WebSocketServer, WebSocket } = require('ws');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const { URL } = require('url');
 
 // === Configuration ===
@@ -109,6 +110,184 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
+});
+
+// === Local video uploads for Actions / alerts ===
+// The Actions bundle asks /api/actions/upload-video/sign for a presigned PUT.
+// Previously that route fell through to the catch-all ({ok:true}) so the bundle
+// reported "Sign failed: 200". We now issue a same-origin token and accept the
+// PUT ourselves, storing the file under USER_DATA (never in the web root).
+const VIDEO_UPLOAD_DIR = path.join(USER_DATA, 'uploads', 'videos');
+const VIDEO_MAX_BYTES = 50 * 1024 * 1024;
+const VIDEO_EXT_MIME = {
+  '.mp4': 'video/mp4', '.m4v': 'video/mp4', '.m4p': 'video/mp4',
+  '.3gp': 'video/3gpp', '.webm': 'video/webm', '.ogv': 'video/ogg',
+  '.mov': 'video/quicktime', '.mkv': 'video/x-matroska',
+  '.gif': 'image/gif', '.webp': 'image/webp', '.png': 'image/png',
+  '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.avif': 'image/avif',
+  '.bmp': 'image/bmp',
+};
+const VIDEO_MIME_EXT = {
+  'video/mp4': 'mp4', 'video/webm': 'webm', 'video/ogg': 'ogv',
+  'video/quicktime': 'mov', 'video/x-matroska': 'mkv', 'video/3gpp': '3gp',
+  'image/gif': 'gif', 'image/webp': 'webp', 'image/png': 'png',
+  'image/jpeg': 'jpg', 'image/avif': 'avif', 'image/bmp': 'bmp',
+};
+const VIDEO_TOKEN_RE = /^[a-f0-9]{32}\.(mp4|m4v|m4p|3gp|webm|ogv|mov|mkv|gif|webp|png|jpe?g|avif|bmp)$/i;
+try { fs.mkdirSync(VIDEO_UPLOAD_DIR, { recursive: true }); } catch (e) {
+  console.warn('[UPLOAD] could not create video upload dir:', e.message);
+}
+
+function uploadBase(req) {
+  const rawProto = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+  const rawHost = req.headers['x-forwarded-host'] || req.headers.host || '';
+  const proto = String(rawProto).split(',')[0].trim() || 'http';
+  const host = String(rawHost).split(',')[0].trim();
+  return host ? proto + '://' + host : '';
+}
+function videoMetaPath(token) { return path.join(VIDEO_UPLOAD_DIR, token + '.json'); }
+function videoFilePath(token) { return path.join(VIDEO_UPLOAD_DIR, token); }
+function cleanVideoTemp(token) {
+  try { fs.unlinkSync(videoFilePath(token) + '.part'); } catch (e) {}
+}
+function videoUploadError(res, status, message) {
+  return res.status(status).json({ ok: false, success: false, error: message, message: message });
+}
+
+app.post('/api/actions/upload-video/sign', (req, res) => {
+  const body = req.body || {};
+  const size = Number(body.size);
+  if (!Number.isFinite(size) || size < 0) {
+    return videoUploadError(res, 400, 'حجم الفيديو غير صالح');
+  }
+  if (size > VIDEO_MAX_BYTES) {
+    return videoUploadError(res, 413, 'حجم الفيديو كبير جدًا (الحد الأقصى 50 ميجابايت)');
+  }
+  const filename = String(body.filename || 'video.mp4').slice(0, 200);
+  const contentType = String(body.contentType || '').split(';')[0].trim().toLowerCase();
+  let ext = VIDEO_MIME_EXT[contentType] || path.extname(filename).toLowerCase().replace(/^\./, '');
+  if (!VIDEO_EXT_MIME['.' + ext]) ext = 'mp4';
+  const token = crypto.randomBytes(16).toString('hex') + '.' + ext;
+  const meta = {
+    token: token,
+    filename: filename,
+    contentType: VIDEO_EXT_MIME['.' + ext],
+    size: size,
+    status: 'pending',
+    createdAt: Date.now(),
+  };
+  try {
+    fs.mkdirSync(VIDEO_UPLOAD_DIR, { recursive: true });
+    fs.writeFileSync(videoMetaPath(token), JSON.stringify(meta));
+  } catch (e) {
+    console.error('[UPLOAD] sign failed:', e.message);
+    return videoUploadError(res, 500, 'تعذّر تجهيز الرفع');
+  }
+  const base = uploadBase(req);
+  return res.json({
+    ok: true,
+    success: true,
+    uploadUrl: base + '/api/uploads/videos/' + encodeURIComponent(token),
+    videoUrl: base + '/uploads/videos/' + encodeURIComponent(token),
+    videoFilename: filename,
+    video_filename: filename,
+    videoR2Key: token,
+  });
+});
+
+app.put('/api/uploads/videos/:token', (req, res) => {
+  const token = req.params.token;
+  if (!VIDEO_TOKEN_RE.test(token)) return videoUploadError(res, 400, 'رمز الرفع غير صالح');
+  let meta;
+  try { meta = JSON.parse(fs.readFileSync(videoMetaPath(token), 'utf8')); }
+  catch (e) { return videoUploadError(res, 404, 'انتهت صلاحية رمز الرفع'); }
+
+  const limit = Math.min(Number(meta.size) || VIDEO_MAX_BYTES, VIDEO_MAX_BYTES);
+  const declared = Number(req.headers['content-length']);
+  if (Number.isFinite(declared) && declared > limit) {
+    cleanVideoTemp(token);
+    return videoUploadError(res, 413, 'حجم الفيديو كبير جدًا (الحد الأقصى 50 ميجابايت)');
+  }
+
+  const tmpFile = videoFilePath(token) + '.part';
+  let received = 0;
+  let done = false;
+  const out = fs.createWriteStream(tmpFile);
+  const fail = (status, message) => {
+    if (done) return;
+    done = true;
+    try { out.destroy(); } catch (e) {}
+    cleanVideoTemp(token);
+    videoUploadError(res, status, message);
+  };
+
+  out.on('error', () => fail(500, 'تعذّر حفظ الفيديو'));
+  req.on('data', (chunk) => {
+    if (done) return;
+    received += chunk.length;
+    if (received > limit) {
+      done = true;
+      try { out.destroy(); } catch (e) {}
+      cleanVideoTemp(token);
+      videoUploadError(res, 413, 'حجم الفيديو كبير جدًا (الحد الأقصى 50 ميجابايت)');
+      res.once('finish', () => { try { req.destroy(); } catch (e) {} });
+      return;
+    }
+    if (!out.write(chunk)) req.pause();
+  });
+  out.on('drain', () => req.resume());
+  req.on('aborted', () => fail(499, 'تم إلغاء الرفع'));
+  req.on('error', () => fail(500, 'خطأ أثناء الرفع'));
+  req.on('end', () => { if (!done) out.end(); });
+  out.on('finish', () => {
+    if (done) return;
+    done = true;
+    try {
+      fs.renameSync(tmpFile, videoFilePath(token));
+      meta.status = 'done';
+      meta.size = received;
+      meta.uploadedAt = Date.now();
+      fs.writeFileSync(videoMetaPath(token), JSON.stringify(meta));
+      return res.json({ ok: true, success: true, url: '/uploads/videos/' + token });
+    } catch (e) {
+      cleanVideoTemp(token);
+      console.error('[UPLOAD] finish failed:', e.message);
+      return videoUploadError(res, 500, 'تعذّر إنهاء الرفع');
+    }
+  });
+});
+
+app.get('/uploads/videos/:token', (req, res) => {
+  const token = req.params.token;
+  if (!VIDEO_TOKEN_RE.test(token)) return res.status(400).end();
+  const file = videoFilePath(token);
+  if (!fs.existsSync(file)) return res.status(404).end();
+  const stat = fs.statSync(file);
+  if (!stat.isFile()) return res.status(404).end();
+
+  const mime = VIDEO_EXT_MIME[path.extname(token).toLowerCase()] || 'application/octet-stream';
+  res.setHeader('Content-Type', mime);
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+
+  const range = req.headers.range;
+  const match = range && /^bytes=(\d*)-(\d*)$/.exec(range);
+  if (match) {
+    let start = match[1] ? parseInt(match[1], 10) : 0;
+    let end = match[2] ? parseInt(match[2], 10) : stat.size - 1;
+    if (!Number.isFinite(start) || !Number.isFinite(end) || start < 0 || end < start || start >= stat.size) {
+      res.setHeader('Content-Range', 'bytes */' + stat.size);
+      return res.status(416).end();
+    }
+    end = Math.min(end, stat.size - 1);
+    res.status(206);
+    res.setHeader('Content-Range', 'bytes ' + start + '-' + end + '/' + stat.size);
+    res.setHeader('Content-Length', end - start + 1);
+    return fs.createReadStream(file, { start: start, end: end }).pipe(res);
+  }
+  res.setHeader('Content-Length', stat.size);
+  return fs.createReadStream(file).pipe(res);
 });
 
 // === TikTok stream endpoints (registered BEFORE the /api/* catch-all and static
