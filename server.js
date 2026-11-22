@@ -9,6 +9,7 @@ const { WebSocketServer, WebSocket } = require('ws');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { Readable } = require('stream');
 const { URL } = require('url');
 
 // === Configuration ===
@@ -288,6 +289,61 @@ app.get('/uploads/videos/:token', (req, res) => {
   }
   res.setHeader('Content-Length', stat.size);
   return fs.createReadStream(file).pipe(res);
+});
+
+// The Actions bundle rewrites library alert previews to this same-origin path
+// (${API_URL}/api/alert-library/previews/:id/video). Proxy the catalog URL so
+// the advanced-settings video preview works just like a locally uploaded one.
+app.get('/api/alert-library/previews/:id/video', async (req, res) => {
+  const id = String(req.params.id || '');
+  const catalog = readJsonFile(ALERT_CATALOG_FILE, {});
+  const items = Array.isArray(catalog) ? catalog : (catalog.items || []);
+  const alert = items.find((a) => a && String(a.id) === id);
+  if (!alert || !alert.preview_url) return res.status(404).end();
+
+  const headers = {};
+  if (req.headers.range) headers.Range = String(req.headers.range);
+  try {
+    const upstream = await fetch(alert.preview_url, {
+      headers: headers,
+      signal: AbortSignal.timeout(20000),
+    });
+    const contentType = upstream.headers.get('content-type') || 'video/mp4';
+    res.status(upstream.status);
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Accept-Ranges', 'bytes');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    const contentLength = upstream.headers.get('content-length');
+    const contentRange = upstream.headers.get('content-range');
+    if (contentLength) res.setHeader('Content-Length', contentLength);
+    if (contentRange) res.setHeader('Content-Range', contentRange);
+    if (!upstream.body) return res.end();
+    return Readable.fromWeb(upstream.body).pipe(res);
+  } catch (e) {
+    console.warn('[ALERT PREVIEW] proxy failed:', id, e.message);
+    if (!res.headersSent) res.status(502).end();
+    else res.end();
+  }
+});
+
+app.get('/api/alert-library/previews/:id/thumb.jpg', async (req, res) => {
+  const id = String(req.params.id || '');
+  const catalog = readJsonFile(ALERT_CATALOG_FILE, {});
+  const items = Array.isArray(catalog) ? catalog : (catalog.items || []);
+  const alert = items.find((a) => a && String(a.id) === id);
+  if (!alert || !alert.thumbnail_url) return res.status(404).end();
+  try {
+    const upstream = await fetch(alert.thumbnail_url, { signal: AbortSignal.timeout(20000) });
+    const contentType = upstream.headers.get('content-type') || 'image/jpeg';
+    res.status(upstream.status);
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    if (!upstream.body) return res.end();
+    return Readable.fromWeb(upstream.body).pipe(res);
+  } catch (e) {
+    if (!res.headersSent) res.status(502).end();
+    else res.end();
+  }
 });
 
 // === TikTok stream endpoints (registered BEFORE the /api/* catch-all and static
